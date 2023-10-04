@@ -1,5 +1,5 @@
-import mockup from "../assets/images/mockup.png";
-import chat from "../assets/images/chat-1.png";
+import mockup from "../../../assets/images/mockup.png";
+import chat from "../../../assets/images/chat-1.png";
 
 const Section1 = () => {
     return (

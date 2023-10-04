@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd";
-import accent from "../assets/images/icon-quote.png";
+import accent from "../../../assets/images/icon-quote.png";
 
 const { TextArea } = Input;
 const Section4 = () => {

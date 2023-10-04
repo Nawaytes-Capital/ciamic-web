@@ -1,0 +1,57 @@
+@import "../../styles/variables.scss";
+
+.confirmation-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .confirmation-wp {
+      width: 500px;
+      position: relative;
+
+      .icon {
+        height: 50px;
+        margin: 0 auto;
+        display: block;
+        padding-bottom: 24px;
+      }
+
+      .btn-email {
+        height: 48px;
+        width: 200px;
+        background-color: $c-primary;
+        margin: 0 auto;
+        display: block;
+        margin-top: 24px;
+      }
+
+      .divider {
+        width: 100%;
+        height: 2px;
+        background-color: #d4d4d4;
+        margin-top: 24px;
+      }
+
+      .title{
+        font-size: 24px;
+        font-family: $amoebaReg;
+        text-align: center;
+        margin-bottom: 14px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+        font-family: $amoebaReg;
+        text-align: center;
+        color: $f-grey;
+
+        span {
+          color: $c-primary;
+          font-family: $amoebaBold;
+          text-decoration: underline;
+        }
+      }
+    }
+}

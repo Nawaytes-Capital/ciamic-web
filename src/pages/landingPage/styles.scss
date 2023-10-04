@@ -1,4 +1,4 @@
-@import "./styles/variables";
+@import "../../styles/variables.scss";
 
 body {
   width: 100%;
@@ -70,7 +70,7 @@ body {
   .section-left {
     width: calc(50% - 12px*2);
     padding: 12px;
-    background-image: url('./assets/images/background.png');
+    background-image: url('../../assets/images/background.png');
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
@@ -468,9 +468,60 @@ body {
     margin-top: -100px;
   }
 
+  .slider-mobile {
+    display: none;
+    position: relative;
+  }
+
   @include phone {
+    display: block;
+    min-height: auto;
+
+    .m-hide {
+      display: none !important;
+    }
+
+    .slider-mobile {
+      display: block;
+    }
+
     .title {
-      margin-top: 50px;
+      margin-top: 150px;
+      font-size: 24px;
+    }
+
+    .img {
+      height: 950px;
+      top: -150px
+    }
+      
+    .slider-wrapper {
+
+      .img-wp {
+        width: auto;
+        padding: 24px;
+        border: 2px solid $f-black;
+        border-radius: 8px;
+      }
+      .content-wrapper {
+        margin-top: 24px;
+
+        .title-content {
+          font-size: 18px;
+          font-family: $amoebaBold;
+          color: $f-black;
+          margin-bottom: 14px;
+          margin-top: 48px;
+          text-align: center;
+        }
+        .subtitle {
+          font-size: 14px;
+          font-family: $amoebaReg;
+          color: $f-grey;
+          margin-bottom: 24px;
+          text-align: center;
+        }
+      }
     }
   }
 }
@@ -549,6 +600,10 @@ body {
     }
   }
 
+  @include phone {
+    display: none;
+  }
+
 }
 
 .section-footer {
@@ -571,7 +626,7 @@ body {
       position: absolute;
       width: 250px;
       height: 275px;
-      background-image: url('./assets/images/accent-footer-2.png');
+      background-image: url('../../assets/images/accent-footer-2.png');
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
@@ -604,13 +659,25 @@ body {
       position: absolute;
       width: 400px;
       height: 200px;
-      background-image: url('./assets/images/accent-footer.png');
+      background-image: url('../../assets/images/accent-footer.png');
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: 1;
       top: -120px;
       right: 0;
+    }
+
+    .content-wp {
+      width: 500px;
+      z-index: 3;
+    }
+
+    .btn-footer {
+      height: 48px; 
+      width: 500px; 
+      background-color: #003BA1;
+      border-radius: 16px;
     }
 
     .title {
@@ -627,6 +694,44 @@ body {
       color: $f-black;
       margin-bottom: 24px;
       text-align: center;text-align: center;
+    }
+  }
+
+  @include phone {
+    margin-top: 0;
+    flex-direction: column;
+    background-color: #f6f7fa;
+
+    .section-left {
+      display: none;
+    }
+
+    .section-right {
+      width: 100%;
+      padding-right: 0;
+      padding: 50px 0;
+
+      .title {
+        font-size: 24px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+        margin-bottom: 0;
+      }
+
+      .content-wp {
+        padding: 24px;
+        width: auto;
+      }
+
+      .btn-footer {
+        width: 90%;
+      }
+
+      &::after {
+        display: none;
+      }
     }
   }
 }

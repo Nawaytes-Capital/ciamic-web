@@ -1,5 +1,5 @@
 import { MenuOutlined } from '@ant-design/icons';
-import logo from '../logo.svg';
+import logo from '../../../assets/images/logo.svg';
 
 const Header = () => {
     return (

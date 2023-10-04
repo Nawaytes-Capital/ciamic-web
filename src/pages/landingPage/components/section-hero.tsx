@@ -1,6 +1,6 @@
-import illustration from '../assets/images/illustration.png'
+import illustration from '../../../assets/images/illustration.png'
 import { Button, Form, Input } from 'antd';
-import logo from '../assets/images/logo-ciamic.png'
+import logo from '../../../assets/images/logo-ciamic.png'
 
 const SectionHero = () => {
     return (

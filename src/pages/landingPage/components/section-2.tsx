@@ -1,6 +1,6 @@
-import mockup from "../assets/images/mockup-2.png";
-import chat from "../assets/images/chat-2.png";
-import iconCheck from "../assets/images/icon-check.png"
+import mockup from "../../../assets/images/mockup-2.png";
+import chat from "../../../assets/images/chat-2.png";
+import iconCheck from "../../../assets/images/icon-check.png"
 
 const Section2 = () => {
     const profit = [

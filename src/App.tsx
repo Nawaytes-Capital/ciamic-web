@@ -1,26 +1,18 @@
 import React from 'react';
-import './App.scss';
-import Footer from './components/footer';
-import Header from './components/header';
-import Section1 from './components/section-1';
-import Section2 from './components/section-2';
-import Section3 from './components/section-3';
-import Section4 from './components/section-4';
-import SectionHero from './components/section-hero';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ConfirmationPage from './pages/confirmationPage';
+import LandingPage from './pages/landingPage';
+import RegisterPage from './pages/registerPage';
 
 function App() {
   return (
-    <>
-      <Header />
-      <div className="app">
-        <SectionHero />
-        <Section1 />
-        <Section2 />
-        <Section3 />
-        <Section4 />
-      </div>
-      <Footer />
-    </>
+    <Router>
+			<Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/confirmation" element={<ConfirmationPage />} />
+      </Routes>
+    </Router>
   );
 }
 

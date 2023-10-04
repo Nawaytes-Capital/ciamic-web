@@ -1,5 +1,5 @@
-import illustration from '../assets/images/illustration.png'
-import { Button, Form, Input } from 'antd';
+import illustration from '../../../assets/images/illustration.png'
+import { Button } from 'antd';
 
 const Footer = () => {
     return (
@@ -8,7 +8,7 @@ const Footer = () => {
             <img src={illustration} className="img" />
           </div>
           <div className='section-right'>
-            <div style={{width: "500px", zIndex: "3"}}>
+            <div className='content-wp'>
                 <p className='title'>
                     Siap Untuk Perubahan?
                 </p>
@@ -16,7 +16,7 @@ const Footer = () => {
                     Gunakan CIAMIC untuk mendukung <br /> kegiatan penjualan mu terhadap Client!
                 </p>
             </div>
-            <Button type="primary" htmlType="submit" style={{height: "48px", width: "500px", backgroundColor: "#003BA1", borderRadius: "16px"}}>
+            <Button type="primary" htmlType="submit" className='btn-footer'>
                  Gunakan Sekarang
             </Button>
           </div>
