@@ -1,44 +1,24 @@
 /* Fonts */
+
 @font-face {
-    font-family: 'Comfortaa';
-    src: url('../assets/fonts/Comfortaa-Bold.woff2') format('woff2'),
-        url('../assets/fonts/Comfortaa-Bold.woff') format('woff');
+    font-family: 'Amoeba-Bold';
+    src: url('../assets/fonts/AmoebaSans-Bold.otf') format('opentype');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Rounded Mplus 1c';
-    src: url('../assets/fonts/RoundedMplus1c-Black.woff2') format('woff2'),
-        url('../assets/fonts/RoundedMplus1c-Black.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Roboto-Bold';
-    src: url('../assets/fonts/Roboto-Bold.woff2') format('woff2'),
-        url('../assets/fonts/Roboto-Bold.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Roboto-medium';
-    src: url('../assets/fonts/Roboto-Medium.woff2') format('woff2'),
-        url('../assets/fonts/Roboto-Medium.woff') format('woff');
+    font-family: 'Amoeba-light';
+    src: url('../assets/fonts/AmoebaSans-Light.otf') format('opentype');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Roboto-regular';
-    src: url('../assets/fonts/Roboto-Regular.woff2') format('woff2'),
-        url('../assets/fonts/Roboto-Regular.woff') format('woff');
+    font-family: 'Amoeba-regular';
+    src: url('../assets/fonts/AmoebaSans-Regular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -60,11 +40,9 @@ p {
   margin: 0;
 }
 
-$comfortaa: "Comfortaa";
-$roundedMplus: "Rounded Mplus 1c";
-$robotoBold: "Roboto-bold";
-$robotoMedium: "Roboto-medium";
-$robotoReg: "Roboto-regular";
+$amoebaBold: "Amoeba-bold";
+$amoebaMedium: "Amoeba-light";
+$amoebaReg: "Amoeba-regular";
 
 $c-primary: #003BA1;
 $c-primary-light: #3B83FF;

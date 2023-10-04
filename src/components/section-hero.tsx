@@ -1,18 +1,21 @@
 import illustration from '../assets/images/illustration.png'
 import { Button, Form, Input } from 'antd';
+import logo from '../assets/images/logo-ciamic.png'
 
 const SectionHero = () => {
     return (
         <section className='section-hero'>
           <div className='section-left'>
             <h2 className='title-hero'>Dekati Target <br />Konsumen <br />Dan Raih Target <br />Bulanan</h2>
+            <h2 className='title-hero-mobile'>Dekati Target Konsumen Dan Raih Target Bulanan</h2>
             <img src={illustration} className='illustration' />
           </div>
           <div className='section-right'>
             <div className='form-wrapper'>
               <div className='title-wp'>
                 <p className='title-form'>Masuk Ke Akun Anda</p>
-                <p className='subtitle-form'>Silahkan masukkan username dan password yang sesuai</p>
+                <p className='subtitle-form m-hide'>Silahkan masukkan username dan password yang sesuai</p>
+                <img src={logo} className='logo-mobile' />
               </div> 
               <Form>
                 <Form.Item

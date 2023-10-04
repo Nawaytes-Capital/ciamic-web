@@ -31,7 +31,7 @@ body {
     .menu-title {
       font-size: 16px;
       color: $f-black;
-      font-family: $robotoReg;
+      font-family: $amoebaReg;
       padding: 8px 16px;
 
       &.btn-menu {
@@ -41,6 +41,24 @@ body {
         color: #fff;
         margin-left: 16px;
       }
+    }
+  }
+
+  .menu-mobile {
+    display: none;
+  }
+
+  @include phone {
+    .logo {
+      display: none;
+    }
+
+    .menu-wrapper {
+      display: none;
+    }
+
+    .menu-mobile {
+      display: block;
     }
   }
 }
@@ -61,12 +79,27 @@ body {
     .title-hero { 
       font-size: 48px;
       color: #fff;
-      font-family: $robotoReg;
+      font-family: $amoebaReg;
       letter-spacing: 5px;
       line-height: 72px;
       width: 80%;
       margin-top: 120px;
       margin-left: 32px;
+    }
+
+    .title-hero-mobile {
+      color: #fff;
+      font-family: $amoebaReg;
+      font-size: 24px;
+      width: 100%;
+      letter-spacing: 1px;
+      line-height: 28px;
+      margin-top: 0;
+      padding-bottom: 150px;
+      margin-left: 0;
+      text-align: center;
+      padding-top: 14px;
+      display: none;
     }
 
     .illustration {
@@ -76,6 +109,7 @@ body {
       height: 350px;
     }
   }
+
   .section-right {
     width: calc(50% - 12px*2);
     padding: 12px;
@@ -90,34 +124,89 @@ body {
       background-color: #f7f7fb;
       border-radius: 8px;
 
+      .logo-mobile {
+        height: 60px;
+        padding-bottom: 24px;
+        margin: 0 auto;
+        display: none;
+      }
+
       .title-form {
         font-size: 24px;
-        font-family: $robotoBold;
+        font-family: $amoebaBold;
         text-align: center;
         margin-bottom: 14px;
       }
 
       .subtitle-form {
         font-size: 14px;
-        font-family: $robotoReg;
+        font-family: $amoebaReg;
         text-align: center;
         margin-bottom: 24px;
         color: $f-grey;
 
         span {
           color: $c-primary;
-          font-family: $robotoBold;
+          font-family: $amoebaBold;
         }
       }
 
       .forgot {
         font-size: 14px;
-        font-family: $robotoReg;
+        font-family: $amoebaReg;
         text-align: right;
         margin-bottom: 24px;
         color: $c-primary;
         margin-top: -20px;
       }
+    }
+  }
+
+  @include phone {
+    flex-direction: column;
+
+    .section-left, .section-right {
+      width: calc(100% - 12px*2);
+    }
+
+    .section-left {
+      min-height: 260px;
+
+      .title-hero {
+        display: none;
+      }
+
+      .title-hero-mobile {
+        display: block;
+      }
+      .illustration {
+        bottom: -20px;
+        height: 220px;
+        left: 18%;
+      }
+    }
+
+    .section-right {
+      padding: 0;
+      width: 100%;
+      margin-top: -24px;
+      z-index: 3;
+    }
+
+    .form-wrapper {
+      width: 100%;
+    }
+
+    .logo-mobile {
+      display: block !important;
+    }
+
+    .title-form {
+      display: none;
+    }
+
+    .m-hide {
+      display: none;
     }
   }
 }
@@ -131,14 +220,14 @@ body {
 
     .title {
       font-size: 48px;
-      font-family: $robotoBold;
+      font-family: $amoebaBold;
       color: $f-black;
       margin-bottom: 24px;
     }
 
     .subtitle {
       font-size: 16px;
-      font-family: $robotoReg;
+      font-family: $amoebaReg;
       color: $f-grey;
       line-height: 24px;
       letter-spacing: 1px;
@@ -161,6 +250,41 @@ body {
       height: 50px;
       top: 200px;
       left: 132px;
+    }
+  }
+
+  @include phone {
+    flex-direction: column-reverse;
+    margin-top: 0;
+
+    .section-left {
+      width: 100%;
+      margin-top: 50px;
+
+      .title {
+        font-size: 24px;
+      }
+
+      .subtitle {
+        line-height: 20px;
+        font-size: 14px;
+        letter-spacing: 0;
+      }
+    }
+
+    .section-right {
+      width: 100%;
+      height: 320px;
+
+      .mockup {
+        height: 320px;
+      }
+
+      .chat {
+        left: 0;
+        height: 34px;
+        top: 150px;
+      }
     }
   }
 }
@@ -194,7 +318,7 @@ body {
 
     .title {
       font-size: 48px;
-      font-family: $robotoBold;
+      font-family: $amoebaBold;
       color: $f-black;
       margin-bottom: 24px;
     }
@@ -206,11 +330,52 @@ body {
 
       .subtitle {
         font-size: 16px;
-        font-family: $robotoReg;
+        font-family: $amoebaReg;
         color: $f-grey;
         line-height: 24px;
         letter-spacing: 1px;
         margin-left: 14px;
+      }
+    }
+  }
+
+  @include phone {
+    flex-direction: column;
+    margin-top: 0;
+
+    .section-left {
+      width: 100%;
+      height: 330px;
+
+      .mockup {
+        height: 330px;
+        bottom: -44px;
+      }
+  
+      .chat {
+        height: 150px;
+        right: 0;
+      }
+    }
+
+    .section-right {
+      width: 100%;
+      padding-left: 0;
+      margin-top: 50px;
+
+      .title {
+        font-size: 24px;
+      }
+
+      .text-wp {
+        img {
+          height: 24px;
+        }
+
+        .subtitle {
+          font-size: 14px;
+          letter-spacing: 0;
+        }
       }
     }
   }
@@ -262,14 +427,14 @@ body {
 
         .title-content {
           font-size: 24px;
-          font-family: $robotoBold;
+          font-family: $amoebaBold;
           color: $f-black;
           margin-bottom: 14px;
         }
   
         .subtitle {
           font-size: 16px;
-          font-family: $robotoReg;
+          font-family: $amoebaReg;
           color: $f-grey;
         }
       }
@@ -297,10 +462,16 @@ body {
 
   .title {
     font-size: 48px;
-    font-family: $robotoBold;
+    font-family: $amoebaBold;
     color: $f-black;
     margin-bottom: 24px;
     margin-top: -100px;
+  }
+
+  @include phone {
+    .title {
+      margin-top: 50px;
+    }
   }
 }
 
@@ -331,14 +502,14 @@ body {
 
     .title {
       font-size: 48px;
-      font-family: $robotoBold;
+      font-family: $amoebaBold;
       color: $f-black;
       margin-bottom: 14px;
       margin-top: 48px;
     }
     .subtitle {
       font-size: 16px;
-      font-family: $robotoReg;
+      font-family: $amoebaReg;
       color: $f-grey;
       margin-bottom: 24px;
     }
@@ -355,13 +526,13 @@ body {
 
       .title-form {
         font-size: 24px;
-        font-family: $robotoBold;
+        font-family: $amoebaBold;
         margin-bottom: 14px;
       }
 
       .subtitle-form {
         font-size: 14px;
-        font-family: $robotoReg;
+        font-family: $amoebaReg;
         margin-bottom: 24px;
         color: $f-grey;
       }
@@ -444,7 +615,7 @@ body {
 
     .title {
       font-size: 32px;
-      font-family: $robotoBold;
+      font-family: $amoebaBold;
       color: $f-black;
       margin-bottom: 24px;
       text-align: center;
@@ -452,7 +623,7 @@ body {
 
     .subtitle {
       font-size: 16px;
-      font-family: $robotoReg;
+      font-family: $amoebaReg;
       color: $f-black;
       margin-bottom: 24px;
       text-align: center;text-align: center;
