@@ -2,9 +2,33 @@ import illustration from '../../../assets/images/illustration.png'
 import { Button, Form, Input } from 'antd';
 import logo from '../../../assets/images/logo-ciamic.png'
 import { useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as yup from "yup";
+interface ILoginRequest {
+	username: string;
+	password: string;
+}
 
 const SectionHero = () => {
     const navigate = useNavigate();
+    const validationLogin = yup.object().shape({
+      username: yup.string().required("username is required"),
+      password: yup.string().matches(
+          /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
+          "Must Contain 8 Characters with Number"
+        ).required("password is required")
+    });
+    const form = useFormik<ILoginRequest>({
+      initialValues: {
+          username: "",
+          password: "",
+      },
+      enableReinitialize: true,
+      validationSchema: validationLogin,
+      onSubmit: async(values) => {
+          console.log("login : ", values);
+      },
+    });
     return (
         <section className='section-hero'>
           <div className='section-left'>
@@ -19,51 +43,49 @@ const SectionHero = () => {
                 <p className='subtitle-form m-hide'>Silahkan masukkan username dan password yang sesuai</p>
                 <img src={logo} className='logo-mobile' />
               </div> 
-              <Form>
-                <Form.Item
-                  name="username"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your username!",
-                    },
-                  ]}
-                >
+              <Form onFinish={form.handleSubmit}>
+                <Form.Item>
                   <div className="form-group">
                     <div className="input-group mb-3">
                       <span className="input-group-text bg-transparent">
                         <i className="ti-user"></i>
                       </span>
                       <Input
+                        name="username"
                         type="text"
                         className="form-control ps-15 bg-transparent"
                         placeholder="Username"
                         style={{height: "48px"}}
+                        value={form.values.username}
+                        onChange={form.handleChange}
+                        onBlur={form.handleBlur}
                       />
                     </div>
+                    {form.touched.username && form.errors.username ? (
+                      <span className="text-error">{form.errors.username}</span>
+                    ) : null}
                   </div>
                 </Form.Item>
-                <Form.Item
-                  name="password"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your password!",
-                    },
-                  ]}
-                >
+                <Form.Item>
                   <div className="form-group">
                     <div className="input-group mb-3">
                       <span className="input-group-text  bg-transparent">
                         <i className="ti-lock"></i>
                       </span>
                       <Input.Password
+                        name="password"
                         type="password"
                         className="form-control ps-15 bg-transparent"
                         placeholder="Password"
                         style={{height: "48px"}}
-                        />
+                        value={form.values.password}
+                        onChange={form.handleChange}
+                        onBlur={form.handleBlur}
+                      />
                     </div>
+                    {form.touched.password && form.errors.password ? (
+                      <span className="text-error">{form.errors.password}</span>
+                    ) : null}
                   </div>
                 </Form.Item>
                 <p className='forgot'>Lupa Password?</p>

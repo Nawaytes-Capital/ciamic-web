@@ -2,9 +2,41 @@ import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import logo from '../../assets/images/logo-ciamic.png';
 import './styles.scss'
+import { useFormik } from 'formik';
+import * as yup from "yup";
+interface IRegisterRequest {
+	name: string;
+	email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 const RegisterPage = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const validation = yup.object().shape({
+      name: yup.string().required("username is required"),
+      email: yup.string().email("must be a valid email").required("email is required").matches(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "must be a valid email"),
+      password: yup.string().matches(
+          /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
+          "Must Contain 8 Characters with Number"
+        ).required("password is required"),
+      confirmPassword: yup.string().test('passwords-match', 'Passwords must match', function(value){
+        return this.parent.password === value })
+    });
+    const form = useFormik<IRegisterRequest>({
+      initialValues: {
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: ""
+      },
+      enableReinitialize: true,
+      validationSchema: validation,
+      onSubmit: async(values) => {
+          console.log("Register : ", values);
+          navigate('/confirmation')
+      },
+    });
     return (
         <div className="register-wp">
             <div className='form-wrapper'>
@@ -12,16 +44,8 @@ const RegisterPage = () => {
                 <img src={logo} className='logo' />
                 <p className='title'>Daftar Sekarang!</p>
               </div> 
-              <Form>
-                <Form.Item
-                  name="name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your name!",
-                    },
-                  ]}
-                >
+              <Form onFinish={form.handleSubmit}>
+                <Form.Item>
                   <div className="form-group">
                     <p className="title-form">Nama <span>*</span></p>
                     <div className="input-group mb-3">
@@ -30,22 +54,21 @@ const RegisterPage = () => {
                       </span>
                       <Input
                         type="text"
+                        name="name"
                         className="form-control ps-15 bg-transparent"
                         placeholder="Masukkan Nama Anda"
                         style={{height: "48px"}}
+                        value={form.values.name}
+                        onChange={form.handleChange}
+                        onBlur={form.handleBlur}
                       />
                     </div>
+                    {form.touched.name && form.errors.name ? (
+                      <span className="text-error">{form.errors.name}</span>
+                    ) : null}
                   </div>
                 </Form.Item>
-                <Form.Item
-                  name="email"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your password!",
-                    },
-                  ]}
-                >
+                <Form.Item>
                   <div className="form-group">
                     <p className="title-form">Email <span>*</span></p>
                     <div className="input-group mb-3">
@@ -53,23 +76,22 @@ const RegisterPage = () => {
                         <i className="ti-lock"></i>
                       </span>
                       <Input
+                        name="email"
                         type="text"
                         className="form-control ps-15 bg-transparent"
                         placeholder="Masukkan Email Anda"
                         style={{height: "48px"}}
+                        value={form.values.email}
+                        onChange={form.handleChange}
+                        onBlur={form.handleBlur}
                       />
                     </div>
+                    {form.touched.email && form.errors.email ? (
+                      <span className="text-error">{form.errors.email}</span>
+                    ) : null}
                   </div>
                 </Form.Item>
-                <Form.Item
-                  name="password"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your password!",
-                    },
-                  ]}
-                >
+                <Form.Item>
                   <div className="form-group">
                     <p className="title-form">Password <span>*</span></p>
                     <div className="input-group mb-3">
@@ -77,23 +99,22 @@ const RegisterPage = () => {
                         <i className="ti-lock"></i>
                       </span>
                       <Input.Password
+                        name="password"
                         type="password"
                         className="form-control ps-15 bg-transparent"
                         placeholder="Masukkan Password Anda"
                         style={{height: "48px"}}
-                        />
+                        value={form.values.password}
+                        onChange={form.handleChange}
+                        onBlur={form.handleBlur}
+                      />
                     </div>
+                    {form.touched.password && form.errors.password ? (
+                      <span className="text-error">{form.errors.password}</span>
+                    ) : null}
                   </div>
                 </Form.Item>
-                <Form.Item
-                  name="password"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your password!",
-                    },
-                  ]}
-                >
+                <Form.Item>
                   <div className="form-group">
                     <p className="title-form">Confirm Password <span>*</span></p>
                     <div className="input-group mb-3">
@@ -101,15 +122,22 @@ const RegisterPage = () => {
                         <i className="ti-lock"></i>
                       </span>
                       <Input.Password
+                        name="confirmPassword"
                         type="password"
                         className="form-control ps-15 bg-transparent"
                         placeholder="Konfirmasi Password Anda"
                         style={{height: "48px"}}
-                        />
+                        value={form.values.confirmPassword}
+                        onChange={form.handleChange}
+                        onBlur={form.handleBlur}
+                      />
                     </div>
+                    {form.touched.confirmPassword && form.errors.confirmPassword ? (
+                      <span className="text-error">{form.errors.confirmPassword}</span>
+                    ) : null}
                   </div>
                 </Form.Item>
-                <Button type="primary" onClick={() => navigate('/confirmation')} htmlType="submit" style={{height: "48px", width: "100%", backgroundColor: "#003BA1"}}>
+                <Button type="primary" htmlType="submit" style={{height: "48px", width: "100%", backgroundColor: "#003BA1"}}>
                   Daftar
                 </Button>
                 <p style={{marginTop: "24px"}} className='subtitle-form'>Sudah punya akun? <span onClick={() => navigate('/')}>Masuk!</span></p>

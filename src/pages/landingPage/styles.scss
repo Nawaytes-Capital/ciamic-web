@@ -44,7 +44,7 @@ body {
     }
   }
 
-  .menu-mobile {
+  .mobile-menu {
     display: none;
   }
 
@@ -57,7 +57,16 @@ body {
       display: none;
     }
 
-    .menu-mobile {
+    .mobile-menu {
+      display: block;
+    }
+  }
+  @include tablet {
+    .menu-wrapper {
+      display: none;
+    }
+
+    .mobile-menu {
       display: block;
     }
   }
@@ -210,6 +219,57 @@ body {
       display: none;
     }
   }
+
+  @include tablet {
+    flex-direction: column;
+
+    .section-left, .section-right {
+      width: calc(100% - 12px*2);
+    }
+
+    .section-left {
+      min-height: 400px;
+
+      .title-hero {
+        display: none;
+      }
+
+      .title-hero-mobile {
+        display: block;
+        font-size: 40px;
+        line-height: 54px;
+      }
+      .illustration {
+        bottom: -20px;
+        height: 350px;
+        left: 25%;
+      }
+    }
+
+    .section-right {
+      padding: 0;
+      width: 100%;
+      margin-top: -24px;
+      z-index: 3;
+    }
+
+    .form-wrapper {
+      width: 100% !important;
+    }
+
+    .logo-mobile {
+      display: block !important;
+      height: 100px !important;
+    }
+
+    .title-form {
+      display: none;
+    }
+
+    .m-hide {
+      display: none;
+    }
+  }
 }
 
 .section-1 {
@@ -284,6 +344,41 @@ body {
       .chat {
         left: 0;
         height: 34px;
+        top: 150px;
+      }
+    }
+  }
+
+  @include tablet {
+    flex-direction: column-reverse;
+    margin-top: 0;
+
+    .section-left {
+      width: 100%;
+      margin-top: 50px;
+
+      .title {
+        font-size: 32px;
+      }
+
+      .subtitle {
+        line-height: 32px;
+        font-size: 22px;
+        letter-spacing: 0;
+      }
+    }
+
+    .section-right {
+      width: 100%;
+      height: 450px;
+
+      .mockup {
+        height: 450px;
+      }
+
+      .chat {
+        height: 60px;
+        left: 250px;
         top: 150px;
       }
     }
@@ -375,6 +470,47 @@ body {
 
         .subtitle {
           font-size: 14px;
+          letter-spacing: 0;
+        }
+      }
+    }
+  }
+
+  @include tablet {
+    flex-direction: column;
+    margin-top: 0;
+
+    .section-left {
+      width: 100%;
+      height: 430px;
+
+      .mockup {
+        height: 430px;
+        bottom: -44px;
+      }
+  
+      .chat {
+        height: 250px;
+        left: 50px;
+      }
+    }
+
+    .section-right {
+      width: 100%;
+      padding-left: 0;
+      margin-top: 50px;
+
+      .title {
+        font-size: 32px;
+      }
+
+      .text-wp {
+        img {
+          height: 22px;
+        }
+
+        .subtitle {
+          font-size: 22px;
           letter-spacing: 0;
         }
       }
@@ -539,6 +675,45 @@ body {
       top: -150px
     }
   }
+
+  @include tablet {
+    display: block;
+    min-height: auto;
+
+    .m-hide {
+      display: none !important;
+    }
+
+    .slider-mobile {
+      display: block;
+
+      .arrow-next {
+        top: 250px;
+      }
+
+      .slider-wrapper {
+        .content-wrapper {
+          .title-content {
+            font-size: 24px;
+          }
+          .subtitle {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+
+    .title {
+      margin-top: 150px;
+      font-size: 32px;
+      text-align: center;
+    }
+
+    .img {
+      height: 950px;
+      top: -150px
+    }
+  }
 }
 
 .section-4 {
@@ -616,6 +791,10 @@ body {
   }
 
   @include phone {
+    display: none;
+  }
+
+  @include tablet { 
     display: none;
   }
 
@@ -713,6 +892,44 @@ body {
   }
 
   @include phone {
+    margin-top: 0;
+    flex-direction: column;
+    background-color: #f6f7fa;
+
+    .section-left {
+      display: none;
+    }
+
+    .section-right {
+      width: 100%;
+      padding-right: 0;
+      padding: 50px 0;
+
+      .title {
+        font-size: 24px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+        margin-bottom: 0;
+      }
+
+      .content-wp {
+        padding: 24px;
+        width: auto;
+      }
+
+      .btn-footer {
+        width: 90%;
+      }
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  @include tablet {
     margin-top: 0;
     flex-direction: column;
     background-color: #f6f7fa;
