@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import accent from "../../../assets/images/background-2.png";
 import img1 from "../../../assets/images/img-content-1.png";
 import img2 from "../../../assets/images/img-content-2.png";
@@ -9,7 +9,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { RightOutlined } from "@ant-design/icons";
 
 const Section3 = () => {
-    const [idContent, setIdContent] = useState<number>(1)
+    const [idContent, setIdContent] = useState<number>(1);
+    const slider = React.useRef<any>(null);
     const content = [
         {
             id: 1,
@@ -31,23 +32,14 @@ const Section3 = () => {
         }
     ]
 
-    function SampleNextArrow(props: any) {
-        const { className, style, onClick, to } = props;
-        return (
-            <button type="button" onClick={onClick} className={`button button--text button--icon ${className}`} aria-label={to}>
-                <RightOutlined />
-            </button>
-        );
-      }
     const settings = {
         dots: true,
         infinite: true,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        nextArrow: <SampleNextArrow to="next" />,
-        prevArrow: <SampleNextArrow to="prev" />,
     };
+    
     return (
         <section className='section-3'>
             <img src={accent} className="img"/>
@@ -55,7 +47,10 @@ const Section3 = () => {
                 Cara menggunakan ciamic
             </p>
             <div className="slider-mobile">
-                <Slider {...settings}>
+                <button onClick={() => slider?.current?.slickNext()} className="arrow-next">
+                    <RightOutlined />
+                </button>
+                <Slider ref={slider} {...settings}>
                     {content.map((item, index) => (
                         <div className='slider-wrapper' onClick={() => setIdContent(item.id)}>
                             <div className="img-wp" style={item.id === 1 ? {paddingBottom: "59px"} : {}} >

@@ -1,8 +1,10 @@
 import { Button, Form, Input } from "antd";
+import { useNavigate } from "react-router-dom";
 import logo from '../../assets/images/logo-ciamic.png';
 import './styles.scss'
 
 const RegisterPage = () => {
+    const navigate = useNavigate()
     return (
         <div className="register-wp">
             <div className='form-wrapper'>
@@ -107,10 +109,10 @@ const RegisterPage = () => {
                     </div>
                   </div>
                 </Form.Item>
-                <Button type="primary" htmlType="submit" style={{height: "48px", width: "100%", backgroundColor: "#003BA1"}}>
+                <Button type="primary" onClick={() => navigate('/confirmation')} htmlType="submit" style={{height: "48px", width: "100%", backgroundColor: "#003BA1"}}>
                   Daftar
                 </Button>
-                <p style={{marginTop: "24px"}} className='subtitle-form'>Sudah punya akun? <span>Masuk!</span></p>
+                <p style={{marginTop: "24px"}} className='subtitle-form'>Sudah punya akun? <span onClick={() => navigate('/')}>Masuk!</span></p>
                 </Form>
             </div>
         </div>

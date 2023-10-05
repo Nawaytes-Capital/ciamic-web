@@ -148,6 +148,7 @@ body {
         span {
           color: $c-primary;
           font-family: $amoebaBold;
+          cursor: pointer;
         }
       }
 
@@ -471,30 +472,21 @@ body {
   .slider-mobile {
     display: none;
     position: relative;
-  }
 
-  @include phone {
-    display: block;
-    min-height: auto;
-
-    .m-hide {
-      display: none !important;
+    .arrow-next {
+      width: 50px;
+      height: 50px;
+      background-color: #fff;
+      box-shadow: 6px 3px 20px rgba(0, 0, 0, 0.2);
+      position: absolute;
+      right: -20px;
+      top: 100px;
+      z-index: 9;
+      border: none;
+      font-size: 18px;
+      border-radius: 50%;
     }
 
-    .slider-mobile {
-      display: block;
-    }
-
-    .title {
-      margin-top: 150px;
-      font-size: 24px;
-    }
-
-    .img {
-      height: 950px;
-      top: -150px
-    }
-      
     .slider-wrapper {
 
       .img-wp {
@@ -522,6 +514,29 @@ body {
           text-align: center;
         }
       }
+    }
+  }
+
+  @include phone {
+    display: block;
+    min-height: auto;
+
+    .m-hide {
+      display: none !important;
+    }
+
+    .slider-mobile {
+      display: block;
+    }
+
+    .title {
+      margin-top: 150px;
+      font-size: 24px;
+    }
+
+    .img {
+      height: 950px;
+      top: -150px
     }
   }
 }

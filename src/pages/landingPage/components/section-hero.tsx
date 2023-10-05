@@ -1,8 +1,10 @@
 import illustration from '../../../assets/images/illustration.png'
 import { Button, Form, Input } from 'antd';
 import logo from '../../../assets/images/logo-ciamic.png'
+import { useNavigate } from 'react-router-dom';
 
 const SectionHero = () => {
+    const navigate = useNavigate();
     return (
         <section className='section-hero'>
           <div className='section-left'>
@@ -68,7 +70,7 @@ const SectionHero = () => {
                 <Button type="primary" htmlType="submit" style={{height: "48px", width: "100%", backgroundColor: "#003BA1"}}>
                   Masuk
                 </Button>
-                <p style={{marginTop: "24px"}} className='subtitle-form'>Belum punya akun? <span>Daftar Sekarang!</span></p>
+                <p style={{marginTop: "24px"}} className='subtitle-form'>Belum punya akun? <span onClick={() => navigate('/register')}>Daftar Sekarang!</span></p>
               </Form>
             </div>
           </div>
