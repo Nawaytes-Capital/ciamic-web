@@ -2,7 +2,7 @@ FROM node:18-alpine AS build-stage
 WORKDIR /app
 COPY package-lock.json ./
 COPY package.json ./
-RUN npm i ci
+RUN npm ci
 COPY . .
 RUN npm run build
 
