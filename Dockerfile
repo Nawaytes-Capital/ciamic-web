@@ -1,10 +1,10 @@
 FROM node:18-alpine AS build-stage
 WORKDIR /app
-COPY yarn.lock ./
+COPY package-lock.json ./
 COPY package.json ./
-RUN yarn install --frozen-lockfile
+RUN npm i ci
 COPY . .
-RUN yarn build
+RUN npm run build
 
 # Final stage
 FROM node:18-alpine AS final-stage
