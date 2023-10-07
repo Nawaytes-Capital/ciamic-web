@@ -15,13 +15,26 @@ const RegisterPage = () => {
     const navigate = useNavigate();
     const validation = yup.object().shape({
       name: yup.string().required("username is required"),
-      email: yup.string().email("must be a valid email").required("email is required").matches(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "must be a valid email"),
-      password: yup.string().matches(
+      email: yup
+        .string()
+        .email("must be a valid email")
+        .required("email is required")
+        .matches(
+          /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
+          "must be a valid telkom email"
+        ),
+      password: yup
+        .string()
+        .matches(
           /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
           "Must Contain 8 Characters with Number"
-        ).required("password is required"),
-      confirmPassword: yup.string().test('passwords-match', 'Passwords must match', function(value){
-        return this.parent.password === value })
+        )
+        .required("password is required"),
+      confirmPassword: yup
+        .string()
+        .test("passwords-match", "Passwords must match", function (value) {
+          return this.parent.password === value;
+        }),
     });
     const form = useFormik<IRegisterRequest>({
       initialValues: {

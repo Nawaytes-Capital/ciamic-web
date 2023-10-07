@@ -41,55 +41,63 @@ const Section3 = () => {
     };
     
     return (
-        <section className='section-3'>
-            <img src={accent} className="img"/>
-            <p className="title">
-                Cara menggunakan ciamic
-            </p>
-            <div className="slider-mobile">
-                <button onClick={() => slider?.current?.slickNext()} className="arrow-next">
-                    <RightOutlined />
-                </button>
-                <Slider ref={slider} {...settings}>
-                    {content.map((item, index) => (
-                        <div className='slider-wrapper' onClick={() => setIdContent(item.id)}>
-                            <div className="img-wp" style={item.id === 1 ? {paddingBottom: "59px"} : {}} >
-                                <img src={item.img} width="100%"/>
-                            </div>
-                            <div className="content-wrapper">
-                                <div className="title-content">{item.title}</div>
-                                <div className="subtitle">{item.subtitle}</div>
-                            </div>
-                        </div>
-                    ))}
-                </Slider>
-            </div>
-            <div className="m-hide" style={{display: "flex", width: '100%'}}>
-                <div className="section-left">
-                    {content.map((item, index) => (
-                        <div className={`container-wrapper ${idContent === item.id && 'active'}`} onClick={() => setIdContent(item.id)}>
-                            <div className="number">{index + 1}</div>
-                            <div className="content-wrapper">
-                                <div className="title-content">{item.title}</div>
-                                <div className="subtitle">{item.subtitle}</div>
-                            </div>
-                        </div>
-                    ))}
+      <section className='section-3'>
+        <img src={accent} className='img' />
+        <p className='title' id='cara-penggunaan'>
+          Cara menggunakan ciamic
+        </p>
+        <div className='slider-mobile'>
+          <button
+            onClick={() => slider?.current?.slickNext()}
+            className='arrow-next'
+          >
+            <RightOutlined />
+          </button>
+          <Slider ref={slider} {...settings}>
+            {content.map((item, index) => (
+              <div
+                className='slider-wrapper'
+                onClick={() => setIdContent(item.id)}
+              >
+                <div
+                  className='img-wp'
+                  style={item.id === 1 ? { paddingBottom: "59px" } : {}}
+                >
+                  <img src={item.img} width='100%' />
                 </div>
-                <div className="section-right">
-                    {idContent === 1 && (
-                        <img src={img1} width="100%"/>
-                    )}
-                    {idContent === 2 && (
-                        <img src={img2} width="100%"/>
-                    )}
-                    {idContent === 3 && (
-                        <img src={img3} width="100%"/>
-                    )}
+                <div className='content-wrapper'>
+                  <div className='title-content'>{item.title}</div>
+                  <div className='subtitle'>{item.subtitle}</div>
                 </div>
-            </div>
-        </section>
-    )
+              </div>
+            ))}
+          </Slider>
+        </div>
+        <div className='m-hide' style={{ display: "flex", width: "100%" }}>
+          <div className='section-left'>
+            {content.map((item, index) => (
+              <div
+                className={`container-wrapper ${
+                  idContent === item.id && "active"
+                }`}
+                onClick={() => setIdContent(item.id)}
+              >
+                <div className='number'>{index + 1}</div>
+                <div className='content-wrapper'>
+                  <div className='title-content'>{item.title}</div>
+                  <div className='subtitle'>{item.subtitle}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className='section-right'>
+            {idContent === 1 && <img src={img1} width='100%' />}
+            {idContent === 2 && <img src={img2} width='100%' />}
+            {idContent === 3 && <img src={img3} width='100%' />}
+          </div>
+        </div>
+      </section>
+    );
 }
 
 export default Section3;

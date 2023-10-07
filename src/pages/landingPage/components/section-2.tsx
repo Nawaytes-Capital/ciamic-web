@@ -26,26 +26,22 @@ const Section2 = () => {
         }
     ]
     return (
-        <section className='section-2'>
-          <div className="section-left">
-            <img src={mockup} className="mockup" />
-            <img src={chat} className="chat"/>
-          </div>
-          <div className="section-right">
-            <p className="title">
-                Keuntungan Menggunakan Ciamic
-            </p>
-            {profit.map((item) => (
-                <div className="text-wp">
-                    <img src={iconCheck} height="32px" />
-                    <p className="subtitle">
-                        {item.value}
-                    </p>
-                </div>
-            ))}
-          </div>
-        </section>
-    )
+      <section className='section-2' id='keuntungan'>
+        <div className='section-left'>
+          <img src={mockup} className='mockup' />
+          <img src={chat} className='chat' />
+        </div>
+        <div className='section-right'>
+          <p className='title'>Keuntungan Menggunakan Ciamic</p>
+          {profit.map((item) => (
+            <div className='text-wp'>
+              <img src={iconCheck} height='32px' />
+              <p className='subtitle'>{item.value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
 }
 
 export default Section2;
