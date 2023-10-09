@@ -24,7 +24,7 @@ body {
     height: 54px;
   }
 
-  .menu-wrapper {
+  .menu-wrapper, .fullmenu {
     display: flex;
     align-items: center;
   
@@ -50,7 +50,49 @@ body {
     display: none;
   }
 
+  .fullmenu {
+    width: 100%;
+    min-height: 100vh;
+    position: fixed;
+    left: -100px;
+    top: 0;
+    display: block;
+    z-index: 9;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .32s;
+
+    .fullmenu-wp {
+      width: 50%;
+      position: relative;
+      min-height: 100vh;
+      padding: 32px;
+      background-color: #fff;
+      z-index: 9;
+    }
+
+    &::before {
+      content: "";
+      width: 100%;
+      height: 100vh;
+      position: absolute;
+      z-index: 1;
+      display: block;
+      background-color: rgba($color: #000000, $alpha: 0.6);
+      left: 0;
+      top: 0;
+    }
+  }
+
   @include phone {
+
+    .fullmenu {
+      &.active {
+        opacity: 1;
+        visibility: visible;
+        left: 0;
+      }
+    }
     .logo {
       display: none;
     }
@@ -64,6 +106,13 @@ body {
     }
   }
   @include tablet {
+    .fullmenu {
+      &.active {
+        opacity: 1;
+        visibility: visible;
+        left: 0;
+      }
+    }
     .menu-wrapper {
       display: none;
     }

@@ -1,8 +1,10 @@
-import { MenuOutlined } from '@ant-design/icons';
+import { CloseOutlined, MenuOutlined } from '@ant-design/icons';
 import logo from "../../../assets/images/logo-ciamic.png";
 import { HashLink } from "react-router-hash-link";
+import { useState } from 'react';
 
 const Header = () => {
+  const [isActive, setIsActive] = useState(false)
   return (
     <header className='header-wrapper'>
       <img src={logo} className='logo' alt='logo' />
@@ -48,7 +50,55 @@ const Header = () => {
         <div className='menu-title btn-menu'>Form Usecase</div>
       </div>
       <div className='mobile-menu'>
-        <MenuOutlined />
+        <MenuOutlined onClick={() => setIsActive(true)} />
+      </div>
+      <div className={`fullmenu ${isActive && 'active'}`}>
+      <div className='fullmenu-wp'>
+        <CloseOutlined onClick={() => setIsActive(false)} style={{textAlign: "right", display: "block", marginBottom: "24px"}} />
+        <HashLink
+          smooth
+          to='/#home'
+          style={{
+            textDecoration: "none",
+          }}
+          onClick={() => setIsActive(false)}
+        >
+          <div className='menu-title '>Home</div>
+        </HashLink>
+        <HashLink
+          smooth
+          to='/#keuntungan'
+          style={{
+            textDecoration: "none",
+          }}
+          onClick={() => setIsActive(false)}
+        >
+          <div className='menu-title'>Keuntungan</div>
+        </HashLink>
+        <HashLink
+          smooth
+          to='/#cara-penggunaan'
+          style={{
+            textDecoration: "none",
+          }}
+          onClick={() => setIsActive(false)}
+        >
+          {" "}
+          <div className='menu-title'>Cara Penggunaan</div>
+        </HashLink>
+        <HashLink
+          smooth
+          to='/#feedback'
+          style={{
+            textDecoration: "none",
+          }}
+          onClick={() => setIsActive(false)}
+        >
+          {" "}
+          <div className='menu-title'>Feedback</div>
+        </HashLink>
+        <div className='menu-title btn-menu' style={{textAlign: "center", marginTop: "14px"}}>Form Usecase</div>
+        </div>
       </div>
     </header>
   );
