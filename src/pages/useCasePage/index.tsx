@@ -1,23 +1,16 @@
-import { Button } from "antd";
-import {
-  ChangeEvent,
-  InputHTMLAttributes,
-  TextareaHTMLAttributes,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import HeaderUsecase from "./component/header";
-import "./styles.scss";
-import { Input } from "antd";
+import { SaveOutlined } from "@ant-design/icons";
+import { Button, Input } from "antd";
+import { ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
 import {
   nextStepUseCase,
   prevStepUseCase,
+  setFromDraft,
   setUseCaseAnswer,
 } from "../../redux/features/usecase/useCaseSlice";
-import { SaveOutlined } from "@ant-design/icons";
+import { AppDispatch, RootState } from "../../redux/store";
+import HeaderUsecase from "./component/header";
+import "./styles.scss";
 
 const { TextArea } = Input;
 
@@ -25,6 +18,13 @@ const useCasePage = () => {
   const useCaseState = useSelector((state: RootState) => state.useCase);
   const dispatch = useDispatch<AppDispatch>();
 
+  useEffect(() => {
+    const useCaseDraft = localStorage.getItem("useCaseDraft");
+    console.log("as");
+    if (useCaseDraft) {
+      dispatch(setFromDraft(JSON.parse(useCaseDraft)));
+    }
+  }, []);
   const handleNextStep = () => {
     dispatch(nextStepUseCase());
   };
@@ -47,7 +47,14 @@ const useCasePage = () => {
   };
 
   const handleSaveDraft = () => {
-    localStorage.setItem("useCaseDraft", JSON.stringify(useCaseState.useCases));
+    localStorage.setItem(
+      "useCaseDraft",
+      JSON.stringify({
+        id: useCaseState.id,
+        useCases: useCaseState.useCases,
+        step: useCaseState.step,
+      })
+    );
   };
 
   return (
@@ -55,7 +62,11 @@ const useCasePage = () => {
       <HeaderUsecase />
       <div className='question-wp'>
         <div className='save-draft-wp'>
-          <Button className='save-draft-btn' icon={<SaveOutlined /> } onClick={handleSaveDraft}> 
+          <Button
+            className='save-draft-btn'
+            icon={<SaveOutlined />}
+            onClick={handleSaveDraft}
+          >
             Simpan Sebagai Draft
           </Button>
         </div>

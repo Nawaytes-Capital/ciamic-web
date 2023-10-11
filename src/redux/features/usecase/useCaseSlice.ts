@@ -90,5 +90,10 @@ const useCaseSlice = createSlice({
 
 export default useCaseSlice.reducer;
 
-export const { setStep, setUseCaseAnswer, nextStepUseCase, prevStepUseCase } =
-  useCaseSlice.actions;
+export const {
+  setStep,
+  setUseCaseAnswer,
+  nextStepUseCase,
+  prevStepUseCase,
+  setFromDraft,
+} = useCaseSlice.actions;
