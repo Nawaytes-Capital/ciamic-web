@@ -41,7 +41,7 @@ p {
 }
 
 $amoebaBold: "Amoeba-bold";
-$amoebaMedium: "Amoeba-light";
+$amoebaLight: "Amoeba-light";
 $amoebaReg: "Amoeba-regular";
 
 $c-primary: #003BA1;
@@ -61,6 +61,10 @@ $f-grey:#545559;
 
 .text-error {
   color: $c-secondary;
+}
+
+body {
+  font-family: $amoebaReg;
 }
 
 

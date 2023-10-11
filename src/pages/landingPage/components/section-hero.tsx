@@ -5,14 +5,21 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from "yup";
 interface ILoginRequest {
-	username: string;
+	email: string;
 	password: string;
 }
 
 const SectionHero = () => {
     const navigate = useNavigate();
     const validationLogin = yup.object().shape({
-      username: yup.string().required("username is required"),
+      email: yup
+      .string()
+      .email("must be a valid email")
+      .required("email is required")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
+        "must be a valid telkom email"
+      ),
       password: yup.string().matches(
           /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
           "Must Contain 8 Characters with Number"
@@ -20,7 +27,7 @@ const SectionHero = () => {
     });
     const form = useFormik<ILoginRequest>({
       initialValues: {
-          username: "",
+          email: "",
           password: "",
       },
       enableReinitialize: true,
@@ -60,18 +67,18 @@ const SectionHero = () => {
                       <i className='ti-user'></i>
                     </span>
                     <Input
-                      name='username'
+                      name='email'
                       type='text'
                       className='form-control ps-15 bg-transparent'
-                      placeholder='Username'
+                      placeholder='Email'
                       style={{ height: "48px" }}
-                      value={form.values.username}
+                      value={form.values.email}
                       onChange={form.handleChange}
                       onBlur={form.handleBlur}
                     />
                   </div>
-                  {form.touched.username && form.errors.username ? (
-                    <span className='text-error'>{form.errors.username}</span>
+                  {form.touched.email && form.errors.email ? (
+                    <span className='text-error'>{form.errors.email}</span>
                   ) : null}
                 </div>
               </Form.Item>

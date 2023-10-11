@@ -1,0 +1,58 @@
+@import "../../styles/variables.scss";
+
+.question-wp {
+    width: 650px;
+    height: 500px;
+    box-shadow: 0 0 35px -16px rgba(0,0,0, 0.3);
+    margin: 0 auto;
+    padding: 64px;
+    border-radius: 8px;
+
+    .title-wp {
+        display: flex;
+        margin-bottom: 24px;
+        justify-content: space-between;
+        .number {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            border-radius: 50%;
+            background-color: $c-primary;
+            margin-right: 14px;
+        }
+        .question {
+            text-align: center;
+            width: calc(100% - 46px);
+        }
+    }
+
+    .steps {
+        width: 250px;
+        background-color: rgba($color: #000000, $alpha: 0.2);
+        border-radius: 8px;
+        height: 15px;
+        margin: 20px auto;
+
+        .steps-complete {
+            height: 15px;
+            border-radius: 8px;
+            background-color: $c-primary;
+        }
+    }
+
+    .textarea {
+        height: 350px;
+    }
+
+    .btn-submit {
+        height: 48px;
+        width: 150px;
+        background-color: $c-primary;
+        margin-left: auto;
+        display: block;
+        margin-top: 24px;
+    }
+}
