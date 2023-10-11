@@ -1,74 +1,112 @@
-import { Button } from "antd";
-import { useMemo, useState } from "react";
+import { SaveOutlined } from "@ant-design/icons";
+import { Button, Input } from "antd";
+import { ChangeEvent, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  nextStepUseCase,
+  prevStepUseCase,
+  setFromDraft,
+  setUseCaseAnswer,
+} from "../../redux/features/usecase/useCaseSlice";
+import { AppDispatch, RootState } from "../../redux/store";
 import HeaderUsecase from "./component/header";
 import "./styles.scss";
-import { Input } from 'antd';
 
 const { TextArea } = Input;
 
 const useCasePage = () => {
-    const [question, setQuestion] = useState(1);
-    const [answer, setAnswer] = useState<string>("");
-    const [useCase, setUseCase] = useState<string[]>([]);
+  const useCaseState = useSelector((state: RootState) => state.useCase);
+  const dispatch = useDispatch<AppDispatch>();
 
-    const handleChange = (e: any) => {
-        setAnswer(e.target.value)
+  useEffect(() => {
+    const useCaseDraft = localStorage.getItem("useCaseDraft");
+    console.log("as");
+    if (useCaseDraft) {
+      dispatch(setFromDraft(JSON.parse(useCaseDraft)));
     }
+  }, []);
+  const handleNextStep = () => {
+    dispatch(nextStepUseCase());
+  };
 
-    const handleSubmit = () => {
-        setUseCase([...useCase, answer]);
-        setAnswer('');
-        if(question < 10){
-            setQuestion((prev) => prev + 1)
-        } else {
-            setQuestion(0)
-        }
-    }
-    
-    const setOfQuestion = useMemo(() => {
-		if(question === 1){
-            return 'Kita mulai aja yuk, nama perusahaannya/brand-nya client kamu itu apa sih?'
-        } else if(question === 2) {
-            return 'nama perusahaannya/brand-nya client kamu itu apa sih? 2'
-        } else if(question === 3) {
-            return 'Test pertanyaan 3'
-        } else if(question === 4) {
-            return 'Test pertanyaan 4'
-        } else if(question === 5) {
-            return 'Test pertanyaan 5'
-        } else if(question === 6) {
-            return 'Test pertanyaan 6'
-        } else if(question === 7) {
-            return 'Test pertanyaan 7'
-        } else if(question === 8) {
-            return 'Test pertanyaan 8'
-        } else if(question === 9) {
-            return 'Test pertanyaan 9'
-        } else if(question === 10) {
-            return 'Test pertanyaan 10'
-        } else {
-            return 'Selesai'
-        }
-	}, [question]);
-    
-    return (
-        <>
-            <HeaderUsecase />
-            <div className="question-wp">
-                <div className="title-wp">
-                    <div className="number">{question}</div>
-                    <div className="question">{setOfQuestion}</div>
-                </div>
-                <div className="steps">
-                    <div className="steps-complete" style={{width: `${question}0%`}}/>
-                </div>
-                <TextArea className="textarea" value={answer} onChange={(e) => handleChange(e)} />
-                <Button type="primary" className="btn-submit" onClick={handleSubmit}>
-                    Lanjut
-                </Button>
-            </div>
-        </>
-    )
-}
+  const handlePrevStep = () => {
+    dispatch(prevStepUseCase());
+  };
+
+  const getProgress = () => {
+    return `${((useCaseState.step + 1) / useCaseState.useCases.length) * 100}%`;
+  };
+
+  const handleAnswerChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    dispatch(
+      setUseCaseAnswer({
+        index: useCaseState.step,
+        answer: e.target.value,
+      })
+    );
+  };
+
+  const handleSaveDraft = () => {
+    localStorage.setItem(
+      "useCaseDraft",
+      JSON.stringify({
+        id: useCaseState.id,
+        useCases: useCaseState.useCases,
+        step: useCaseState.step,
+      })
+    );
+  };
+
+  return (
+    <>
+      <HeaderUsecase />
+      <div className='question-wp'>
+        <div className='save-draft-wp'>
+          <Button
+            className='save-draft-btn'
+            icon={<SaveOutlined />}
+            onClick={handleSaveDraft}
+          >
+            Simpan Sebagai Draft
+          </Button>
+        </div>
+        <div className='title-wp'>
+          <div className='number'>{useCaseState.step + 1}</div>
+          <div className='question'>
+            {useCaseState.useCases[useCaseState.step].question}
+          </div>
+        </div>
+        <div className='steps'>
+          <div className='steps-complete' style={{ width: getProgress() }} />
+          <div className='text-progress'>1 dari 10 Pertanyaan</div>
+        </div>
+        <TextArea
+          className='textarea'
+          value={useCaseState.useCases[useCaseState.step].answer}
+          onChange={handleAnswerChange}
+        />
+        <div className='btn-wp'>
+          <Button
+            type='primary'
+            className='btn-back'
+            style={{
+              display: useCaseState.step === 0 ? "none" : "block",
+            }}
+            onClick={handlePrevStep}
+          >
+            Kembali
+          </Button>
+          <Button
+            type='primary'
+            className='btn-submit'
+            onClick={handleNextStep}
+          >
+            Lanjut
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default useCasePage;
