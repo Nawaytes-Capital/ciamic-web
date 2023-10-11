@@ -1,6 +1,6 @@
 import { SaveOutlined } from "@ant-design/icons";
 import { Button, Input } from "antd";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   nextStepUseCase,
@@ -17,7 +17,7 @@ const { TextArea } = Input;
 const useCasePage = () => {
   const useCaseState = useSelector((state: RootState) => state.useCase);
   const dispatch = useDispatch<AppDispatch>();
-
+  const [isRequired, setIsRequired] = useState(false);
   useEffect(() => {
     const useCaseDraft = localStorage.getItem("useCaseDraft");
     console.log("as");
@@ -26,10 +26,19 @@ const useCasePage = () => {
     }
   }, []);
   const handleNextStep = () => {
+    if (
+      useCaseState.useCases[useCaseState.step].isMandatory &&
+      useCaseState.useCases[useCaseState.step].answer === ""
+    ) {
+      setIsRequired(true);
+      return;
+    }
+    setIsRequired(false);
     dispatch(nextStepUseCase());
   };
 
   const handlePrevStep = () => {
+    setIsRequired(false);
     dispatch(prevStepUseCase());
   };
 
@@ -73,7 +82,10 @@ const useCasePage = () => {
         <div className='title-wp'>
           <div className='number'>{useCaseState.step + 1}</div>
           <div className='question'>
-            {useCaseState.useCases[useCaseState.step].question}
+            {useCaseState.useCases[useCaseState.step].question}{" "}
+            {useCaseState.useCases[useCaseState.step].isMandatory && (
+              <span style={{ color: "red" }}>*</span>
+            )}
           </div>
         </div>
         <div className='steps'>
@@ -81,7 +93,7 @@ const useCasePage = () => {
           <div className='text-progress'>1 dari 10 Pertanyaan</div>
         </div>
         <TextArea
-          className='textarea'
+          className={`textarea ${isRequired ? "warn-textarea" : ""}`}
           value={useCaseState.useCases[useCaseState.step].answer}
           onChange={handleAnswerChange}
         />
