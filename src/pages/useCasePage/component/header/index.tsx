@@ -1,5 +1,5 @@
-import logo from "../../../assets/images/logo-ciamic.png";
-import mockup from "../../../assets/images/people-img.png";
+import logo from "../../../../assets/images/logo-ciamic.png";
+import mockup from "../../../../assets/images/people-img.png";
 import "./styles.scss";
 
 const HeaderUsecase = () => {

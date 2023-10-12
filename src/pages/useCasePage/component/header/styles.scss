@@ -1,10 +1,11 @@
-@import "../../../styles/variables.scss";
+@import "../../../../styles/variables.scss";
 
 .header-wp {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 32px;
+    width: calc(100% -  32px*2);
 
     .logo-wp {
         display: flex;
@@ -39,6 +40,32 @@
         .title-account {
             font-family: $amoebaLight;
             font-size: 14px;
+        }
+    }
+
+    @include phone { 
+        border-bottom: 2px solid #e3e3e3;
+        padding: 14px;
+        width: calc(100% -  14px*2);
+        .logo-wp {
+            img {
+                height: 30px !important;
+            }
+            .title {
+                font-size: 12px;
+                margin-left: 8px;
+            }
+        }
+
+        .account-wp {
+            .img-account {
+                height: 30px;
+                width: 30px;
+                margin-right: 8px;
+            }
+            .title-account {
+                font-size: 10px;
+            }
         }
     }
 }

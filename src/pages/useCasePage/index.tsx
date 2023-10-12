@@ -9,18 +9,21 @@ import {
   setUseCaseAnswer,
 } from "../../redux/features/usecase/useCaseSlice";
 import { AppDispatch, RootState } from "../../redux/store";
+import Alert from "../../components/alert/alert";
 import HeaderUsecase from "./component/header";
 import "./styles.scss";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 
 const useCasePage = () => {
+  const navigate = useNavigate()
   const useCaseState = useSelector((state: RootState) => state.useCase);
   const dispatch = useDispatch<AppDispatch>();
   const [isRequired, setIsRequired] = useState(false);
+  const [isSave, setIsSave] = useState(false);
   useEffect(() => {
     const useCaseDraft = localStorage.getItem("useCaseDraft");
-    console.log("as");
     if (useCaseDraft) {
       dispatch(setFromDraft(JSON.parse(useCaseDraft)));
     }
@@ -32,6 +35,8 @@ const useCasePage = () => {
     ) {
       setIsRequired(true);
       return;
+    } else if ((useCaseState.step + 1) === useCaseState.useCases.length) {
+      navigate('/success-page')
     }
     setIsRequired(false);
     dispatch(nextStepUseCase());
@@ -64,11 +69,28 @@ const useCasePage = () => {
         step: useCaseState.step,
       })
     );
+    setIsSave(true)
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsSave(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isSave]);
 
   return (
     <>
       <HeaderUsecase />
+      <Alert 
+        type="success"
+        title="Berhasil"
+        description="Jawaban kamu berhasil disimpan sebagai Draft"
+        isVisible={isSave}
+      />
       <div className='question-wp'>
         <div className='save-draft-wp'>
           <Button
@@ -90,7 +112,7 @@ const useCasePage = () => {
         </div>
         <div className='steps'>
           <div className='steps-complete' style={{ width: getProgress() }} />
-          <div className='text-progress'>1 dari 10 Pertanyaan</div>
+          <div className='text-progress'>{useCaseState.step + 1} dari {useCaseState.useCases.length} Pertanyaan</div>
         </div>
         <TextArea
           className={`textarea ${isRequired ? "warn-textarea" : ""}`}
