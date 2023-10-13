@@ -4,13 +4,15 @@
     position: relative;
 
     .section-left {
-        width: calc(25% - 32px*2);
-        min-height: calc(100vh - 32px*2);
+        padding: 24px;
+        width: calc(25% - 24*2px);
+        min-height: calc(100vh - 24px*2);
+        max-height: calc(100vh - 24px*2);
         background-color: #354463;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding: 32px;
+        padding: 24px;
 
         .btn-add {
             background-color: transparent;
@@ -50,10 +52,12 @@
         }
 
         .history-chat {
-            height: 100%;
-            overflow: scroll;
             margin-top: 24px;
 
+            .buble-container {
+                height: calc(100vh - 220px);
+                overflow: scroll;
+            }
             .title {
                 font-size: 18px;
                 color: #fff;
@@ -77,6 +81,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        max-height: calc(100vh - 64px);
 
         .chat-wp {
             max-height: calc(100vh - 125px);
@@ -146,10 +151,14 @@
         .input-wp {
             position: relative;
 
+            .input-question {
+                padding: 10px 48px 10px 10px;
+            }
+
             .btn-icon {
                 position: absolute;
                 right: 16px;
-                top: 16px;
+                bottom: 14px;
             }
         }
     }

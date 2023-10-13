@@ -4,7 +4,7 @@ import { useState } from "react";
 import people from "../../assets/images/people-img.png";
 import logo from "../../assets/images/logo-ciamic.png";
 import "./styles.scss";
-
+const { TextArea } = Input;
 const ChatBotPage = () => {
     const [question, setQuestion] = useState<string>("");
     const defaultChat = [
@@ -13,11 +13,6 @@ const ChatBotPage = () => {
             chat: "Hallo! Saya adalah Asisten virtual untuk AM. Teman kolaborasi yang siap membantu Anda. Saat ini, Saya masih memiliki keterbatasan untuk memberikan rekomendasi dan tidak selallu benar. Bantu saya dengan memilih apa yang sedang kamu butuhkan.",
             sender: "admin"
         },
-        // {
-        //     id: 2,
-        //     chat: "Hallo, saya customer",
-        //     sender: "customer"
-        // },
     ]
     const [chat, setChat] = useState(defaultChat)
     const recomendQuestion = [
@@ -39,20 +34,22 @@ const ChatBotPage = () => {
         }
     ]
     const sendChat = () => {
-        const payload = [
-            {
-                id: question.length + 1,
-                chat: question,
-                sender: "customer"
-            },
-            {
-                id: question.length + 2,
-                chat: "Produk masih dalam tahap pengembangan",
-                sender: "admin"
-            }
-        ]
-        setChat([...chat, ...payload])
-        setQuestion("")
+        if(question.length > 0){
+            const payload = [
+                {
+                    id: question.length + 1,
+                    chat: question,
+                    sender: "customer"
+                },
+                {
+                    id: question.length + 2,
+                    chat: "Produk masih dalam tahap pengembangan",
+                    sender: "admin"
+                }
+            ]
+            setChat([...chat, ...payload])
+            setQuestion("")
+        }
     }
     return (
         <div className="chatbot-wp">
@@ -60,9 +57,11 @@ const ChatBotPage = () => {
                 <Button className="btn-add" icon={<PlusOutlined />}>New Chat</Button>
                 <div className="history-chat">
                     <p className="title">Riwayat Pertanyaan</p>
-                    {chat.filter((item) => item.sender === "customer").map((item) => (
-                        <div className="bubble-wp">{item.chat}</div>
-                    ))}
+                    <div className="buble-container">
+                        {chat.filter((item) => item.sender === "customer").map((item) => (
+                            <div className="bubble-wp">{item.chat}</div>
+                        ))}
+                    </div>
                 </div>
                 <div className="account-wp">
                     <div className="img-wp">
@@ -110,13 +109,12 @@ const ChatBotPage = () => {
                     </div>
                 )}
                 <div className="input-wp">
-                    <Input
-                        type="text"
+                    <TextArea 
                         className="input-question"
-                        style={{height: "48px"}}
+                        placeholder="Autosize height based on content lines" 
                         value={question}
-                        // suffix={}
                         onChange={(e) => setQuestion(e.target.value)}
+                        autoSize 
                     />
                     <SendOutlined className="btn-icon" onClick={() => sendChat()} />
                 </div>

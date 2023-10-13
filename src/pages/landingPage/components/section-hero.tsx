@@ -34,6 +34,7 @@ const SectionHero = () => {
       validationSchema: validationLogin,
       onSubmit: async(values) => {
           console.log("login : ", values);
+          navigate('/chatbot')
       },
     });
     return (
