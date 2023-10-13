@@ -8,10 +8,27 @@
     padding: 64px;
     border-radius: 8px;
 
+    .save-draft-wp{
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+
+        .save-draft-btn{
+            height: 48px;
+            padding: 0 32px;
+            background-color: #fff;
+            border: none;
+            font-size: medium;
+            color: $c-primary;
+        }
+    }
+
     .title-wp {
         display: flex;
         margin-bottom: 24px;
         justify-content: space-between;
+        padding-left: 80px;
+        padding-right: 80px;
         .number {
             width: 32px;
             height: 32px;
@@ -29,7 +46,7 @@
         }
     }
 
-    .steps {
+    .steps {    
         width: 250px;
         background-color: rgba($color: #000000, $alpha: 0.2);
         border-radius: 8px;
@@ -41,18 +58,65 @@
             border-radius: 8px;
             background-color: $c-primary;
         }
-    }
 
+        .text-progress{
+            text-align: right;
+            font-size: small;
+            margin: 10px 0;
+        }
+    }
+    
     .textarea {
-        height: 350px;
+        margin-top: 20px;
+        height: 258px;
     }
 
-    .btn-submit {
-        height: 48px;
-        width: 150px;
-        background-color: $c-primary;
-        margin-left: auto;
-        display: block;
-        margin-top: 24px;
+    .warn-textarea{
+        border-color: red;
     }
+    
+    .btn-wp{
+        display: flex;
+        margin-top: 20px;
+        justify-content: end;
+        gap: 20px;
+
+        .btn-submit {
+            height: 48px;
+            width: 150px;
+            background-color: $c-primary;
+        }
+    
+        .btn-back{
+            height: 48px;
+            padding: 0 32px;
+            background-color: #fff;
+            border: 1px solid $c-primary;
+            color: $c-primary;
+        }
+    }
+
+    @include phone { 
+        padding: 24px;
+        width: calc(100% -  24px*2);
+        height: auto;
+        box-shadow: none;
+
+        .save-draft-wp {
+            margin-bottom: 40px;
+        }
+
+        .title-wp {
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .steps {
+            .text-progress {
+                text-align: center;
+            }
+        }
+    }
+    
 }

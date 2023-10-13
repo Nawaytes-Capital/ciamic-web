@@ -1,0 +1,34 @@
+@import "../../styles/variables.scss";
+
+.alert-wp {
+    position: absolute;
+    height: auto;
+    width: 450px;
+    position: absolute;
+    left: 50%;
+    margin-left: -225px;
+    top: 24px;
+    z-index: 9;
+
+    .ant-alert-message {
+        font-size: 16px;
+        font-family: $amoebaBold;
+    }
+    .ant-alert-description {
+        font-family: $amoebaReg;
+        font-size: 14px;
+    }
+
+    @include phone {
+        margin-left: -150px;
+        width: 300px;
+
+        .ant-alert-message {
+            font-size: 14px;
+        }
+
+        .ant-alert-description {
+            font-size: 10px;
+        }
+    }
+}
