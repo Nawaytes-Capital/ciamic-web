@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ChatBotPage from './pages/chatBotPage';
 import ConfirmationPage from './pages/confirmationPage';
 import LandingPage from './pages/landingPage';
 import RegisterPage from './pages/registerPage';
@@ -17,6 +18,7 @@ function App() {
         <Route path="/usecase" element={<LoginPage />} />
         <Route path="/usecase-form" element={<UseCasePage />} />
         <Route path="/success-page" element={<SuccessPage />} />
+        <Route path="/chatbot" element={<ChatBotPage />} />
       </Routes>
     </Router>
   );
