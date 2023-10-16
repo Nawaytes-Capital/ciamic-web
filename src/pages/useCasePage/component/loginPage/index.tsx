@@ -43,7 +43,7 @@ const LoginPage = () => {
     return (
         <>
             <HeaderUsecase />
-            <div className='container-wrapper'>
+            <div className='container-wrapper-login'>
                 <section className='login-wrapper'>
                     <div className='section-left'>
                     <h2 className='title-hero'>
