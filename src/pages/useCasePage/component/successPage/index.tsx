@@ -11,8 +11,8 @@ const SuccessPage = () => {
             <div className="success-page">
                 <img src={image} className="img-illustration"  />
                 <p style={{marginTop: "14px"}}>Jawaban kamu berhasil disimpan!</p>
-                <p className="link">Lihat Riwayat Respon</p>
-                <p className="link" onClick={() => navigate('/usecase')}>Berikan Jawaban Lain</p>
+                <p className="link" onClick={() => navigate('/list-review')}>Lihat Riwayat Respon</p>
+                <p className="link" onClick={() => navigate('/usecase-form')}>Berikan Jawaban Lain</p>
             </div>
         </>
     )

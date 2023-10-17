@@ -1,4 +1,4 @@
-import { MoreOutlined, PlusOutlined, SendOutlined } from "@ant-design/icons"
+import { CloseSquareOutlined, CopyOutlined, DislikeOutlined, LikeOutlined, MenuOutlined, MoreOutlined, PlusOutlined, SendOutlined } from "@ant-design/icons"
 import { Button, Col, Input, Row } from "antd"
 import { useState } from "react";
 import people from "../../assets/images/people-img.png";
@@ -7,6 +7,7 @@ import "./styles.scss";
 const { TextArea } = Input;
 const ChatBotPage = () => {
     const [question, setQuestion] = useState<string>("");
+    const [isFullmenu, setFullmenu] = useState<boolean>(false)
     const defaultChat = [
         {
             id: 1,
@@ -43,7 +44,7 @@ const ChatBotPage = () => {
                 },
                 {
                     id: question.length + 2,
-                    chat: "Produk masih dalam tahap pengembangan",
+                    chat: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
                     sender: "admin"
                 }
             ]
@@ -53,7 +54,7 @@ const ChatBotPage = () => {
     }
     return (
         <div className="chatbot-wp">
-            <div className="section-left">
+            <div className={`section-left ${isFullmenu && 'active'}`}>
                 <Button className="btn-add" icon={<PlusOutlined />}>New Chat</Button>
                 <div className="history-chat">
                     <p className="title">Riwayat Pertanyaan</p>
@@ -72,8 +73,17 @@ const ChatBotPage = () => {
                 </div>
             </div>
             <div className="section-right">
+                <div className={`header-mobile ${isFullmenu && 'after-active'}`}>
+                    {isFullmenu ? (
+                        <CloseSquareOutlined onClick={() => setFullmenu(false)} style={{fontSize: "24px"}} />
+                    ): (
+                        <MenuOutlined onClick={() => setFullmenu(true)} />
+                    )}
+                </div>
                 <div className="chat-wp">
-                    {chat.map((item) => {
+                    {chat.map((item, index) => {
+                        const feedbackValidation = item.sender === "admin" && item.id !== 1;
+                        const suggestionChat = chat.length > 2 && chat.length === index + 1 && item.sender === "admin"
                         return (
                             <div className="buble-chat">
                                 <div className="img-wp">
@@ -83,9 +93,22 @@ const ChatBotPage = () => {
                                         <img className="img-cust" src={people} />
                                     )}
                                 </div>
-                                <p className={`chat ${item.sender === "customer" && 'chat-cust'}`}>
+                                <p className={`chat ${item.sender === "customer" ? 'chat-cust': 'chat-admin'}`}>
                                     {item.chat}
                                 </p>
+                                {feedbackValidation && (
+                                    <div className="feedback-wp">
+                                        <CopyOutlined className="icon-copy" />
+                                        <LikeOutlined className="icon-like" />
+                                        <DislikeOutlined className="icon-unlike" />
+                                    </div>
+                                )}
+                                {suggestionChat && (
+                                    <div className="suggestion-wp">
+                                        <div className="chat-wp">Kelebihan Astinet Kebanding Kompetitor</div>
+                                        <div className="chat-wp">Cara Mendaftar Astinet</div>
+                                    </div>
+                                )}
                             </div>
                         )
                     })}

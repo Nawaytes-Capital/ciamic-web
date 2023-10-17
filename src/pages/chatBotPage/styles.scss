@@ -1,3 +1,5 @@
+@import "../../styles/variables.scss";
+
 .chatbot-wp {
     display: flex;
     width: 100%;
@@ -99,6 +101,10 @@
         max-height: calc(100vh - 64px);
         z-index: 3;
 
+        .header-mobile {
+            display: none;
+        }
+
         &::after {
             content: '';
             display: block;
@@ -121,10 +127,17 @@
             display: block;
         }
 
+        .buble-chat:last-child{
+            .chat-admin{
+                margin-bottom: 60px;
+            }
+        }
+
         .buble-chat {
             display: flex;
-            justify-content: space-between;
+            // justify-content: space-between;
             margin-bottom: 16px;
+            position: relative;
             .img-wp {
                 width: 48px;
                 height: 48px;
@@ -151,14 +164,51 @@
             }
             .chat {
                 border: 1px solid #003BA1;
-                width: 90%;
+                width: 85%;
                 padding: 16px;
                 border-radius: 0 16px 16px 16px;
                 background-color: #fff;
+                margin-left: 14px;
+                display: flex;
+                align-items: center;
 
                 &.chat-cust {
                     background-color: #354463 !important;
                     color: #fff;
+                }
+            }
+            .feedback-wp {
+                display: flex;
+                flex-direction: column;
+                padding: 8px;
+                // width: 5%;
+
+                .icon-copy {
+                    color: $c-primary;
+                    cursor: pointer;
+                }
+                .icon-like {
+                    color: #1B8700;
+                    margin-top: 14px;
+                    cursor: pointer;
+                }
+                .icon-unlike {
+                    color: #B10606;
+                    margin-top: 14px;
+                    cursor: pointer;
+                }
+            }
+            .suggestion-wp {
+                display: flex;
+                position: absolute;
+                bottom: 0;
+
+                .chat-wp {
+                    padding: 10px;
+                    background-color: #F0F5FF;
+                    border: 1px solid #D0DFFF;
+                    margin: 0 8px;
+                    border-radius: 8px;
                 }
             }
         }
@@ -193,6 +243,133 @@
                 position: absolute;
                 right: 16px;
                 bottom: 14px;
+            }
+        }
+    }
+
+    @include phone { 
+        .section-left {
+            position: fixed;
+            width: 70%;
+            z-index: 9;
+            visibility: hidden;
+            opacity: 0;
+            left: -50px;
+            transition: all .32s;
+            overflow: hidden;
+            z-index: 9;
+
+            &.active {
+                opacity: 1;
+                visibility: visible;
+                left: 0;
+            }
+        }
+        .section-right {
+            width: 100%;
+            overflow: hidden;
+
+            .header-mobile {
+                display: flex;
+                margin-bottom: 32px;
+                position: fixed;
+                justify-content: end;
+                width: calc(100% - 32px*2);
+                z-index: 99;
+                font-size: 18px;
+
+                &.after-active {
+                    &::after {
+                        width: calc(100% + 200px);
+                        top: -32px;
+                        left: 0;
+                        height: 100vh;
+                        z-index: -1;
+                        content: "";
+                        position: absolute;
+                        background-color: rgba($color: #fff, $alpha: 0.8)
+                    }
+                }
+            }
+
+            .chat-wp {
+                margin-top: 50px;
+                .buble-chat {
+                    .img-wp {
+                        width: 35px;
+                        height: 35px;
+                    }
+                    .chat {
+                        width: 65%;
+                    }
+                }
+            }
+
+            .buble-chat:last-child{
+                .chat-admin{
+                    margin-bottom: 50px;
+                }
+            }
+
+            .buble-chat {
+                .suggestion-wp {
+                    font-size: 12px;
+                    .chat-wp:last-child {
+                        display: none;
+                    }
+                }
+                .chat {
+                    font-size: 14px;
+                }
+            }
+
+            .recomend-question {
+                font-size: 14px;
+                .recomend-wp {
+                    .ant-row {
+                        flex-direction: column;
+                    }
+                    .ant-col-12 {
+                        max-width: 100%;
+                    }
+                    .ant-col-12:nth-child(3), .ant-col-12:nth-child(4) {
+                        display: none;
+                    }
+                    .recomend-box {
+                        padding: 16px;
+                    }
+                }
+            }
+        }
+    }
+    @include tablet { 
+        .section-left {
+            width: calc(45% - 48px);
+        }
+        .section-right {
+            overflow: hidden;
+            .chat-wp {
+                .buble-chat {
+                    .chat {
+                        width: 65%;
+                    }
+                    .suggestion-wp {
+                        .chat-wp:last-child {
+                            display: none;
+                        }
+                    }
+                }
+            }
+            .recomend-question {
+                .recomend-wp {
+                    .ant-row {
+                        flex-direction: column;
+
+                        .ant-col-12 {
+                            max-width: 100%;
+                        }
+                    }
+                }
             }
         }
     }
