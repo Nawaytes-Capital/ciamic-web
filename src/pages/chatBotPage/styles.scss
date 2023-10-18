@@ -73,7 +73,21 @@
 
             .buble-container {
                 height: calc(100vh - 220px);
-                overflow: scroll;
+                overflow-y: scroll;
+                padding-right: 10px;
+
+                &::-webkit-scrollbar {
+                    width: 6px;
+                }
+                &::-webkit-scrollbar-track {
+                    background-color: transparent;
+                    border-radius: 10px;
+                    padding: 8px;
+                }
+                &::-webkit-scrollbar-thumb {
+                    border-radius: 10px;
+                    background-color: #D9D9D9; 
+                }
             }
             .title {
                 font-size: 18px;
@@ -122,9 +136,22 @@
 
         .chat-wp {
             max-height: calc(100vh - 125px);
-            overflow: scroll;
+            overflow-y: scroll;
             z-index: 9;
             display: block;
+
+            &::-webkit-scrollbar {
+                width: 6px;
+            }
+            &::-webkit-scrollbar-track {
+                background-color: transparent;
+                border-radius: 10px;
+                padding: 8px;
+            }
+            &::-webkit-scrollbar-thumb {
+                border-radius: 10px;
+                background-color: #D9D9D9; 
+            }
         }
 
         .buble-chat:last-child{
