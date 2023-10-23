@@ -1,4 +1,4 @@
-import { SaveOutlined } from "@ant-design/icons";
+import { AudioOutlined, SaveOutlined } from "@ant-design/icons";
 import { Button, Input } from "antd";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -114,11 +114,16 @@ const useCasePage = () => {
           <div className='steps-complete' style={{ width: getProgress() }} />
           <div className='text-progress'>{useCaseState.step + 1} dari {useCaseState.useCases.length} Pertanyaan</div>
         </div>
-        <TextArea
-          className={`textarea ${isRequired ? "warn-textarea" : ""}`}
-          value={useCaseState.useCases[useCaseState.step].answer}
-          onChange={handleAnswerChange}
-        />
+        <div className="text-area-wp">
+          <TextArea
+            className={`textarea ${isRequired ? "warn-textarea" : ""}`}
+            value={useCaseState.useCases[useCaseState.step].answer}
+            onChange={handleAnswerChange}
+          />
+          <div className="audio-wp">
+            <AudioOutlined className="audio" />
+          </div>
+        </div>
         <div className='btn-wp'>
           <Button
             type='primary'

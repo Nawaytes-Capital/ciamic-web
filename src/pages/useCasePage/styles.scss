@@ -96,6 +96,29 @@
         }
     }
 
+    .text-area-wp {
+        position: relative;
+
+        .audio-wp {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid $c-primary-light;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: #fff;
+            color:$c-primary-light;
+        }
+
+        .textarea {
+            padding-right: 48px;
+        }
+    }
+
     @include phone { 
         padding: 24px;
         width: calc(100% -  24px*2);
