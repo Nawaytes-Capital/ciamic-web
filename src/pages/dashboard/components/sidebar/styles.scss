@@ -1,0 +1,54 @@
+@import "../../../../styles/variables.scss";
+
+.sidebar-dashboard {
+    width: calc(25% - 24px*2);
+    height: 100vh;
+    padding: 24px;
+    background-color: #3B83FF;
+    position: fixed;
+
+    .header-sidebar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .title {
+            font-size: 24px;
+            font-family: $amoebaBold;
+            color: #fff;
+        }
+
+        .icon-wrapper {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #B10606;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+    }
+
+    .menu-wrapper {
+        margin-top: 75px;
+
+        .menu-container {
+            display: flex;
+            padding: 16px;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 8px;
+
+            &:hover {
+                background-color: rgba($color: #fff, $alpha: 0.3);
+            }
+
+            .title-menu {
+                margin-left: 16px;
+            }
+            
+        }
+    }
+}

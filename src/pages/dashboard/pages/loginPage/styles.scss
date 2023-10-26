@@ -1,0 +1,194 @@
+@import "../../../../styles/variables.scss";
+
+#login-dashboard {
+
+.container-wrapper-login {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @include phone{
+      padding: 14px;
+      width: calc(100% - 14px*2);
+      height: 80vh;
+      overflow: hidden;
+  }
+}
+
+.login-wrapper {
+  display: flex;
+  height: 600px;
+  padding: 64px;
+  width: 100%;
+
+  .section-left {
+    width: calc(50% - 12px*2);
+    padding: 12px;
+    background-image: url('../../../../assets/images/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    border-radius: 8px;
+
+    .title-hero { 
+      margin-top: 150px;
+      font-size: 42px;
+      color: #fff;
+      font-family: $amoebaReg;
+      letter-spacing: 5px;
+      line-height: 72px;
+      z-index: 9;
+      display: block;
+      position: relative;
+      text-align: center;
+    }
+
+    .illustration {
+      position: absolute;
+      bottom: -34px;
+      right: 14px;
+      height: 350px;
+    }
+  }
+
+  .section-right {
+    width: calc(50% - 12px*2);
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .form-wrapper {
+      width: 420px;
+      padding: 24px 24px;
+      background-color: #f7f7fb;
+      border-radius: 8px;
+
+      .logo {
+        height: 64px;
+        padding-bottom: 24px;
+        margin: 0 auto;
+        display: block;
+      }
+
+      .title-form {
+        font-size: 24px;
+        font-family: $amoebaBold;
+        text-align: center;
+        margin-bottom: 14px;
+      }
+
+      .subtitle-form {
+        font-size: 14px;
+        font-family: $amoebaReg;
+        text-align: center;
+        margin-bottom: 24px;
+        color: $f-grey;
+
+        span {
+          color: $c-primary;
+          font-family: $amoebaBold;
+          cursor: pointer;
+        }
+      }
+
+      .forgot {
+        font-size: 14px;
+        font-family: $amoebaReg;
+        text-align: right;
+        margin-bottom: 24px;
+        color: $c-primary;
+        margin-top: -20px;
+      }
+    }
+  }
+
+  @include phone {
+    flex-direction: column;
+
+    .section-left, .section-right {
+      width: calc(100% - 12px*2);
+    }
+
+    .section-left {
+      min-height: 260px;
+
+      .illustration {
+        bottom: -20px;
+        height: 220px;
+        left: 18%;
+      }
+    }
+
+    .section-right {
+      padding: 0;
+      width: 100%;
+      margin-top: -24px;
+      z-index: 3;
+    }
+
+    .form-wrapper {
+      width: 100%;
+    }
+
+    // .logo-mobile {
+    //   display: block !important;
+    // }
+
+    .title-form {
+      display: none;
+    }
+
+    .m-hide {
+      display: none;
+    }
+  }
+
+  @include tablet {
+    flex-direction: column;
+    height: auto;
+    padding: 32px;
+
+    .section-left, .section-right {
+      width: calc(100% - 12px*2);
+    }
+
+    .section-left {
+      min-height: 400px;
+      
+      .illustration {
+        bottom: -20px;
+        height: 350px;
+        left: 25%;
+      }
+    }
+
+    .section-right {
+      padding: 0;
+      width: 100%;
+      margin-top: -24px;
+      z-index: 3;
+    }
+
+    .form-wrapper {
+      width: 100% !important;
+    }
+
+    // .logo-mobile {
+    //   display: block !important;
+    //   height: 100px !important;
+    // }
+
+    .title-form {
+      display: none;
+    }
+
+    .m-hide {
+      display: none;
+    }
+  }
+}
+}

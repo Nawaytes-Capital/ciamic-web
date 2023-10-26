@@ -1,0 +1,23 @@
+.wrapper-dashboard-admin {
+    width: 100%;
+
+    .content-wrapper {
+        width: calc(75% - 32px*2);
+        padding: 32px;
+        margin-left: 25%;
+
+        .table-wp {
+            .ant-table {
+                table {
+                    thead {
+                        tr {
+                            th {
+                                background-color: #F2F2F2;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

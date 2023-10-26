@@ -1,6 +1,7 @@
 @import "../../../../styles/variables.scss";
 
-.container-wrapper-login {
+#login-usecase {
+  .container-wrapper-login {
     width: 100%;
     height: calc(100vh - 120px);
     display: flex;
@@ -220,3 +221,4 @@
       }
     }
   }
+}

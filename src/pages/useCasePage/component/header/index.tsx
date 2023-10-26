@@ -5,7 +5,7 @@ import "./styles.scss";
 const HeaderUsecase = () => {
     const email = localStorage.getItem('userEmail')
     return (
-        <div className="header-wp">
+        <div className="header-wp-usecase">
             <div className="logo-wp">
                 <img src={logo} height="50" />
                 <p className="title">Form Pengambilan Usecase</p>

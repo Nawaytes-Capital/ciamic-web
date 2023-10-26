@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from "yup";
 import './styles.scss'
-import HeaderUsecase from '../header';
 interface ILoginRequest {
 	email: string;
 	password: string;
@@ -37,42 +36,26 @@ const LoginPage = () => {
       onSubmit: async(values) => {
           console.log("login : ", values);
           localStorage.setItem("userEmail", values.email);
-          navigate('/usecase-form')
+          navigate('/dashboard/usecase')
       },
     });
     return (
-        <div id='login-usecase'>
-            <HeaderUsecase />
+        <div id='login-dashboard'>
             <div className='container-wrapper-login'>
                 <section className='login-wrapper'>
                     <div className='section-left'>
                     <h2 className='title-hero'>
-                        Dekati Target <br />
-                        Konsumen <br />
-                        Dan Raih Target <br />
-                        Bulanan
-                    </h2>
-                    <h2 className='title-hero-mobile'>
-                        Dekati Target Konsumen Dan Raih Target Bulanan
+                        Admin Dashboard
                     </h2>
                     <img src={illustration} className='illustration' />
                     </div>
                     <div className='section-right'>
                     <div className='form-wrapper'>
-                        <div className='title-wp'>
-                        <p className='title-form'>Masuk Ke Akun Anda</p>
-                        <p className='subtitle-form m-hide'>
-                            Silahkan masukkan username dan password yang sesuai
-                        </p>
-                        <img src={logo} className='logo-mobile' />
-                        </div>
+                        <img src={logo} className='logo' />
                         <Form onFinish={form.handleSubmit}>
                         <Form.Item>
                             <div className='form-group'>
                             <div className='input-group mb-3'>
-                                <span className='input-group-text bg-transparent'>
-                                <i className='ti-user'></i>
-                                </span>
                                 <Input
                                 name='email'
                                 type='text'
@@ -92,9 +75,6 @@ const LoginPage = () => {
                         <Form.Item>
                             <div className='form-group'>
                             <div className='input-group mb-3'>
-                                <span className='input-group-text  bg-transparent'>
-                                <i className='ti-lock'></i>
-                                </span>
                                 <Input.Password
                                 name='password'
                                 type='password'
@@ -123,12 +103,6 @@ const LoginPage = () => {
                         >
                             Masuk
                         </Button>
-                        <p style={{ marginTop: "24px" }} className='subtitle-form'>
-                            Belum punya akun?{" "}
-                            <span onClick={() => navigate("/register")}>
-                            Daftar Sekarang!
-                            </span>
-                        </p>
                         </Form>
                     </div>
                     </div>
