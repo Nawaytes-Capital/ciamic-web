@@ -1,9 +1,11 @@
-import { AppstoreAddOutlined, DoubleLeftOutlined, UnorderedListOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined, DoubleLeftOutlined, LogoutOutlined, UnorderedListOutlined, UsergroupAddOutlined, WechatOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import "./styles.scss"
+import "./styles.scss";
+import people from "../../../../assets/images/people-img.png";
 
 const SidebarDashboard = () => {
     const navigate = useNavigate();
+    const pathName = window.location.pathname;
     const menuData = [
         {
             id: 1,
@@ -16,6 +18,18 @@ const SidebarDashboard = () => {
             title: "List Respon",
             link: "/dashboard/list-response",
             icon: <UnorderedListOutlined />
+        },
+        {
+            id: 3,
+            title: "Admin Management",
+            link: "/dashboard/admin-management",
+            icon: <UsergroupAddOutlined />
+        },
+        {
+            id: 4,
+            title: "List Feedback",
+            link: "/dashboard/list-feedback",
+            icon: <WechatOutlined />
         }
     ]
     return (
@@ -28,11 +42,20 @@ const SidebarDashboard = () => {
             </div>
             <div className="menu-wrapper">
                 {menuData.map((item) => (
-                    <div className="menu-container">
+                    <div className={`menu-container ${pathName === item.link && 'active'}`}>
                         {item.icon}
                         <div className="title-menu" onClick={() => navigate(item.link)}>{item.title}</div>
                     </div>
                 ))}
+            </div>
+            <div className="user-wrapper">
+                <div className="title-wp">
+                    <div className="img-wp">
+                        <img alt="profile" src={people} />
+                    </div>
+                    <p className="name">Mubarok Al Fatih</p>
+                </div>
+                <LogoutOutlined className="btn-logout" />
             </div>
         </div>
     )

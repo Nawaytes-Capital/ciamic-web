@@ -33,39 +33,34 @@ export const ModalAdd = ({
 			open={isShow}
 			width={850}
 			destroyOnClose
-			className="modal-forgot"
 		>
 			<Form onFinish={form.handleSubmit}>
                 <Form.Item>
                   <div className="form-group">
                     <p className="title-form">ID Batch</p>
-                    <div className="input-group mb-3">
-                      <Input
-                        name="id_batch"
-                        type="text"
-                        className="form-control ps-15 bg-transparent"
-                        placeholder="Masukkan Email Anda"
-                        style={{height: "48px"}}
-                        value={form.values.id_batch}
-                        disabled
-                      />
-                    </div>
+                    <Input
+                      name="id_batch"
+                      type="text"
+                      className="form-control ps-15 bg-transparent"
+                      placeholder="Masukkan Email Anda"
+                      style={{height: "48px"}}
+                      value={form.values.id_batch}
+                      disabled
+                    />
                   </div>
                 </Form.Item>
                 <Form.Item>
                   <div className="form-group">
                     <p className="title-form">Pertanyaan 1</p>
-                    <div className="input-group mb-3">
-                      <Input
-                        name="id_batch"
-                        type="text"
-                        className="form-control ps-15 bg-transparent"
-                        placeholder="Masukkan Email Anda"
-                        style={{height: "48px"}}
-                        value={form.values.id_batch}
-                        disabled
-                      />
-                    </div>
+                    <Input
+                      name="id_batch"
+                      type="text"
+                      className="form-control ps-15 bg-transparent"
+                      placeholder="Masukkan Email Anda"
+                      style={{height: "48px"}}
+                      value={form.values.id_batch}
+                      disabled
+                    />
                   </div>
                 </Form.Item>
             </Form>

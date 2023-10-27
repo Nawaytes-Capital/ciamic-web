@@ -1,5 +1,7 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import SidebarDashboard from './components/sidebar';
+import AdminManagementpage from './pages/adminManagementPage';
+import ListFeedbackpage from './pages/feeadbackPage';
 import ResponPage from './pages/responPage';
 import UsecasePage from './pages/usecasePage';
 import "./styles.scss";
@@ -12,6 +14,8 @@ function RouterDashboard() {
         <Routes>
           <Route path="/usecase" element={<UsecasePage />} />
           <Route path="/list-response" element={<ResponPage />} />
+          <Route path="/admin-management" element={<AdminManagementpage />} />
+          <Route path="/list-feedback" element={<ListFeedbackpage />} />
         </Routes>
       </div>
     </div>

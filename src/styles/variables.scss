@@ -67,6 +67,16 @@ body {
   font-family: $amoebaReg;
 }
 
+.btn-primary {
+  height: 48px;
+  background-color: $c-primary;
+  color: #fff;
+
+  &:hover {
+    color: #fff !important;
+  }
+}
+
 
 $phone-width: 200px;
 $tablet-width: 768px;
