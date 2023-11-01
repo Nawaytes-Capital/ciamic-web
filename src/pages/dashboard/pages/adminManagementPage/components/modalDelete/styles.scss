@@ -1,0 +1,19 @@
+.modal-delete {
+    .title-wrapper {
+        text-align: center;
+
+        .anticon {
+            font-size: 60px;
+        }
+    }
+    .btn-wrapper {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 32px;
+
+        .ant-btn {
+            width: 48%;
+            height: 40px;
+        }
+    }
+}

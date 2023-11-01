@@ -1,3 +1,5 @@
+@import "../../styles/variables.scss";
+
 .wrapper-dashboard-admin {
     width: 100%;
 
@@ -5,6 +7,29 @@
         width: calc(75% - 32px*2);
         padding: 32px;
         margin-left: 25%;
+
+        .header-mobile {
+            display: none;
+            margin-bottom: 32px;
+            position: relative;
+            justify-content: end;
+            // width: calc(100% - 32px*2);
+            z-index: 99;
+            font-size: 18px;
+
+            &.after-active {
+                &::after {
+                    width: calc(100% + 200px);
+                    top: -32px;
+                    left: 0;
+                    height: 100vh;
+                    z-index: -1;
+                    content: "";
+                    position: absolute;
+                    background-color: rgba($color: #fff, $alpha: 0.8)
+                }
+            }
+        }
 
         .table-wp {
             .ant-table {
@@ -17,6 +42,38 @@
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @include phone { 
+        .content-wrapper {
+            width: calc(100% - 24px*2);
+            padding: 24px;
+            margin-left: 0;
+            
+            .header-mobile {
+                display: flex;
+            }
+
+            .table-wp {
+                overflow-x: scroll;
+            }
+        }
+    }
+
+    @include tablet { 
+        .content-wrapper {
+            width: calc(100% - 24px*2);
+            padding: 24px;
+            margin-left: 0;
+            
+            .header-mobile {
+                display: flex;
+            }
+
+            .table-wp {
+                overflow-x: scroll;
             }
         }
     }

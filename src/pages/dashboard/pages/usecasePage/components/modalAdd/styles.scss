@@ -1,0 +1,29 @@
+@import "../../../../../../styles/variables.scss";
+
+.modal-add-usecase {
+    .wrapper-input-usecase {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    
+        .btn-delete-usecase {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: rgba($color: $c-secondary, $alpha: 0.2);
+            margin-left: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: $c-secondary;
+            cursor: pointer;
+        }
+    }
+    
+    .add-wrarpper {
+        color: $c-primary;
+        cursor: pointer;
+    }
+}
+

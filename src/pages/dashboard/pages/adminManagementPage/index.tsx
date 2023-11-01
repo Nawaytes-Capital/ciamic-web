@@ -5,6 +5,7 @@ import { ModalAdd } from "./components/modalAdd";
 import "./styles.scss";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { ModalDelete } from "./components/modalDelete";
 
 export interface IAddAdmin {
     name: string,
@@ -36,8 +37,9 @@ const dataSource = [
     },
 ];
 const AdminManagementpage = () => {
-    const [isShow, setIsShow] = useState(false);
+    const [isShow, setIsShow] = useState<boolean>(false);
     const [detail, setDetail] = useState<any>();
+    const [isDelete, setIsDelete] = useState<boolean>(false);
     const handleDetail = (data: any) => {
         setDetail(data)
         setIsShow(true)
@@ -78,7 +80,7 @@ const AdminManagementpage = () => {
                 return (
                     <div>
                         <EditOutlined onClick={() => handleDetail(record)} />
-                        <DeleteOutlined style={{marginLeft: "8px"}} />
+                        <DeleteOutlined onClick={() => setIsDelete(true)} style={{marginLeft: "8px"}} />
                     </div>
                 );
             },
@@ -108,6 +110,10 @@ const AdminManagementpage = () => {
             console.log("add batch : ", values);
         },
     });
+
+    const handleDelete = () => {
+        setIsDelete(false)
+    }
     
     return (
         <div id="admin-dashboard">
@@ -117,6 +123,7 @@ const AdminManagementpage = () => {
             </div>
             <Table className="table-wp" dataSource={dataSource} columns={columns} />
             <ModalAdd isShow={isShow} handleCancel={() => setIsShow(false)} form={form} handleSubmit={form.handleSubmit} />
+            <ModalDelete isShow={isDelete} handleSubmit={handleDelete} handleCancel={() => setIsDelete(false)} />
         </div>
     )
 }

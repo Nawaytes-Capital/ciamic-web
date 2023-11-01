@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "./styles.scss";
 import people from "../../../../assets/images/people-img.png";
 
-const SidebarDashboard = () => {
+interface ISidebar {
+    isActiveMobile: boolean,
+}
+
+const SidebarDashboard:React.FC<ISidebar> = ({isActiveMobile}) => {
     const navigate = useNavigate();
     const pathName = window.location.pathname;
     const menuData = [
@@ -33,7 +37,7 @@ const SidebarDashboard = () => {
         }
     ]
     return (
-        <div className="sidebar-dashboard">
+        <div className={`sidebar-dashboard ${isActiveMobile && 'active-mobile'}`}>
             <div className="header-sidebar">
                 <h2 className="title">Dashboard Ciamic</h2>
                 <div className="icon-wrapper">

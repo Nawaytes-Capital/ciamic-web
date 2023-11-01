@@ -3,12 +3,6 @@ import { Button, Table } from "antd";
 import { useState } from "react";
 import { ModalAdd } from "./components/modalAdd";
 import "./styles.scss";
-import { useFormik } from "formik";
-
-interface IAddBatch {
-    id_batch: string,
-    question: string[],
-}
 
 const dataSource = [
     {
@@ -33,8 +27,10 @@ const dataSource = [
         status: 'Done'
     },
 ];
+
 const UsecasePage = () => {
-    const [isShow, setIsShow] = useState(false)
+    const [isShow, setIsShow] = useState<boolean>(false)
+
     const columns = [
         {
             title: 'No',
@@ -80,18 +76,7 @@ const UsecasePage = () => {
                 );
             },
         },
-    ]
-    const form = useFormik<IAddBatch>({
-        initialValues: {
-            id_batch: "",
-            question: [],
-        },
-        enableReinitialize: true,
-        // validationSchema: validation,
-        onSubmit: async(values) => {
-            console.log("add batch : ", values);
-        },
-    });
+    ] 
     return (
         <div id="usecase-dashboard">
             <div className="header-wp">
@@ -99,7 +84,7 @@ const UsecasePage = () => {
                 <Button className="btn-add" onClick={() => setIsShow(true)}>Kunjungan Baru <PlusOutlined style={{marginLeft: "8px"}} /></Button>
             </div>
             <Table className="table-wp" dataSource={dataSource} columns={columns} />
-            <ModalAdd isShow={isShow} handleCancel={() => setIsShow(false)} form={form} handleSubmit={form.handleSubmit} />
+            <ModalAdd isShow={isShow} handleCancel={() => setIsShow(false)}  />
         </div>
     )
 }
