@@ -1,9 +1,12 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import logo from '../../assets/images/logo-ciamic.png';
 import './styles.scss'
 import { useFormik } from 'formik';
 import * as yup from "yup";
+import { useState } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+import { register } from "../../api/auth";
 interface IRegisterRequest {
 	name: string;
 	email: string;
@@ -13,6 +16,7 @@ interface IRegisterRequest {
 
 const RegisterPage = () => {
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const validation = yup.object().shape({
       name: yup.string().required("username is required"),
       email: yup
@@ -46,8 +50,25 @@ const RegisterPage = () => {
       enableReinitialize: true,
       validationSchema: validation,
       onSubmit: async(values) => {
-          console.log("Register : ", values);
+        setIsLoading(true)
+        const payload = {
+          name: values.name,
+          email: values.email,
+          password: values.password,
+        }
+        try {
+          const auth = await register(payload);
+          message.success({
+            content: `${auth.data.message}`,
+          });
+          setIsLoading(false)
           navigate('/confirmation')
+        } catch (error: any) {
+          setIsLoading(false)
+          message.error({
+            content:`${error?.response?.data?.message}`,
+          });
+        }
       },
     });
     return (
@@ -150,8 +171,8 @@ const RegisterPage = () => {
                     ) : null}
                   </div>
                 </Form.Item>
-                <Button type="primary" htmlType="submit" style={{height: "48px", width: "100%", backgroundColor: "#003BA1"}}>
-                  Daftar
+                <Button type="primary" htmlType="submit" disabled={isLoading} style={{height: "48px", width: "100%", backgroundColor: "#003BA1", color: "#fff"}}>
+                  Daftar {isLoading && (<LoadingOutlined />)}
                 </Button>
                 <p style={{marginTop: "24px"}} className='subtitle-form'>Sudah punya akun? <span onClick={() => navigate('/')}>Masuk!</span></p>
                 </Form>

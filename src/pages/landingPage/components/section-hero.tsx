@@ -1,9 +1,12 @@
 import illustration from '../../../assets/images/illustration.png'
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import logo from '../../../assets/images/logo-ciamic.png'
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from "yup";
+import { login } from '../../../api/auth';
+import { useState } from 'react';
+import { LoadingOutlined } from '@ant-design/icons';
 interface ILoginRequest {
 	email: string;
 	password: string;
@@ -11,19 +14,21 @@ interface ILoginRequest {
 
 const SectionHero = () => {
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const validationLogin = yup.object().shape({
       email: yup
       .string()
       .email("must be a valid email")
-      .required("email is required")
-      .matches(
-        /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
-        "must be a valid telkom email"
-      ),
-      password: yup.string().matches(
-          /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
-          "Must Contain 8 Characters with Number"
-        ).required("password is required")
+      .required("email is required"),
+      // .matches(
+      //   /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
+      //   "must be a valid telkom email"
+      // ),
+      password: yup.string().required("password is required")
+      // .matches(
+      //   /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
+      //   "Must Contain 8 Characters with Number"
+      // )
     });
     const form = useFormik<ILoginRequest>({
       initialValues: {
@@ -33,8 +38,24 @@ const SectionHero = () => {
       enableReinitialize: true,
       validationSchema: validationLogin,
       onSubmit: async(values) => {
-          console.log("login : ", values);
+        setIsLoading(true)
+        const payload = {
+          ...values,
+          application_id : 2
+        }
+        try {
+          const auth = await login(payload);
+          message.success({
+            content: `${auth.data.message}`,
+          });
+          setIsLoading(false)
           navigate('/chatbot')
+        } catch (error: any) {
+          setIsLoading(false)
+          message.error({
+            content:`${error?.response?.data?.message}`,
+          });
+        }
       },
     });
     return (
@@ -113,9 +134,11 @@ const SectionHero = () => {
                   height: "48px",
                   width: "100%",
                   backgroundColor: "#003BA1",
+                  color: "#fff"
                 }}
+                disabled={isLoading}
               >
-                Masuk
+                Masuk {isLoading && (<LoadingOutlined />)}
               </Button>
               <p style={{ marginTop: "24px" }} className='subtitle-form'>
                 Belum punya akun?{" "}
