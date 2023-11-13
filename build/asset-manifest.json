@@ -1,0 +1,36 @@
+{
+  "files": {
+    "main.css": "/static/css/main.65fbb85f.css",
+    "main.js": "/static/js/main.e2143843.js",
+    "static/js/27.ea7bb1b1.chunk.js": "/static/js/27.ea7bb1b1.chunk.js",
+    "static/media/background.png": "/static/media/background.15543b982bbab582465a.png",
+    "static/media/background-2.png": "/static/media/background-2.943ad9fae4f4d749cb90.png",
+    "static/media/people-img.png": "/static/media/people-img.a20e915304deb8da6b34.png",
+    "static/media/MaterialIcons-Regular.svg": "/static/media/MaterialIcons-Regular.b11ade433e63277fc658.svg",
+    "static/media/MaterialIcons-Regular.eot": "/static/media/MaterialIcons-Regular.b74ad4508cfbb1d6dd69.eot",
+    "static/media/MaterialIcons-Regular.ttf": "/static/media/MaterialIcons-Regular.1fa1f1b2dd0a600f226a.ttf",
+    "static/media/img-content-1.png": "/static/media/img-content-1.a3e39f1b074321ac7e42.png",
+    "static/media/illustration.png": "/static/media/illustration.786ea61e77a9212adf6c.png",
+    "static/media/MaterialIcons-Regular.woff": "/static/media/MaterialIcons-Regular.7b721a40d93d7f2579a4.woff",
+    "static/media/mockup-2.png": "/static/media/mockup-2.ac8fba4092803cfdbd60.png",
+    "static/media/MaterialIcons-Regular.woff2": "/static/media/MaterialIcons-Regular.db4b2d611e80e7a53d39.woff2",
+    "static/media/AmoebaSans-Bold.otf": "/static/media/AmoebaSans-Bold.2cfe32f3aa000fa1a32f.otf",
+    "static/media/img-success.png": "/static/media/img-success.958f0e08f3d21f2a4e97.png",
+    "static/media/img-content-3.png": "/static/media/img-content-3.07341aa7869969c65086.png",
+    "static/media/AmoebaSans-Light.otf": "/static/media/AmoebaSans-Light.875569c658ae91fd313d.otf",
+    "static/media/AmoebaSans-Regular.otf": "/static/media/AmoebaSans-Regular.b9438fecf85550474aef.otf",
+    "static/media/chat-2.png": "/static/media/chat-2.95ef27cf951e55557b71.png",
+    "static/media/mockup.png": "/static/media/mockup.cd962ba0172b46cd3417.png",
+    "static/media/img-content-2.png": "/static/media/img-content-2.cd231268ec6897950fbe.png",
+    "static/media/chat-1.png": "/static/media/chat-1.230a1f1d7e930431481e.png",
+    "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.65fbb85f.css",
+    "static/js/main.e2143843.js"
+  ]
+}
