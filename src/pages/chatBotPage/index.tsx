@@ -1,12 +1,16 @@
 import { CloseSquareOutlined, CopyOutlined, DislikeOutlined, LikeOutlined, MenuOutlined, MoreOutlined, PlusOutlined, SendOutlined } from "@ant-design/icons"
-import { Button, Col, Input, Popover, Row } from "antd";
+import { Button, Col, Input, Popover, Row, message } from "antd";
 import { useEffect, useState } from "react";
 import people from "../../assets/images/people-img.png";
 import logo from "../../assets/images/logo-ciamic.png";
 import "./styles.scss";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { getHistoryChat } from "../../redux/features/chatbot/history/historyChatSlice";
+import {
+  getHistoryChat,
+  resetHistoryChat,
+} from "../../redux/features/chatbot/history/historyChatSlice";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 
@@ -28,6 +32,7 @@ const content = (
 const ChatBotPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const historyChatState = useSelector((state: RootState) => state.historyChat);
+  const navigate = useNavigate();
 
   const [question, setQuestion] = useState<string>("");
   const [isFullmenu, setFullmenu] = useState<boolean>(false);
@@ -87,16 +92,30 @@ const ChatBotPage = () => {
     const storageAccessToken = localStorage.getItem("access_token");
     const storageUser = localStorage.getItem("user");
     if (!storageAccessToken || !storageUser) {
-      window.location.href = "/";
+      navigate("/");
     } else {
       setAccessToken(storageAccessToken);
       setUser(JSON.parse(storageUser));
     }
 
-    setIsLoading(false);
+    // setIsLoading(false);
   }, []);
   if (isLoading) return <div></div>;
-  if (!accessToken) return <div>.</div>;
+  if (!accessToken) {
+    message.error({
+      content: `Sesi anda telah berakhir, silahkan login kembali`,
+    });
+    navigate("/");
+  }
+  if (historyChatState.error) {
+    message.error({
+      content: `Sesi anda telah berakhir, silahkan login kembali`,
+    });
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
+    dispatch(resetHistoryChat());
+    navigate("/");
+  }
   return (
     <div className='chatbot-wp'>
       <div className={`section-left ${isFullmenu && "active"}`}>
@@ -105,11 +124,6 @@ const ChatBotPage = () => {
         </Button>
         <div className='history-chat'>
           <div className='buble-container'>
-            {/* {chat
-              .filter((item) => item.sender === "customer")
-              .map((item) => (
-                <div className='bubble-wp'>{item.chat}</div>
-              ))} */}
             <p className='title'>Today</p>
             {historyChatState.data?.data?.today.map((item: any) => {
               return <div className='bubble-wp'>{item.message}</div>;

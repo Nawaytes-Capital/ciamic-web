@@ -24,7 +24,13 @@ const initialState: IHistoryChatState = {
 const historyChatSlice = createSlice({
   name: "historyChat",
   initialState,
-  reducers: {},
+  reducers: {
+    resetHistoryChat: (state) => {
+      state.status = "idle";
+      state.error = null;
+      state.data = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getHistoryChat.pending, (state) => {
       state.status = "loading";
@@ -42,3 +48,4 @@ const historyChatSlice = createSlice({
 
 export { getHistoryChat };
 export default historyChatSlice.reducer;
+export const { resetHistoryChat } = historyChatSlice.actions;
