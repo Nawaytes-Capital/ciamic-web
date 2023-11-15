@@ -1,5 +1,5 @@
 import { AudioOutlined, SaveOutlined } from "@ant-design/icons";
-import { Button, Input } from "antd";
+import { Button, Input, message } from "antd";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,6 +14,7 @@ import Alert from "../../components/alert/alert";
 import HeaderUsecase from "./component/header";
 import "./styles.scss";
 import { useNavigate } from "react-router-dom";
+import { IUseCaseResponse, sendUsecaseResponseApi } from "../../api/useCase";
 
 const { TextArea } = Input;
 
@@ -44,6 +45,48 @@ const useCasePage = () => {
     }
   }, [dispatch, accessToken]);
 
+  const handleSendResponse = async (batchId: string) => {
+    try {
+      const payload: IUseCaseResponse = {
+        batch_id: batchId,
+        responses: useCaseState.useCases.map((useCase) => ({
+          question_id: useCase.id!,
+          answer: useCase.answer!,
+        })),
+      };
+      const response = await sendUsecaseResponseApi(accessToken || "", payload);
+      if (response.status === 201) {
+        message.success({
+          content: "Jawaban kamu berhasil disimpan",
+          style: {
+            marginTop: "20vh",
+          },
+        });
+        localStorage.removeItem("useCaseDraft");
+        navigate("/success-page");
+      }
+    } catch (error: any) {
+      console.log(error);
+      if (error.response.status === 401) {
+        message.error({
+          content: "Session anda telah berakhir, silahkan login kembali",
+          style: {
+            marginTop: "20vh",
+          },
+        });
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("user");
+        navigate("/usecase");
+      }
+      // message.error({
+      //   content: "Gagal mengirim jawaban",
+      //   style: {
+      //     marginTop: "20vh",
+      //   },
+      // });
+    }
+  };
+
   const handleNextStep = () => {
     if (
       useCaseState.useCases[useCaseState.step].required &&
@@ -52,7 +95,8 @@ const useCasePage = () => {
       setIsRequired(true);
       return;
     } else if (useCaseState.step + 1 === useCaseState.useCases.length) {
-      navigate("/success-page");
+      // navigate("/success-page");
+      handleSendResponse(useCaseState.id);
     }
     setIsRequired(false);
     dispatch(nextStepUseCase());
