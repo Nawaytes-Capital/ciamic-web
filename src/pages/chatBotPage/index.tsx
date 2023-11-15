@@ -4,27 +4,40 @@ import { useEffect, useState } from "react";
 import people from "../../assets/images/people-img.png";
 import logo from "../../assets/images/logo-ciamic.png";
 import "./styles.scss";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { getHistoryChat } from "../../redux/features/chatbot/history/historyChatSlice";
 
 const { TextArea } = Input;
 
 const content = (
   <div>
-    <Button 
-    onClick={() => {
+    <Button
+      onClick={() => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("user");
         window.location.href = "/";
-    }}
-    className='btn-logout'>Logout</Button>
+      }}
+      className='btn-logout'
+    >
+      Logout
+    </Button>
   </div>
 );
 
 const ChatBotPage = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const historyChatState = useSelector((state: RootState) => state.historyChat);
+
   const [question, setQuestion] = useState<string>("");
   const [isFullmenu, setFullmenu] = useState<boolean>(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [user, setUser] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    if (accessToken) dispatch(getHistoryChat(accessToken || ""));
+  }, [dispatch, accessToken]);
+
   const defaultChat = [
     {
       id: 1,
@@ -91,13 +104,20 @@ const ChatBotPage = () => {
           New Chat
         </Button>
         <div className='history-chat'>
-          <p className='title'>Riwayat Pertanyaan</p>
           <div className='buble-container'>
-            {chat
+            {/* {chat
               .filter((item) => item.sender === "customer")
               .map((item) => (
                 <div className='bubble-wp'>{item.chat}</div>
-              ))}
+              ))} */}
+            <p className='title'>Today</p>
+            {historyChatState.data?.data?.today.map((item: any) => {
+              return <div className='bubble-wp'>{item.message}</div>;
+            })}
+            <p className='title'>7 Hari Terakhir</p>
+            {historyChatState.data?.data?.week_before.map((item: any) => {
+              return <div className='bubble-wp'>{item.message}</div>;
+            })}
           </div>
         </div>
         <div className='account-wp'>

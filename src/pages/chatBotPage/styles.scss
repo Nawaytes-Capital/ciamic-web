@@ -4,10 +4,12 @@
     display: flex;
     width: 100%;
     position: relative;
+    overflow: hidden;
 
     .section-left {
         padding: 24px;
-        width: calc(25% - 24*2px);
+        // width: calc(25% - 24*2px);
+        width: 30%;
         min-height: calc(100vh - 24px*2);
         max-height: calc(100vh - 24px*2);
         background-color: #354463;
@@ -16,6 +18,7 @@
         justify-content: space-between;
         padding: 24px;
         position: relative;
+        z-index: 3;
 
         &::after {
             content: '';
@@ -28,7 +31,7 @@
             height: 400px;
             bottom: 0;
             left: 0;
-            z-index: 1;
+            z-index: 0;
         }
 
         .btn-add {
@@ -75,10 +78,12 @@
 
         .history-chat {
             margin-top: 24px;
-
+            z-index: 3;
+            
             .buble-container {
                 height: calc(100vh - 220px);
                 overflow-y: scroll;
+                overflow-x: hidden;
                 padding-right: 10px;
 
                 &::-webkit-scrollbar {
@@ -95,14 +100,16 @@
                 }
             }
             .title {
-                font-size: 18px;
+                font-size: 14px;
                 color: #fff;
+                font-weight: 700;
             }
 
             .bubble-wp {
-                padding: 16px;
+                cursor: pointer;
+                padding: 8px 16px 8px 16px;
                 width: calc(100% - 16px*2);
-                background-color: #5D8BEA;
+                border: #4771C8 solid 2px;
                 border-radius: 8px;
                 color: #fff;
                 margin: 8px 0;
@@ -110,14 +117,15 @@
         }
     }
     .section-right {
-        width: calc(75% - 32px*2);
+        // width: calc(75% - 32px*2);
+        width: max-content;
         min-height: calc(100vh - 32px*2);
-        padding: 32px;
+        padding: 30px;
         position: relative;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        max-height: calc(100vh - 64px);
+        max-height: calc(100vh);
         z-index: 3;
 
         .header-mobile {

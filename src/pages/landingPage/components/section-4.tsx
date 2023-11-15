@@ -21,7 +21,6 @@ const Section4 = () => {
       });
       form.resetForm();
     } catch (error: any) {
-      console.log(error);
       message.error({
         content: `Terjadi kesalahan saat mengirim feedback`,
       });
