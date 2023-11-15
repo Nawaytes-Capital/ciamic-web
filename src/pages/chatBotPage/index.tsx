@@ -12,8 +12,11 @@ import {
 } from "../../redux/features/chatbot/history/historyChatSlice";
 import { useNavigate } from "react-router-dom";
 import { generateChatRoom } from "../../redux/features/chatbot/chatRoom/chatRoomSlice";
-import { sendChatApi } from "../../api/chatbot";
-import { addChat } from "../../redux/features/chatbot/chat/chatSlice";
+import { sendChatApi, sendChatFeedbackApi } from "../../api/chatbot";
+import {
+  addChat,
+  updateLike,
+} from "../../redux/features/chatbot/chat/chatSlice";
 
 const { TextArea } = Input;
 
@@ -89,9 +92,10 @@ const ChatBotPage = () => {
       dispatch(
         addChat({
           id: chatState.chats.length + 1,
-          message: chatResponse?.data?.data?.output,
+          message: chatResponse?.data?.data?.message,
           type: "bot",
           like: null,
+          chatId: chatResponse?.data?.data?._id,
         })
       );
     } catch (error: any) {
@@ -129,6 +133,27 @@ const ChatBotPage = () => {
     dispatch(resetHistoryChat());
     navigate("/");
   }
+
+  const handleFeedback = async (chatId: string, like: boolean) => {
+    try {
+      const response = await sendChatFeedbackApi(
+        accessToken || "",
+        chatId,
+        like
+      );
+      dispatch(
+        updateLike({
+          chatId,
+          like,
+        })
+      );
+    } catch (error) {
+      message.error({
+        content: `Sesi anda telah berakhir, silahkan login kembali`,
+      });
+    }
+  };
+
   return (
     <div className='chatbot-wp'>
       <div className={`section-left ${isFullmenu && "active"}`}>
@@ -208,11 +233,17 @@ const ChatBotPage = () => {
                     />
                     <LikeOutlined
                       className={`icon-like ${item.like ? "icon-liked" : ""}`}
+                      onClick={() => {
+                        handleFeedback(item.chatId!, true);
+                      }}
                     />
                     <DislikeOutlined
                       className={`icon-unlike ${
                         item.like === false ? "icon-unliked" : ""
                       }`}
+                      onClick={() => {
+                        handleFeedback(item.chatId!, false);
+                      }}
                     />
                   </div>
                 )}

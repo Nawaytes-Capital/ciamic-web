@@ -26,3 +26,17 @@ export const sendChatApi = (token: string, payload: IChat) => {
     headers: { Authorization: "Bearer " + token },
   });
 };
+
+export const sendChatFeedbackApi = (
+  token: string,
+  chatId: string,
+  like: boolean | null
+) => {
+  return api.post(
+    `/chatbot/bot-feedback/${chatId}`,
+    { like },
+    {
+      headers: { Authorization: "Bearer " + token },
+    }
+  );
+};

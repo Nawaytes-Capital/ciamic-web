@@ -5,6 +5,7 @@ interface IChat {
   message: string;
   like?: true | false | null;
   id: number;
+  chatId?: string;
 }
 
 interface IChatState {
@@ -37,9 +38,26 @@ const chatSlice = createSlice({
     resetChat: (state) => {
       state.chats = [];
     },
+    updateLike: (
+      state,
+      action: {
+        payload: {
+          chatId: string;
+          like: true | false | null;
+        };
+      }
+    ) => {
+      const { chatId, like } = action.payload;
+      const chat = state.chats.find((chat) => chat.chatId === chatId);
+      if (chat) {
+        if (chat.like === like) {
+          chat.like = null;
+        } else chat.like = like;
+      }
+    },
   },
 });
 
-export const { addChat, resetChat } = chatSlice.actions;
+export const { addChat, resetChat, updateLike } = chatSlice.actions;
 
 export default chatSlice.reducer;
