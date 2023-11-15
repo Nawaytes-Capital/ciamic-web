@@ -28,15 +28,14 @@ const LoginPage = () => {
     });
     const form = useFormik<ILoginRequest>({
       initialValues: {
-          email: "",
-          password: "",
+        email: "",
+        password: "",
       },
       enableReinitialize: true,
       validationSchema: validationLogin,
-      onSubmit: async(values) => {
-          console.log("login : ", values);
-          localStorage.setItem("userEmail", values.email);
-          navigate('/dashboard/usecase')
+      onSubmit: async (values) => {
+        localStorage.setItem("userEmail", values.email);
+        navigate("/dashboard/usecase");
       },
     });
     return (

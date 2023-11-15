@@ -10,7 +10,10 @@ import {
   getHistoryChat,
   resetHistoryChat,
 } from "../../redux/features/chatbot/history/historyChatSlice";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { generateChatRoom } from "../../redux/features/chatbot/chatRoom/chatRoomSlice";
+import { sendChatApi } from "../../api/chatbot";
+import { addChat } from "../../redux/features/chatbot/chat/chatSlice";
 
 const { TextArea } = Input;
 
@@ -32,6 +35,8 @@ const content = (
 const ChatBotPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const historyChatState = useSelector((state: RootState) => state.historyChat);
+  const chatRoomState = useSelector((state: RootState) => state.chatRoom);
+  const chatState = useSelector((state: RootState) => state.chat);
   const navigate = useNavigate();
 
   const [question, setQuestion] = useState<string>("");
@@ -39,18 +44,15 @@ const ChatBotPage = () => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [user, setUser] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [loadingChat, setLoadingChat] = useState(false);
   useEffect(() => {
-    if (accessToken) dispatch(getHistoryChat(accessToken || ""));
+    if (accessToken) {
+      dispatch(getHistoryChat(accessToken || ""));
+      dispatch(generateChatRoom(accessToken || ""));
+    }
   }, [dispatch, accessToken]);
 
-  const defaultChat = [
-    {
-      id: 1,
-      chat: "Hallo! Saya adalah Asisten virtual untuk AM. Teman kolaborasi yang siap membantu Anda. Saat ini, Saya masih memiliki keterbatasan untuk memberikan rekomendasi dan tidak selallu benar. Bantu saya dengan memilih apa yang sedang kamu butuhkan.",
-      sender: "admin",
-    },
-  ];
-  const [chat, setChat] = useState(defaultChat);
   const recomendQuestion = [
     {
       id: 1,
@@ -69,23 +71,33 @@ const ChatBotPage = () => {
       question: "Tutorial Mendaftar Akun Chatbot",
     },
   ];
-  const sendChat = () => {
-    if (question.length > 0) {
-      const payload = [
-        {
-          id: question.length + 1,
-          chat: question,
-          sender: "customer",
-        },
-        {
-          id: question.length + 2,
-          chat: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-          sender: "admin",
-        },
-      ];
-      setChat([...chat, ...payload]);
-      setQuestion("");
+  const sendChat = async () => {
+    try {
+      setLoadingChat(true);
+      dispatch(
+        addChat({
+          id: chatState.chats.length,
+          message: question,
+          type: "user",
+        })
+      );
+      const chatResponse = await sendChatApi(accessToken || "", {
+        chat: question,
+        room_id: chatRoomState.roomId!,
+      });
+      setLoadingChat(false);
+      dispatch(
+        addChat({
+          id: chatState.chats.length + 1,
+          message: chatResponse?.data?.data?.output,
+          type: "bot",
+          like: null,
+        })
+      );
+    } catch (error: any) {
+      console.log(error);
     }
+    setQuestion("");
   };
 
   useEffect(() => {
@@ -98,8 +110,9 @@ const ChatBotPage = () => {
       setUser(JSON.parse(storageUser));
     }
 
-    // setIsLoading(false);
+    setIsLoading(false);
   }, []);
+
   if (isLoading) return <div></div>;
   if (!accessToken) {
     message.error({
@@ -125,13 +138,21 @@ const ChatBotPage = () => {
         <div className='history-chat'>
           <div className='buble-container'>
             <p className='title'>Today</p>
-            {historyChatState.data?.data?.today.map((item: any) => {
-              return <div className='bubble-wp'>{item.message}</div>;
-            })}
+            {historyChatState.data?.data?.today &&
+              [...historyChatState.data?.data?.today]
+                .reverse()
+                .map((item: any, index: number) => (
+                  <div key={index} className='bubble-wp'>
+                    {item.message}
+                  </div>
+                ))}
             <p className='title'>7 Hari Terakhir</p>
-            {historyChatState.data?.data?.week_before.map((item: any) => {
-              return <div className='bubble-wp'>{item.message}</div>;
-            })}
+            {historyChatState.data?.data?.week_before &&
+              [...historyChatState.data?.data?.week_before]
+                .reverse()
+                .map((item: any) => {
+                  return <div className='bubble-wp'>{item.message}</div>;
+                })}
           </div>
         </div>
         <div className='account-wp'>
@@ -156,49 +177,61 @@ const ChatBotPage = () => {
           )}
         </div>
         <div className='chat-wp'>
-          {chat.map((item, index) => {
-            const feedbackValidation = item.sender === "admin" && item.id !== 1;
-            const suggestionChat =
-              chat.length > 2 &&
-              chat.length === index + 1 &&
-              item.sender === "admin";
+          {chatState.chats.map((item, index) => {
             return (
               <div className='buble-chat'>
                 <div className='img-wp'>
-                  {item.sender === "admin" ? (
-                    <img className='img-admin' src={logo} />
-                  ) : (
+                  {item.type === "user" ? (
                     <img className='img-cust' src={people} />
+                  ) : (
+                    <img className='img-admin' src={logo} />
                   )}
                 </div>
                 <p
                   className={`chat ${
-                    item.sender === "customer" ? "chat-cust" : "chat-admin"
+                    item.type === "user" ? "chat-cust" : "chat-admin"
                   }`}
-                >
-                  {item.chat}
-                </p>
-                {feedbackValidation && (
+                  dangerouslySetInnerHTML={{
+                    __html: item.message.replace(/\n/g, "<br />"),
+                  }}
+                ></p>
+                {item.type === "bot" && index !== 0 && (
                   <div className='feedback-wp'>
-                    <CopyOutlined className='icon-copy' />
-                    <LikeOutlined className='icon-like' />
-                    <DislikeOutlined className='icon-unlike' />
+                    <CopyOutlined
+                      className='icon-copy'
+                      onClick={() => {
+                        navigator.clipboard.writeText(item.message);
+                        message.success({
+                          content: `Chatbot berhasil dicopy`,
+                        });
+                      }}
+                    />
+                    <LikeOutlined
+                      className={`icon-like ${item.like ? "icon-liked" : ""}`}
+                    />
+                    <DislikeOutlined
+                      className={`icon-unlike ${
+                        item.like === false ? "icon-unliked" : ""
+                      }`}
+                    />
                   </div>
                 )}
-                {suggestionChat && (
-                  <div className='suggestion-wp'>
-                    <div className='chat-wp'>
-                      Kelebihan Astinet Kebanding Kompetitor
+                {item.type === "bot" &&
+                  item.id !== 0 &&
+                  item.id === chatState.chats.length - 1 && (
+                    <div className='suggestion-wp'>
+                      <div className='chat-wp'>
+                        Kelebihan Astinet Kebanding Kompetitor
+                      </div>
+                      <div className='chat-wp'>Cara Mendaftar Astinet</div>
                     </div>
-                    <div className='chat-wp'>Cara Mendaftar Astinet</div>
-                  </div>
-                )}
+                  )}
               </div>
             );
           })}
         </div>
-        ;
-        {chat.length < 2 && (
+
+        {chatState.chats.length === 1 && (
           <div className='recomend-question'>
             <p>Pertanyaan yang sering ditanyakan</p>
             <div className='recomend-wp'>
@@ -222,12 +255,17 @@ const ChatBotPage = () => {
         <div className='input-wp'>
           <TextArea
             className='input-question'
-            placeholder='Autosize height based on content lines'
+            disabled={loadingChat}
+            placeholder='Type A Messages'
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             autoSize
           />
-          <SendOutlined className='btn-icon' onClick={() => sendChat()} />
+          <SendOutlined
+            className='btn-icon'
+            disabled={loadingChat}
+            onClick={() => sendChat()}
+          />
         </div>
       </div>
     </div>

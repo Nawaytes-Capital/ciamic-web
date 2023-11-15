@@ -8,8 +8,8 @@
 
     .section-left {
         padding: 24px;
-        // width: calc(25% - 24*2px);
-        width: 30%;
+        width: calc(25% - 24*2px);
+        // width: 30%;
         min-height: calc(100vh - 24px*2);
         max-height: calc(100vh - 24px*2);
         background-color: #354463;
@@ -117,8 +117,8 @@
         }
     }
     .section-right {
-        // width: calc(75% - 32px*2);
-        width: max-content;
+        width: calc(75% - 32px*2);
+        // width: max-content;
         min-height: calc(100vh - 32px*2);
         padding: 30px;
         position: relative;
@@ -199,7 +199,8 @@
                 }
 
                 .img-admin {
-                    height: 25px;
+                    width: 50%;
+                    height: 50%;
                 }
             }
             .chat {
@@ -224,18 +225,24 @@
                 // width: 5%;
 
                 .icon-copy {
-                    color: $c-primary;
+                    color: #003BA1;
                     cursor: pointer;
                 }
                 .icon-like {
-                    color: #1B8700;
+                    color: #003BA1;
                     margin-top: 14px;
                     cursor: pointer;
                 }
+                .icon-liked{
+                    color: #1B8700;
+                }
                 .icon-unlike {
-                    color: #B10606;
+                    color: #003BA1;
                     margin-top: 14px;
                     cursor: pointer;
+                }
+                .icon-unliked{
+                    color: #B10606;
                 }
             }
             .suggestion-wp {

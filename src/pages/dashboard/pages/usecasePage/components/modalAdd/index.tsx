@@ -86,7 +86,6 @@ export const ModalAdd = ({
     setListQuestion(updatedQuestions);
   };
 
-  console.log(">>>", listQuestion);
   
   
   return (
