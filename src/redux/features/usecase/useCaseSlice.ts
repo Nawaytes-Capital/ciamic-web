@@ -1,63 +1,33 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getUseCaseLatestBatchApi } from "../../../api/useCase";
+
+export const getUsecaseLatestBatch = createAsyncThunk(
+  "usecase/getUsecaseLatestBatch",
+  async (token: string) => {
+    const response = await getUseCaseLatestBatchApi(token);
+    return response.data;
+  }
+);
 
 interface IUsecCaseState {
   question: string;
   answer?: string;
-  isMandatory: boolean;
+  required: boolean;
+  id: number;
 }
 
 interface IInitialUseCaseState {
   id: string;
   useCases: IUsecCaseState[];
+  status: "idle" | "loading" | "failed";
   step: number;
 }
 
 const initialState: IInitialUseCaseState = {
-  id: "usecase-01",
+  id: "",
   step: 0,
-  useCases: [
-    {
-      question:
-        "Kita mulai aja yuk, nama perusahaannya/brand-nya client kamu itu apa sih?",
-      answer: "",
-      isMandatory: false,
-    },
-    {
-      question: "Siapa Kompetitor Untuk Layanan Astinet?",
-      answer: "",
-      isMandatory: true,
-    },
-    {
-      question:
-        "Apa layanan utama yang ditawarkan oleh perusahaan telekomunikasi ini kepada pelanggan?",
-      answer: "",
-      isMandatory: true,
-    },
-    {
-      question:
-        "Bagaimana perusahaan ini berinvestasi dalam teknologi terbaru untuk meningkatkan jaringan dan layanan mereka?",
-      answer: "",
-      isMandatory: true,
-    },
-    {
-      question:
-        "Apa cakupan jaringan perusahaan ini, baik secara regional maupun global?",
-      answer: "",
-      isMandatory: false,
-    },
-    {
-      question:
-        "Bagaimana perusahaan menghadapi persaingan di pasar telekomunikasi dan strategi apa yang mereka gunakan untuk mempertahankan atau meningkatkan pangsa pasar?",
-      answer: "",
-      isMandatory: false,
-    },
-    {
-      question:
-        "Apa peran perusahaan dalam mengembangkan infrastruktur telekomunikasi di negara atau wilayah tertentu?",
-      answer: "",
-      isMandatory: false,
-    },
-  ],
+  status: "idle",
+  useCases: [],
 };
 
 const useCaseSlice = createSlice({
@@ -85,6 +55,21 @@ const useCaseSlice = createSlice({
       state.useCases = action.payload.useCases;
       state.step = action.payload.step;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUsecaseLatestBatch.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getUsecaseLatestBatch.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.id = action.payload?.data?._id;
+        state.useCases = action.payload?.data?.question;
+        state.step = 0;
+      })
+      .addCase(getUsecaseLatestBatch.rejected, (state) => {
+        state.status = "failed";
+      });
   },
 });
 
