@@ -48,6 +48,11 @@ const SectionHero = () => {
           message.success({
             content: `${auth.data.message}`,
           });
+          localStorage.setItem(
+            "access_token",
+            auth.data.data.authorization.token
+          );
+          localStorage.setItem("user", JSON.stringify(auth.data.data.user));
           setIsLoading(false)
           navigate('/chatbot')
         } catch (error: any) {

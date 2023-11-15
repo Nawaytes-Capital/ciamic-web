@@ -41,6 +41,7 @@
         .account-wp {
             display: flex;
             align-items: center;
+            z-index: 2;
 
             .img-wp {
                 width: 48px;
@@ -63,8 +64,12 @@
             }
 
             .btn-more {
+                cursor: pointer;
                 font-size: 20px;
                 color: #fff;
+                margin-right: 0;
+                margin-left: auto;
+                
             }
         }
 
@@ -400,4 +405,7 @@
             }
         }
     }
+}
+.btn-logout{
+    width: 100%;
 }
