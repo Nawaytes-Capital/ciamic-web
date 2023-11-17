@@ -1,5 +1,6 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { RightOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -10,21 +11,6 @@ import img3 from "../../../assets/images/img-content-3.png";
 
 const Section3 = () => {
   const [idContent, setIdContent] = useState<number>(1);
-  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    const newInterval = setInterval(() => {
-      setIdContent((prevIdContent) => (prevIdContent % 3) + 1);
-    }, 10000);
-
-    setIntervalId(newInterval);
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [intervalId]);
-
   const slider = React.useRef<any>(null);
   const content = [
     {

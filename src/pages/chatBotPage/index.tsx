@@ -1,39 +1,54 @@
-import { CloseSquareOutlined, CopyOutlined, DislikeOutlined, LikeOutlined, MenuOutlined, MoreOutlined, PlusOutlined, SendOutlined } from "@ant-design/icons"
+/* eslint-disable jsx-a11y/alt-text */
+import {
+  CloseSquareOutlined,
+  CopyOutlined,
+  DislikeOutlined,
+  LikeOutlined,
+  MenuOutlined,
+  MoreOutlined,
+  PlusOutlined,
+  SendOutlined,
+} from "@ant-design/icons";
 import { Button, Col, Input, Popover, Row, message } from "antd";
 import { useEffect, useState } from "react";
-import people from "../../assets/images/people-img.png";
-import logo from "../../assets/images/logo-ciamic.png";
-import "./styles.scss";
-import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getHistoryChat,
-  resetHistoryChat,
-} from "../../redux/features/chatbot/history/historyChatSlice";
 import { useNavigate } from "react-router-dom";
-import { generateChatRoom } from "../../redux/features/chatbot/chatRoom/chatRoomSlice";
 import { sendChatApi, sendChatFeedbackApi } from "../../api/chatbot";
+import logo from "../../assets/images/logo-ciamic.png";
+import people from "../../assets/images/people-img.png";
+import { logoutApp } from "../../redux/features/auth/authSlice";
 import {
   addChat,
   updateLike,
 } from "../../redux/features/chatbot/chat/chatSlice";
+import { generateChatRoom } from "../../redux/features/chatbot/chatRoom/chatRoomSlice";
+import {
+  getHistoryChat,
+  resetHistoryChat,
+} from "../../redux/features/chatbot/history/historyChatSlice";
+import { AppDispatch, RootState } from "../../redux/store";
+import "./styles.scss";
 
 const { TextArea } = Input;
 
-const content = (
-  <div>
-    <Button
-      onClick={() => {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("user");
-        window.location.href = "/";
-      }}
-      className='btn-logout'
-    >
-      Logout
-    </Button>
-  </div>
-);
+const LogoutButton = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
+    dispatch(logoutApp());
+    navigate("/");
+  };
+
+  return (
+    <div>
+      <Button onClick={handleLogout} className='btn-logout'>
+        Logout
+      </Button>
+    </div>
+  );
+};
 
 const ChatBotPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,17 +59,22 @@ const ChatBotPage = () => {
 
   const [question, setQuestion] = useState<string>("");
   const [isFullmenu, setFullmenu] = useState<boolean>(false);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [user, setUser] = useState<any | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   const [loadingChat, setLoadingChat] = useState(false);
+  const authState = useSelector((state: RootState) => state.auth);
+
   useEffect(() => {
-    if (accessToken) {
-      dispatch(getHistoryChat(accessToken || ""));
-      dispatch(generateChatRoom(accessToken || ""));
+    if (!authState.authenticated) {
+      navigate("/");
     }
-  }, [dispatch, accessToken]);
+  }, [authState, navigate]);
+
+  useEffect(() => {
+    if (authState.authenticated) {
+      dispatch(getHistoryChat(authState.accessToken || ""));
+      dispatch(generateChatRoom(authState.accessToken || ""));
+    }
+  }, [dispatch, authState]);
 
   const recomendQuestion = [
     {
@@ -84,7 +104,7 @@ const ChatBotPage = () => {
           type: "user",
         })
       );
-      const chatResponse = await sendChatApi(accessToken || "", {
+      const chatResponse = await sendChatApi(authState.accessToken || "", {
         chat: question,
         room_id: chatRoomState.roomId!,
       });
@@ -104,26 +124,6 @@ const ChatBotPage = () => {
     setQuestion("");
   };
 
-  useEffect(() => {
-    const storageAccessToken = localStorage.getItem("access_token");
-    const storageUser = localStorage.getItem("user");
-    if (!storageAccessToken || !storageUser) {
-      navigate("/");
-    } else {
-      setAccessToken(storageAccessToken);
-      setUser(JSON.parse(storageUser));
-    }
-
-    setIsLoading(false);
-  }, []);
-
-  if (isLoading) return <div></div>;
-  if (!accessToken) {
-    message.error({
-      content: `Sesi anda telah berakhir, silahkan login kembali`,
-    });
-    navigate("/");
-  }
   if (historyChatState.error) {
     message.error({
       content: `Sesi anda telah berakhir, silahkan login kembali`,
@@ -136,11 +136,7 @@ const ChatBotPage = () => {
 
   const handleFeedback = async (chatId: string, like: boolean) => {
     try {
-      const response = await sendChatFeedbackApi(
-        accessToken || "",
-        chatId,
-        like
-      );
+      await sendChatFeedbackApi(authState.accessToken || "", chatId, like);
       dispatch(
         updateLike({
           chatId,
@@ -162,7 +158,13 @@ const ChatBotPage = () => {
         </Button>
         <div className='history-chat'>
           <div className='buble-container'>
-            <p className='title'>Today</p>
+            {historyChatState.data?.data?.today.length !== 0 &&
+              historyChatState.data?.data?.week_before.length !== 0 && (
+                <p className='title'>Belum ada percakapan hari ini</p>
+              )}
+            {historyChatState.data?.data?.today.length !== 0 && (
+              <p className='title'>Today</p>
+            )}
             {historyChatState.data?.data?.today &&
               [...historyChatState.data?.data?.today]
                 .reverse()
@@ -171,7 +173,9 @@ const ChatBotPage = () => {
                     {item.message}
                   </div>
                 ))}
-            <p className='title'>7 Hari Terakhir</p>
+            {historyChatState.data?.data?.week_before.length !== 0 && (
+              <p className='title'>7 Hari Terakhir</p>
+            )}
             {historyChatState.data?.data?.week_before &&
               [...historyChatState.data?.data?.week_before]
                 .reverse()
@@ -184,8 +188,8 @@ const ChatBotPage = () => {
           <div className='img-wp'>
             <img src={people} />
           </div>
-          <p className='name'>{user?.name}</p>
-          <Popover placement='topRight' title={"Menu"} content={content}>
+          <p className='name'>{authState.user?.name}</p>
+          <Popover placement='topRight' title={"Menu"} content={LogoutButton}>
             <MoreOutlined className='btn-more' />
           </Popover>
         </div>
@@ -303,4 +307,4 @@ const ChatBotPage = () => {
   );
 };
 
-export default ChatBotPage
+export default ChatBotPage;

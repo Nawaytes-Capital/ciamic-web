@@ -3,6 +3,7 @@ import usecaseReducer from "./features/usecase/useCaseSlice";
 import historyChatReducer from "./features/chatbot/history/historyChatSlice";
 import chatRoomReducer from "./features/chatbot/chatRoom/chatRoomSlice";
 import chatReducer from "./features/chatbot/chat/chatSlice";
+import authReducer from "./features/auth/authSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     historyChat: historyChatReducer,
     chatRoom: chatRoomReducer,
     chat: chatReducer,
+    auth: authReducer,
   },
 });
 
