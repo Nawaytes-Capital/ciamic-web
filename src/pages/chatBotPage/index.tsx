@@ -12,7 +12,7 @@ import {
 import { Button, Col, Input, Popover, Row, message } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { sendChatApi, sendChatFeedbackApi } from "../../api/chatbot";
 import logo from "../../assets/images/logo-ciamic.png";
 import people from "../../assets/images/people-img.png";
@@ -149,6 +149,10 @@ const ChatBotPage = () => {
       });
     }
   };
+
+  if (!authState.authenticated) {
+    return <Outlet />;
+  }
 
   return (
     <div className='chatbot-wp'>
