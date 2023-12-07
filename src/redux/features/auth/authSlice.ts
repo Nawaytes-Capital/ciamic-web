@@ -1,20 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 
 interface IAuthState {
   authenticated: boolean;
   accessToken: string | null;
   user: any;
+  role?: string[];
   isAdmin?: boolean;
 }
 
 export const isAuthenticated = (): boolean => {
-  const accessTokenStore = localStorage.getItem("access_token");
-  const userStore = localStorage.getItem("user");
-
-  if (!!accessTokenStore && !!userStore) {
-    return true;
+  let state = false;
+  try {
+    const accessTokenStore = localStorage.getItem("access_token");
+    jwtDecode(accessTokenStore || "");
+    const userStore = localStorage.getItem("user");
+    if (!!accessTokenStore && !!userStore) {
+      state = true;
+    }
+  } catch (error) {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("role");
+    localStorage.removeItem("userEmail");
   }
-  return false;
+
+  return state;
 };
 
 export const getAccessToken = (): string | null => {
@@ -33,10 +44,17 @@ export const getIsAdmin = (): boolean => {
   return user.role === "admin";
 };
 
+export const getRole = (): string[] => {
+  const role = localStorage.getItem("role");
+  console.log(role);
+  return JSON.parse(role || "[]")!;
+};
+
 const initialState: IAuthState = {
   authenticated: isAuthenticated(),
   accessToken: getAccessToken(),
   user: getUser(),
+  role: getRole(),
   isAdmin: getIsAdmin(),
 };
 

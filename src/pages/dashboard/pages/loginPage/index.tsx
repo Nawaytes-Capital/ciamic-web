@@ -11,6 +11,8 @@ import { AppDispatch } from "../../../../redux/store";
 import { useState } from "react";
 import { loginApp } from "../../../../redux/features/auth/authSlice";
 import { LoadingOutlined } from "@ant-design/icons";
+import { IAuthResponse } from "../../../../utils/interface";
+import { AxiosResponse } from "axios";
 interface ILoginRequest {
   email: string;
   password: string;
@@ -25,21 +27,31 @@ const LoginPage = () => {
   const handleLogin = async (payload: ILoginRequest) => {
     setIsLoading(true);
     try {
-      const auth = await login({
+      const auth: AxiosResponse<IAuthResponse> = await login({
         ...payload,
         application_id: 2,
       });
+      if (!auth.data.data.role.includes("admin_chatbot")) {
+        setIsLoading(false);
+        message.error({
+          content: `Anda tidak memiliki akses ke halaman ini`,
+        });
+        return;
+      }
       message.success({
         content: `${auth.data.message}`,
       });
+
       localStorage.setItem("access_token", auth.data.data.authorization.token);
       localStorage.setItem("user", JSON.stringify(auth.data.data.user));
+      localStorage.setItem("role", JSON.stringify(auth.data.data.role));
       setIsLoading(false);
       dispatch(
         loginApp({
           authenticated: true,
           accessToken: auth.data.data.authorization.token,
           user: auth.data.data.user,
+          role: auth.data.data.role,
           isAdmin: true,
         })
       );
