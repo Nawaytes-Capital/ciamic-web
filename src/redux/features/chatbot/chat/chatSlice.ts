@@ -36,7 +36,14 @@ const chatSlice = createSlice({
       state.chats.push(action.payload);
     },
     resetChat: (state) => {
-      state.chats = [];
+      state.chats = [
+        {
+          id: 0,
+          type: "bot",
+          message:
+            "Hai kak! Saya CIAMIC, asisten virtual Telkom Indonesia. Ada yang bisa saya bantu??",
+        },
+      ];
     },
     updateLike: (
       state,

@@ -41,6 +41,7 @@ const historyChatSlice = createSlice({
     });
     builder.addCase(getHistoryChat.rejected, (state, action) => {
       state.status = "failed";
+      console.log(action.error);
       state.error = action.error.message || null;
     });
   },

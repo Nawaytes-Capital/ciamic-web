@@ -26,6 +26,7 @@ const useCasePage = () => {
   const [isSave, setIsSave] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [user, setUser] = useState<any | null>(null);
+  const authState = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const accessTokenStore = localStorage.getItem("access_token");
@@ -45,6 +46,10 @@ const useCasePage = () => {
       }
     }
   }, [dispatch, accessToken]);
+
+  if (!authState.authenticated) {
+    navigate("/usecase");
+  }
 
   const handleSendResponse = async (batchId: string) => {
     try {

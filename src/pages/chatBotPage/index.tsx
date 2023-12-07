@@ -22,12 +22,17 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
-import { sendChatApi, sendChatFeedbackApi } from "../../api/chatbot";
+import {
+  generateChatRoomApi,
+  sendChatApi,
+  sendChatFeedbackApi,
+} from "../../api/chatbot";
 import logo from "../../assets/images/logo-ciamic.png";
 import people from "../../assets/images/people-img.png";
 import { logoutApp } from "../../redux/features/auth/authSlice";
 import {
   addChat,
+  resetChat,
   updateLike,
 } from "../../redux/features/chatbot/chat/chatSlice";
 import { generateChatRoom } from "../../redux/features/chatbot/chatRoom/chatRoomSlice";
@@ -46,6 +51,7 @@ const LogoutButton = () => {
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user");
+    localStorage.removeItem("userEmail");
     dispatch(logoutApp());
     navigate("/");
   };
@@ -133,15 +139,15 @@ const ChatBotPage = () => {
     setQuestion("");
   };
 
-  if (historyChatState.error) {
-    message.error({
-      content: `Sesi anda telah berakhir, silahkan login kembali`,
-    });
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
-    dispatch(resetHistoryChat());
-    navigate("/");
-  }
+  // if (historyChatState.error) {
+  //   message.error({
+  //     content: `Sesi anda telah berakhir, silahkan login kembali`,
+  //   });
+  //   localStorage.removeItem("access_token");
+  //   localStorage.removeItem("user");
+  //   dispatch(resetHistoryChat());
+  //   navigate("/");
+  // }
 
   const handleFeedback = async (chatId: string, like: boolean) => {
     try {
@@ -163,11 +169,26 @@ const ChatBotPage = () => {
     return <Outlet />;
   }
 
+  const handleNewChatRoom = async () => {
+    try {
+      await generateChatRoomApi(authState.accessToken || "");
+      dispatch(resetChat());
+    } catch (error) {
+      message.error({
+        content: `Sesi anda telah berakhir, silahkan login kembali`,
+      });
+    }
+  };
+
   return (
     <div className='chatbot-wp'>
       <div className={`section-left ${isFullmenu && "active"}`}>
-        <Button className='btn-add' icon={<PlusOutlined />}>
-          New Chat
+        <Button
+          className='btn-add'
+          icon={<PlusOutlined />}
+          onClick={handleNewChatRoom}
+        >
+          Pertanyaan Baru
         </Button>
         <div className='history-chat'>
           <div className='buble-container'>
@@ -202,7 +223,7 @@ const ChatBotPage = () => {
             <img src={people} />
           </div>
           <p className='name'>{authState.user?.name}</p>
-          <Popover placement='topRight' title={"Menu"} content={LogoutButton}>
+          <Popover placement='topRight' title={""} content={LogoutButton}>
             <MoreOutlined className='btn-more' />
           </Popover>
         </div>
