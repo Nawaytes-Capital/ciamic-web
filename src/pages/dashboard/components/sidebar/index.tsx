@@ -37,32 +37,37 @@ const SidebarDashboard:React.FC<ISidebar> = ({isActiveMobile}) => {
         }
     ]
     return (
-        <div className={`sidebar-dashboard ${isActiveMobile && 'active-mobile'}`}>
-            <div className="header-sidebar">
-                <h2 className="title">Dashboard Ciamic</h2>
-                <div className="icon-wrapper">
-                    <DoubleLeftOutlined />
-                </div>
-            </div>
-            <div className="menu-wrapper">
-                {menuData.map((item) => (
-                    <div className={`menu-container ${pathName === item.link && 'active'}`}>
-                        {item.icon}
-                        <div className="title-menu" onClick={() => navigate(item.link)}>{item.title}</div>
-                    </div>
-                ))}
-            </div>
-            <div className="user-wrapper">
-                <div className="title-wp">
-                    <div className="img-wp">
-                        <img alt="profile" src={people} />
-                    </div>
-                    <p className="name">Mubarok Al Fatih</p>
-                </div>
-                <LogoutOutlined className="btn-logout" />
-            </div>
+      <div className={`sidebar-dashboard ${isActiveMobile && "active-mobile"}`}>
+        <div className='header-sidebar'>
+          <h2 className='title'>Dashboard Ciamic</h2>
+          <div className='icon-wrapper'>
+            <DoubleLeftOutlined />
+          </div>
         </div>
-    )
+        <div className='menu-wrapper'>
+          {menuData.map((item) => (
+            <div
+              className={`menu-container ${pathName === item.link && "active"}`}
+              onClick={() => navigate(item.link)}
+            >
+              {item.icon}
+              <div className='title-menu' onClick={() => navigate(item.link)}>
+                {item.title}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className='user-wrapper'>
+          <div className='title-wp'>
+            <div className='img-wp'>
+              <img alt='profile' src={people} />
+            </div>
+            <span className='name'>Mubarok Al Fatih</span>
+          </div>
+          <LogoutOutlined className='btn-logout' />
+        </div>
+      </div>
+    );
 }
 
 export default SidebarDashboard;

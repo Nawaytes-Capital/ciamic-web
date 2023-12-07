@@ -16,6 +16,7 @@ import LoginPage from "./pages/useCasePage/component/loginPage";
 import LoginDashboard from "./pages/dashboard/pages/loginPage";
 import SuccessPage from "./pages/useCasePage/component/successPage";
 import "./styles/variables.scss";
+import VerificationPage from "./pages/verificationPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path='/' element={<LandingPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/confirmation' element={<ConfirmationPage />} />
+        <Route path='/verification/:token' element={<VerificationPage />} />
 
         <Route path='/usecase' element={<LoginPage />} />
         <Route path='/usecase-form' element={<UseCasePage />} />

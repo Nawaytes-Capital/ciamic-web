@@ -19,3 +19,9 @@ export const login = (data: ILoginRequest) => {
 export const register = (data: IRegisterRequest) => {
 	return api.post("/chatbot/register", data);
 };
+
+export const verifyApi = (token: string) => {
+  return api.post(`/chatbot/verification`, {
+    verif_code: token,
+  });
+};

@@ -55,7 +55,7 @@ const Header = () => {
           <div className='menu-title'>Feedback</div>
         </HashLink>
         <Link
-          to={isAuthenticated() ? "/usecase-form" : "/usecase"}
+          to={"/usecase-form"}
           style={{
             textDecoration: "none",
           }}
@@ -119,7 +119,7 @@ const Header = () => {
             <div className='menu-title'>Feedback</div>
           </HashLink>
           <Link
-            to={isAuthenticated() ? "/usecase-form" : "/usecase"}
+            to={"/usecase-form"}
             style={{
               textDecoration: "none",
             }}

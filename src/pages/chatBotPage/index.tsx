@@ -9,7 +9,16 @@ import {
   PlusOutlined,
   SendOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Input, Popover, Row, message } from "antd";
+import {
+  Button,
+  Col,
+  Input,
+  Popover,
+  Row,
+  Skeleton,
+  Space,
+  message,
+} from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -162,8 +171,8 @@ const ChatBotPage = () => {
         </Button>
         <div className='history-chat'>
           <div className='buble-container'>
-            {historyChatState.data?.data?.today.length !== 0 &&
-              historyChatState.data?.data?.week_before.length !== 0 && (
+            {historyChatState.data?.data?.today.length === 0 &&
+              historyChatState.data?.data?.week_before.length === 0 && (
                 <p className='title'>Belum ada percakapan hari ini</p>
               )}
             {historyChatState.data?.data?.today.length !== 0 && (
@@ -268,6 +277,22 @@ const ChatBotPage = () => {
               </div>
             );
           })}
+          {/* <Space>
+            <Skeleton.Avatar active={true} size={"large"} shape={"circle"} />
+            <Skeleton.Input active={true} size={"default"} />
+          </Space> */}
+          {loadingChat && (
+            <div className='buble-chat'>
+              <div className='img-wp'>
+                <Skeleton.Avatar active={true} size={100} shape={"circle"} />
+              </div>
+              <Skeleton.Input
+                active={true}
+                size={"default"}
+                className='chat-skeleton'
+              />
+            </div>
+          )}
         </div>
 
         {chatState.chats.length === 1 && (

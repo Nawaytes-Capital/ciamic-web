@@ -37,6 +37,7 @@ const useCasePage = () => {
   useEffect(() => {
     const useCaseDraft = localStorage.getItem("useCaseDraft");
     if (useCaseDraft) {
+
       dispatch(setFromDraft(JSON.parse(useCaseDraft)));
     } else {
       if (accessToken) {

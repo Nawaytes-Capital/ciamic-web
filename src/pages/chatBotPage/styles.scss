@@ -218,6 +218,15 @@
                     color: #fff;
                 }
             }
+            .chat-skeleton{
+                border:none;
+                width: 95%;
+                border-radius: 0 16px 16px 16px;
+                margin-left: 8px;
+                display: flex;
+                align-items: center;
+                height: 48px;
+            }
             .feedback-wp {
                 display: flex;
                 flex-direction: column;
@@ -341,6 +350,7 @@
 
             .chat-wp {
                 margin-top: 50px;
+                
                 .buble-chat {
                     .img-wp {
                         width: 35px;
@@ -348,6 +358,9 @@
                     }
                     .chat {
                         width: 65%;
+                    }
+                    .chat-skeleton{
+                        width: 84%;
                     }
                 }
             }
@@ -399,6 +412,9 @@
                 .buble-chat {
                     .chat {
                         width: 65%;
+                    }
+                    .chat-skeleton{
+                        width: 85%;
                     }
                     .suggestion-wp {
                         .chat-wp:last-child {

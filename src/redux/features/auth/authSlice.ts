@@ -4,6 +4,7 @@ interface IAuthState {
   authenticated: boolean;
   accessToken: string | null;
   user: any;
+  isAdmin?: boolean;
 }
 
 export const isAuthenticated = (): boolean => {
@@ -26,10 +27,17 @@ export const getUser = (): object => {
   return JSON.parse(userStore || "{}")!;
 };
 
+export const getIsAdmin = (): boolean => {
+  const isAdmin = localStorage.getItem("is_admin");
+  const user = JSON.parse(isAdmin || "false")!;
+  return user.role === "admin";
+};
+
 const initialState: IAuthState = {
   authenticated: isAuthenticated(),
   accessToken: getAccessToken(),
   user: getUser(),
+  isAdmin: getIsAdmin(),
 };
 
 const authSlice = createSlice({
@@ -40,6 +48,7 @@ const authSlice = createSlice({
       state.authenticated = true;
       state.accessToken = action.payload.accessToken;
       state.user = action.payload.user;
+      state.isAdmin = action.payload.isAdmin ?? false;
     },
     logoutApp: (state) => {
       state.authenticated = false;
