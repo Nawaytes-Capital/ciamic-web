@@ -65,6 +65,7 @@ const authSlice = createSlice({
       state.authenticated = true;
       state.accessToken = action.payload.accessToken;
       state.user = action.payload.user;
+      state.role = action.payload.role ?? [];
       state.isAdmin = action.payload.isAdmin ?? false;
     },
     logoutApp: (state) => {

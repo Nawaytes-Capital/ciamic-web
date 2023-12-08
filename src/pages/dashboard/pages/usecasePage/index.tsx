@@ -121,20 +121,21 @@ const UsecasePage = () => {
       render: (text: string, record: any, index: number) => {
         return <div className={`${text.toLowerCase()}`}>{text}</div>;
       },
+      align: "center" as "center",
     },
-    {
-      title: "Action",
-      render: (text: string, record: any, index: number) => {
-        return <EditOutlined />;
-      },
-    },
+    // {
+    //   title: "Action",
+    //   render: (text: string, record: any, index: number) => {
+    //     return <EditOutlined />;
+    //   },
+    // },
   ];
   return (
     <div id='usecase-dashboard'>
       <div className='header-wp'>
         <h3 className='title-page'>List Batch Usecase</h3>
         <Button className='btn-add' onClick={() => setIsShow(true)}>
-          Kunjungan Baru <PlusOutlined style={{ marginLeft: "8px" }} />
+          Add UseCase <PlusOutlined style={{ marginLeft: "8px" }} />
         </Button>
       </div>
       <Table

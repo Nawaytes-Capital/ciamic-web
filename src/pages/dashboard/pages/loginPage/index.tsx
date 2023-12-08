@@ -38,24 +38,24 @@ const LoginPage = () => {
         });
         return;
       }
-      message.success({
-        content: `${auth.data.message}`,
-      });
-
       localStorage.setItem("access_token", auth.data.data.authorization.token);
       localStorage.setItem("user", JSON.stringify(auth.data.data.user));
       localStorage.setItem("role", JSON.stringify(auth.data.data.role));
       setIsLoading(false);
+      console.log(auth.data.data.role);
       dispatch(
         loginApp({
           authenticated: true,
           accessToken: auth.data.data.authorization.token,
           user: auth.data.data.user,
-          role: auth.data.data.role,
+          role: [...auth.data.data.role],
           isAdmin: true,
         })
       );
       navigate("/dashboard/usecase");
+      message.success({
+        content: `${auth.data.message}`,
+      });
     } catch (error: any) {
       setIsLoading(false);
       message.error({
