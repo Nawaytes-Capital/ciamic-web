@@ -49,9 +49,6 @@ const LogoutButton = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("userEmail");
     dispatch(logoutApp());
     navigate("/");
   };

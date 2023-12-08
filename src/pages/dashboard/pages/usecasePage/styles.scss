@@ -17,6 +17,12 @@
         }
     }
 
+    .pagination-wp {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        margin-bottom: 24px;
+    }
     .draft {
         background-color: #FCF2F9;
         padding: 4px 8px;

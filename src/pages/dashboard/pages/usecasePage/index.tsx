@@ -1,9 +1,14 @@
 import { EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Table, message } from "antd";
+import { Button, Pagination, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import { ModalAdd } from "./components/modalAdd";
 import "./styles.scss";
 import { fetchUsecasebatchApi } from "../../../../api/dashboard";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store";
+import { FetchUsecaseBatchApiResponse } from "../../../../api/interface/FetchUsecaseBatch";
 
 interface IUsecaseBatchData {
   key: string;
@@ -38,12 +43,17 @@ const dataSource = [
 ];
 
 const UsecasePage = () => {
+  const authState = useSelector((state: RootState) => state.auth);
   const [isShow, setIsShow] = useState<boolean>(false);
   const [data, setData] = useState<IUsecaseBatchData[]>([]);
-
+  const [fetchResponse, setFetchResponse] =
+    useState<FetchUsecaseBatchApiResponse>();
+  const [page, setPage] = useState<number>(1);
+  const navigate = useNavigate();
   const fetchData = async () => {
     try {
-      const response = await fetchUsecasebatchApi();
+      const response = await fetchUsecasebatchApi(authState.accessToken!, page);
+      setFetchResponse(response.data);
       const dataSet: IUsecaseBatchData[] = response.data.data.map(
         (item, index) => {
           return {
@@ -57,10 +67,19 @@ const UsecasePage = () => {
       );
 
       setData(dataSet);
-    } catch (error: any) {
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          message.error({
+            content: error?.response?.data?.message,
+          });
+          navigate("/dashboard");
+        }
+      }
       message.error({
-        content: `${error?.response?.data?.message}` ?? "Something went wrong",
+        content: "Something went wrong",
       });
+      navigate("/dashboard");
     }
   };
 
@@ -69,7 +88,7 @@ const UsecasePage = () => {
       fetchData();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [page]
   );
 
   const columns = [
@@ -118,7 +137,20 @@ const UsecasePage = () => {
           Kunjungan Baru <PlusOutlined style={{ marginLeft: "8px" }} />
         </Button>
       </div>
-      <Table className='table-wp' dataSource={data} columns={columns} />
+      <Table
+        className='table-wp'
+        dataSource={data}
+        columns={columns}
+        pagination={false}
+      />
+      <Pagination
+        className='pagination-wp'
+        defaultCurrent={1}
+        current={page}
+        onChange={(page) => setPage(page)}
+        total={fetchResponse?.total}
+        showSizeChanger={false}
+      />
       <ModalAdd isShow={isShow} handleCancel={() => setIsShow(false)} />
     </div>
   );

@@ -28,14 +28,26 @@ function RouterDashboard() {
         <Routes>
           <Route
             path='/usecase'
+            element={<PrivateRouteDashboard children={<UsecasePage />} />}
+          />
+          <Route
+            path='/list-response'
+            element={<PrivateRouteDashboard children={<ResponPage />} />}
+          />
+          <Route
+            path='/admin-management'
             element={
-              // <UsecasePage />
-              <PrivateRouteDashboard children={<UsecasePage />} />
+              // <AdminManagementpage />
+              <PrivateRouteDashboard children={<AdminManagementpage />} />
             }
           />
-          <Route path='/list-response' element={<ResponPage />} />
-          <Route path='/admin-management' element={<AdminManagementpage />} />
-          <Route path='/list-feedback' element={<ListFeedbackpage />} />
+          <Route
+            path='/list-feedback'
+            element={
+              // <ListFeedbackpage />
+              <PrivateRouteDashboard children={<ListFeedbackpage />} />
+            }
+          />
         </Routes>
       </div>
     </div>

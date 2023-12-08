@@ -81,7 +81,9 @@ const useCasePage = () => {
           },
         });
         localStorage.removeItem("access_token");
-        localStorage.removeItem("user");
+    localStorage.removeItem("user");
+    localStorage.removeItem("role");
+    localStorage.removeItem("userEmail");
         navigate("/usecase");
       }
       // message.error({

@@ -46,7 +46,6 @@ export const getIsAdmin = (): boolean => {
 
 export const getRole = (): string[] => {
   const role = localStorage.getItem("role");
-  console.log(role);
   return JSON.parse(role || "[]")!;
 };
 
@@ -69,6 +68,10 @@ const authSlice = createSlice({
       state.isAdmin = action.payload.isAdmin ?? false;
     },
     logoutApp: (state) => {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("role");
+      localStorage.removeItem("userEmail");
       state.authenticated = false;
       state.accessToken = null;
       state.user = null;
