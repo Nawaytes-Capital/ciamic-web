@@ -33,6 +33,9 @@ const chatRoomSlice = createSlice({
       state.data = null;
       state.roomId = null;
     },
+    changeChatRoom: (state, action) => {
+      state.roomId = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(generateChatRoom.pending, (state) => {
@@ -52,4 +55,4 @@ const chatRoomSlice = createSlice({
 
 export { generateChatRoom };
 export default chatRoomSlice.reducer;
-export const { resetChatRoom } = chatRoomSlice.actions;
+export const { resetChatRoom, changeChatRoom } = chatRoomSlice.actions;

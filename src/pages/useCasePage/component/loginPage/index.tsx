@@ -63,6 +63,7 @@ const LoginPage = () => {
         );
         localStorage.setItem("user", JSON.stringify(auth.data.data.user));
         localStorage.setItem("userEmail", values.email);
+        localStorage.setItem("role", JSON.stringify(auth.data.data.role));
         setIsLoading(false);
         dispatch(
           loginApp({

@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import {
   generateChatRoomApi,
+  getHistoryChatByIdApi,
   sendChatApi,
   sendChatFeedbackApi,
 } from "../../api/chatbot";
@@ -35,13 +36,19 @@ import {
   resetChat,
   updateLike,
 } from "../../redux/features/chatbot/chat/chatSlice";
-import { generateChatRoom } from "../../redux/features/chatbot/chatRoom/chatRoomSlice";
+import {
+  changeChatRoom,
+  generateChatRoom,
+} from "../../redux/features/chatbot/chatRoom/chatRoomSlice";
 import {
   getHistoryChat,
   resetHistoryChat,
 } from "../../redux/features/chatbot/history/historyChatSlice";
 import { AppDispatch, RootState } from "../../redux/store";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import Markdown from "react-markdown";
+import MarkdownPreview from "@uiw/react-markdown-preview";
 
 const { TextArea } = Input;
 
@@ -121,6 +128,7 @@ const ChatBotPage = () => {
         room_id: chatRoomState.roomId!,
       });
       setLoadingChat(false);
+      dispatch(getHistoryChat(authState.accessToken || ""));
       dispatch(
         addChat({
           id: chatState.chats.length + 1,
@@ -136,15 +144,15 @@ const ChatBotPage = () => {
     setQuestion("");
   };
 
-  // if (historyChatState.error) {
-  //   message.error({
-  //     content: `Sesi anda telah berakhir, silahkan login kembali`,
-  //   });
-  //   localStorage.removeItem("access_token");
-  //   localStorage.removeItem("user");
-  //   dispatch(resetHistoryChat());
-  //   navigate("/");
-  // }
+  if (historyChatState.error) {
+    message.error({
+      content: `Sesi anda telah berakhir, silahkan login kembali`,
+    });
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
+    dispatch(resetHistoryChat());
+    navigate("/");
+  }
 
   const handleFeedback = async (chatId: string, like: boolean) => {
     try {
@@ -163,14 +171,59 @@ const ChatBotPage = () => {
   };
 
   if (!authState.authenticated) {
-    return <Outlet />;
+    return <></>;
   }
 
   const handleNewChatRoom = async () => {
     try {
-      await generateChatRoomApi(authState.accessToken || "");
+      const response = await generateChatRoomApi(authState.accessToken || "");
       dispatch(resetChat());
+      dispatch(changeChatRoom(response?.data?.data?.id));
     } catch (error) {
+      message.error({
+        content: `Sesi anda telah berakhir, silahkan login kembali`,
+      });
+    }
+  };
+
+  const isActive = (chatRoomId: string) => {
+    if (chatRoomState.roomId === chatRoomId) {
+      return "history-active";
+    }
+    return "";
+  };
+
+  const handleSelectChatRoom = async (chatRoomId: string) => {
+    try {
+      const response = await getHistoryChatByIdApi(
+        authState.accessToken || "",
+        chatRoomId
+      );
+      dispatch(resetChat());
+      dispatch(changeChatRoom(chatRoomId));
+      response.data.data.forEach((item, index) => {
+        dispatch(
+          addChat({
+            id: index,
+            message: item.message!,
+            type: item.from === "bot" ? "bot" : "user",
+            like: item.like,
+            chatId: item._id,
+          })
+        );
+      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          message.error({
+            content: `Sesi anda telah berakhir, silahkan login kembali`,
+          });
+        } else {
+          message.error({
+            content: `${error.response?.data?.message}`,
+          });
+        }
+      }
       message.error({
         content: `Sesi anda telah berakhir, silahkan login kembali`,
       });
@@ -200,8 +253,12 @@ const ChatBotPage = () => {
               [...historyChatState.data?.data?.today]
                 .reverse()
                 .map((item: any, index: number) => (
-                  <div key={index} className='bubble-wp'>
-                    {item.message}
+                  <div
+                    key={item.room_id}
+                    className={`bubble-wp ${isActive(item.room_id)}`}
+                    onClick={() => handleSelectChatRoom(item.room_id)}
+                  >
+                    {item.first_chat}
                   </div>
                 ))}
             {historyChatState.data?.data?.week_before.length !== 0 && (
@@ -211,7 +268,15 @@ const ChatBotPage = () => {
               [...historyChatState.data?.data?.week_before]
                 .reverse()
                 .map((item: any) => {
-                  return <div className='bubble-wp'>{item.message}</div>;
+                  return (
+                    <div
+                      key={item.room_id}
+                      className={`bubble-wp ${isActive(item.room_id)}`}
+                      onClick={() => handleSelectChatRoom(item.room_id)}
+                    >
+                      {item.first_chat}
+                    </div>
+                  );
                 })}
           </div>
         </div>
@@ -247,14 +312,27 @@ const ChatBotPage = () => {
                     <img className='img-admin' src={logo} />
                   )}
                 </div>
-                <p
+                {/* <p
                   className={`chat ${
                     item.type === "user" ? "chat-cust" : "chat-admin"
                   }`}
                   dangerouslySetInnerHTML={{
                     __html: item.message.replace(/\n/g, "<br />"),
                   }}
-                ></p>
+                ></p> */}
+                <div
+                  className={`chat ${
+                    item.type === "user" ? "chat-cust" : "chat-admin"
+                  }`}
+                >
+                  <MarkdownPreview
+                    className={`${
+                      item.type === "user" ? "markdown-cust" : "markdown-admin"
+                    }`}
+                    source={item.message}
+                  />
+                </div>
+
                 {item.type === "bot" && index !== 0 && (
                   <div className='feedback-wp'>
                     <CopyOutlined

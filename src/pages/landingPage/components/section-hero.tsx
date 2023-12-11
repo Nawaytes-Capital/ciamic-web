@@ -58,6 +58,7 @@ const SectionHero = () => {
           auth.data.data.authorization.token
         );
         localStorage.setItem("user", JSON.stringify(auth.data.data.user));
+        localStorage.setItem("role", JSON.stringify(auth.data.data.role));
         setIsLoading(false);
         dispatch(
           loginApp({
