@@ -22,17 +22,31 @@ export const fetchUsecasebatchApi = (
 export const createNewBatchApi = (
   payload: IQuestionnaire
 ): Promise<AxiosResponse<ICreateBatchResponse>> => {
-  return apiWithToken.post(`/chatbot/admin/batch`, payload);
+  return apiWithToken.post(`/chatbot/admin/batch`, payload, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
 };
 
 export const fetchFeedbackApi = (
-  page: number = 1
+  page: number = 1,
+  token: string
 ): Promise<AxiosResponse<fetchFeedbackResponse>> => {
-  return apiWithToken.get(`/chatbot/admin/feedback?page=${page}`);
+  return apiWithToken.get(`/chatbot/admin/feedback?page=${page}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const getBatchResultApi = (
-  batchId: string
+  batchId: string,
+  token: string
 ): Promise<AxiosResponse<UsecaseResult>> => {
-  return apiWithToken.get(`/chatbot/admin/response/${batchId}`);
+  return apiWithToken.get(`/chatbot/admin/response/${batchId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };

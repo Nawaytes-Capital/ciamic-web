@@ -5,6 +5,8 @@ import { fetchFeedbackApi } from "../../../../api/dashboard";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { fetchFeedbackResponse } from "../../../../api/interface/feedbackresponse.interface";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store";
 
 interface IFeedbackData {
   key: string;
@@ -39,11 +41,12 @@ const dataSource = [
 const ListFeedbackpage = () => {
   const [dataSet, setDataSet] = useState<IFeedbackData[]>();
   const [fetchResponse, setFetchResponse] = useState<fetchFeedbackResponse>();
+  const authState = useSelector((state: RootState) => state.auth);
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
   const fetchData = async () => {
     try {
-      const response = await fetchFeedbackApi(page);
+      const response = await fetchFeedbackApi(page, authState.accessToken!);
       const data = response.data.data.map((item, index: number) => {
         return {
           key: item._id,

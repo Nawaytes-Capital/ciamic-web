@@ -133,7 +133,7 @@ const ResponsePage = () => {
   const handleDetailClick = async (index: number) => {
     try {
       const id = data![index].id;
-      const response = await getBatchResultApi(id);
+      const response = await getBatchResultApi(id, authState.accessToken!);
       const payload: IDataQuestions[] = response.data.data.map(
         (item, index) => {
           return {
