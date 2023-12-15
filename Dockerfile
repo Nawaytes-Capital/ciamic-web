@@ -1,10 +1,10 @@
 FROM node:18-alpine AS build-stage
 WORKDIR /app
-COPY package-lock.json ./
-COPY package.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
+# COPY package-lock.json ./
+# COPY package.json ./
+# RUN npm ci
+# COPY . .
+# RUN npm run build
 
 # Final stage
 FROM node:18-alpine AS final-stage
