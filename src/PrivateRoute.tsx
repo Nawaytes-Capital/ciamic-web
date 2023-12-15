@@ -1,19 +1,47 @@
-// PrivateRoute.tsx
-import React from 'react';
-import { Navigate, Route, RouteProps } from 'react-router-dom';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logoutApp } from "./redux/features/auth/authSlice";
+import { AppDispatch, RootState } from "./redux/store";
 
-// Define the type for the dynamic props
-type PrivateRouteProps = {
-  isAuthenticated: boolean;
-} & RouteProps;
+interface PrivateRouteProps {
+  children: React.ReactNode;
+  role: string;
+  unautorizedPath?: string;
+}
+export default function PrivateRoute(props: PrivateRouteProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const authState = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ isAuthenticated, ...props }) => {
-  return isAuthenticated ? (
-    <Route {...props} />
-  ) : (
-    // @ts-ignore
-    <Navigate to="/login" replace state={{ from: props.location }} />
-  );
-};
+  useEffect(() => {
+    if (!authState.authenticated) {
+      console.log("not authenticated");
+      // Redirect if not authenticated
+      navigate(props.unautorizedPath ? props.unautorizedPath : "/");
+    }
+  }, [authState.authenticated, props.unautorizedPath, navigate]);
 
-export default PrivateRoute;
+  useEffect(() => {
+    if (props.role === "admin_chatbot checking") {
+      console.log("admin_chatbot");
+      if (!authState.role?.includes("admin_chatbot")) {
+        console.log("not admin_chatbot");
+        // Logout and redirect if not admin_chatbot
+        dispatch(logoutApp());
+        navigate(props.unautorizedPath ? props.unautorizedPath : "/");
+      }
+    } else if (props.role === "user") {
+      console.log("user checking");
+      if (!authState.role?.includes("user")) {
+        console.log("not user");
+        // Logout and redirect if not user
+        dispatch(logoutApp());
+        navigate(props.unautorizedPath ? props.unautorizedPath : "/");
+      }
+    }
+  }, [authState.role, props.role, dispatch, props.unautorizedPath, navigate]);
+
+  // Render the children only if authenticated and role checks pass
+  return authState.authenticated ? <>{props.children}</> : null;
+}

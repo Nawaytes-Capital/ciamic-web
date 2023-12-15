@@ -54,9 +54,16 @@
         position: relative;
 
         img {
-          width: 100%;
-          height: 100%;
+          width: 40%; /* Adjust this value based on your needs */
+          height: 40%; /* Adjust this value based on your needs */
           object-fit: cover;
+          display: block;
+          margin: auto;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
         }
       }
 
@@ -196,10 +203,12 @@
         background-color: #fff;
         box-shadow: 0px 0px 8px rgba($color: #000000, $alpha: 0.2);
         margin: 4px;
-
+        &.bg-cust {
+          background-color: #354463;
+        }
         .img-cust {
-          width: 100%;
-          height: 100%;
+          width: 40%;
+          height: 40%;
           object-fit: cover;
           position: absolute;
         }
@@ -224,12 +233,12 @@
           color: #fff;
         }
 
-        .markdown-cust{
+        .markdown-cust {
           background-color: #354463 !important;
           color: #fff;
         }
 
-        .markdown-admin{
+        .markdown-admin {
           background-color: #fff !important;
           color: #000;
         }

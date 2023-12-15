@@ -17,6 +17,7 @@ import LoginDashboard from "./pages/dashboard/pages/loginPage";
 import SuccessPage from "./pages/useCasePage/component/successPage";
 import "./styles/variables.scss";
 import VerificationPage from "./pages/verificationPage";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   return (
@@ -28,15 +29,70 @@ function App() {
         <Route path='/verification/:token' element={<VerificationPage />} />
 
         <Route path='/usecase' element={<LoginPage />} />
-        <Route path='/usecase-form' element={<UseCasePage />} />
-        <Route path='/success-page' element={<SuccessPage />} />
-        <Route path='/list-review' element={<ListReviewPage />} />
-        <Route path='/detail-review' element={<DetailReviewPage />} />
+        <Route
+          path='/usecase-form'
+          element={
+            <PrivateRoute
+              role='user'
+              unautorizedPath='/usecase'
+              children={<UseCasePage />}
+            />
+          }
+        />
 
-        <Route path='/chatbot' element={<ChatBotPage />} />
+        <Route
+          path='/success-page'
+          element={
+            <PrivateRoute
+              role='user'
+              unautorizedPath='/usecase'
+              children={<SuccessPage />}
+            />
+          }
+        />
+        <Route
+          path='/list-review'
+          element={
+            <PrivateRoute
+              role='user'
+              unautorizedPath='/usecase'
+              children={<ListReviewPage />}
+            />
+          }
+        />
+        <Route
+          path='/detail-review/:usecaseId'
+          element={
+            <PrivateRoute
+              role='user'
+              unautorizedPath='/usecase'
+              children={<DetailReviewPage />}
+            />
+          }
+        />
+
+        <Route
+          path='/chatbot'
+          element={
+            <PrivateRoute
+              role='user'
+              unautorizedPath='/'
+              children={<ChatBotPage />}
+            />
+          }
+        />
 
         <Route path='/dashboard' element={<LoginDashboard />} />
-        <Route path='/dashboard/*' element={<RouterDashboard />} />
+        <Route
+          path='/dashboard/*'
+          element={
+            <PrivateRoute
+              role='admin_chatbot'
+              unautorizedPath='/'
+              children={<RouterDashboard />}
+            />
+          }
+        />
       </Routes>
     </Router>
   );

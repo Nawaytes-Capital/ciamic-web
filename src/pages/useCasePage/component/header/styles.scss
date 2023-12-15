@@ -10,7 +10,7 @@
     .logo-wp {
         display: flex;
         align-items: center;
-
+        cursor: pointer;
         .title {
             font-size: 18px;
             font-family: $amoebaReg;
@@ -21,6 +21,7 @@
     .account-wp {
         display: flex;
         align-items: center;
+        margin-right: 30px;
 
         .img-wp {
             height: 40px;
@@ -48,6 +49,7 @@
         padding: 14px;
         width: calc(100% -  14px*2);
         .logo-wp {
+            cursor: pointer;
             img {
                 height: 30px !important;
             }

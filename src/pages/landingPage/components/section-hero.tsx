@@ -65,6 +65,7 @@ const SectionHero = () => {
             authenticated: true,
             accessToken: auth.data.data.authorization.token,
             user: auth.data.data.user,
+            role: auth.data.data.role,
           })
         );
         navigate("/chatbot");

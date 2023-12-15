@@ -1,6 +1,11 @@
-import { AudioOutlined, SaveOutlined } from "@ant-design/icons";
-import { Button, Input, message } from "antd";
-import { ChangeEvent, useEffect, useState } from "react";
+import {
+  AudioOutlined,
+  CheckOutlined,
+  LoadingOutlined,
+  SaveOutlined,
+} from "@ant-design/icons";
+import { Button, Input, Tooltip, message } from "antd";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getUsecaseLatestBatch,
@@ -15,6 +20,8 @@ import HeaderUsecase from "./component/header";
 import "./styles.scss";
 import { useNavigate } from "react-router-dom";
 import { IUseCaseResponse, sendUsecaseResponseApi } from "../../api/useCase";
+import { speechToText } from "../../api/speechtotext";
+import { logoutApp } from "../../redux/features/auth/authSlice";
 
 const { TextArea } = Input;
 
@@ -27,6 +34,78 @@ const useCasePage = () => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [user, setUser] = useState<any | null>(null);
   const authState = useSelector((state: RootState) => state.auth);
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [recording, setRecording] = useState<boolean>(false);
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const [loadingRecord, setLoadingRecord] = useState<boolean>(false);
+  const chunks = useRef<Blob[]>([]);
+
+  const startRecording = () => {
+    setRecording(true);
+    setLoadingRecord(true);
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then((stream) => {
+        mediaRecorder.current = new MediaRecorder(stream);
+
+        mediaRecorder.current.ondataavailable = (e) => {
+          if (e.data.size > 0) {
+            chunks.current.push(e.data);
+          }
+        };
+
+        mediaRecorder.current.onstop = () => {
+          const blob = new Blob(chunks.current, {
+            type: "audio/ogg; codecs=opus",
+          });
+          chunks.current = [];
+
+          // Convert blob to File
+          const fileName = "audio-recording.ogg";
+          const audioFile2 = new File([blob], fileName, { type: blob.type });
+          setAudioFile(audioFile2);
+        };
+
+        mediaRecorder.current.start();
+      })
+      .catch((error) => {
+        console.error("Error accessing microphone:", error);
+      });
+  };
+
+  const stopRecording = () => {
+    setRecording(false);
+
+    if (!mediaRecorder.current) return;
+    mediaRecorder.current.stop();
+  };
+
+  const handleSpeechToText = async (audioFile: File) => {
+    try {
+      const response = await speechToText(audioFile);
+      dispatch(
+        setUseCaseAnswer({
+          index: useCaseState.step,
+          answer: response.data.all_text,
+        })
+      );
+      setLoadingRecord(false);
+    } catch (error) {
+      message.error({
+        content: "Gagal mengirim jawaban",
+        style: {
+          marginTop: "20vh",
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (audioFile) {
+      handleSpeechToText(audioFile);
+      setAudioFile(null);
+    }
+  }, [audioFile]);
 
   useEffect(() => {
     const accessTokenStore = localStorage.getItem("access_token");
@@ -38,7 +117,6 @@ const useCasePage = () => {
   useEffect(() => {
     const useCaseDraft = localStorage.getItem("useCaseDraft");
     if (useCaseDraft) {
-
       dispatch(setFromDraft(JSON.parse(useCaseDraft)));
     } else {
       if (accessToken) {
@@ -80,10 +158,11 @@ const useCasePage = () => {
             marginTop: "20vh",
           },
         });
-        localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("role");
-    localStorage.removeItem("userEmail");
+        // localStorage.removeItem("access_token");
+        // localStorage.removeItem("user");
+        // localStorage.removeItem("role");
+        // localStorage.removeItem("userEmail");
+        dispatch(logoutApp());
         navigate("/usecase");
       }
       // message.error({
@@ -193,7 +272,19 @@ const useCasePage = () => {
               onChange={handleAnswerChange}
             />
             <div className='audio-wp'>
-              <AudioOutlined className='audio' />
+              {/* <AudioOutlined
+                className='audio'
+                onClick={isRecording ? stopRecordingAndSend : startRecording}
+              /> */}
+              {recording ? (
+                <Tooltip title='Sedang Merekam' placement='bottom'>
+                  <CheckOutlined className='audio' onClick={stopRecording} />
+                </Tooltip>
+              ) : (
+                <Tooltip title='Jawab Dengan Suara' placement='bottom'>
+                  <AudioOutlined className='audio' onClick={startRecording} />
+                </Tooltip>
+              )}
             </div>
           </div>
           <div className='btn-wp'>
@@ -211,8 +302,9 @@ const useCasePage = () => {
               type='primary'
               className='btn-submit'
               onClick={handleNextStep}
+              disabled={loadingRecord}
             >
-              Lanjut
+             Lanjut {loadingRecord && <LoadingOutlined />}
             </Button>
           </div>
         </div>

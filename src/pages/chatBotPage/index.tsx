@@ -282,7 +282,7 @@ const ChatBotPage = () => {
         </div>
         <div className='account-wp'>
           <div className='img-wp'>
-            <img src={people} />
+            <img src={"user-profile.png"} />
           </div>
           <p className='name'>{authState.user?.name}</p>
           <Popover placement='topRight' title={""} content={LogoutButton}>
@@ -305,9 +305,11 @@ const ChatBotPage = () => {
           {chatState.chats.map((item, index) => {
             return (
               <div className='buble-chat'>
-                <div className='img-wp'>
+                <div
+                  className={`img-wp ${item.type === "user" ? "bg-cust" : ""}`}
+                >
                   {item.type === "user" ? (
-                    <img className='img-cust' src={people} />
+                    <img className='img-cust' src={"user-chatbot.png"} />
                   ) : (
                     <img className='img-admin' src={logo} />
                   )}

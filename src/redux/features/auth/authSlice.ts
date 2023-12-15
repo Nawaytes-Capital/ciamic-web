@@ -13,7 +13,7 @@ export const isAuthenticated = (): boolean => {
   let state = false;
   try {
     const accessTokenStore = localStorage.getItem("access_token");
-    jwtDecode(accessTokenStore || "");
+    const user = jwtDecode(accessTokenStore || "");
     const userStore = localStorage.getItem("user");
     if (!!accessTokenStore && !!userStore) {
       state = true;

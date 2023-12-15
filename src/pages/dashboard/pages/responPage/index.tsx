@@ -1,5 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Table, message } from "antd";
+import { Button, Pagination, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import { ModalListQuestion } from "./components/modalListQuestion";
 import {
@@ -192,7 +192,16 @@ const ResponsePage = () => {
     {
       title: "Action",
       render: (text: string, record: any, index: number) => {
-        return <div onClick={() => handleDetailClick(index)}>Lihat Detail</div>;
+        return (
+          <div
+            style={{
+              cursor: "pointer",
+            }}
+            onClick={() => handleDetailClick(index)}
+          >
+            Lihat Detail
+          </div>
+        );
       },
     },
   ];
@@ -208,7 +217,20 @@ const ResponsePage = () => {
           Download as CSV <PlusOutlined style={{ marginLeft: "8px" }} />
         </Button>
       </div>
-      <Table className='table-wp' dataSource={data} columns={columns} />
+      <Table
+        className='table-wp'
+        dataSource={data}
+        columns={columns}
+        pagination={false}
+      />
+      <Pagination
+        className='pagination-wp'
+        defaultCurrent={1}
+        current={page}
+        onChange={(page) => setPage(page)}
+        total={fetchResponse?.total}
+        showSizeChanger={false}
+      />
       <ModalListQuestion
         isShow={isShow}
         handleCancel={() => setIsShow(false)}
