@@ -3,7 +3,7 @@ WORKDIR /app
 # COPY package-lock.json ./
 # COPY package.json ./
 # RUN npm ci
-# COPY . .
+COPY . .
 # RUN npm run build
 
 # Final stage
