@@ -47,8 +47,9 @@ import {
 import { AppDispatch, RootState } from "../../redux/store";
 import "./styles.scss";
 import { AxiosError } from "axios";
-import Markdown from "react-markdown";
+import ReactMarkdown from "react-markdown";
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import remarkGfm from "remark-gfm";
 
 const { TextArea } = Input;
 
@@ -204,7 +205,7 @@ const ChatBotPage = () => {
       response.data.data.forEach((item, index) => {
         dispatch(
           addChat({
-            id: index,
+            id: index + 1,
             message: item.message!,
             type: item.from === "bot" ? "bot" : "user",
             like: item.like,
@@ -229,6 +230,14 @@ const ChatBotPage = () => {
       });
     }
   };
+
+  function LinkRenderer(props: any) {
+    return (
+      <a href={props.href} target='_blank'>
+        {props.children}
+      </a>
+    );
+  }
 
   return (
     <div className='chatbot-wp'>
@@ -314,14 +323,6 @@ const ChatBotPage = () => {
                     <img className='img-admin' src={logo} />
                   )}
                 </div>
-                {/* <p
-                  className={`chat ${
-                    item.type === "user" ? "chat-cust" : "chat-admin"
-                  }`}
-                  dangerouslySetInnerHTML={{
-                    __html: item.message.replace(/\n/g, "<br />"),
-                  }}
-                ></p> */}
                 <div
                   className={`chat ${
                     item.type === "user" ? "chat-cust" : "chat-admin"
@@ -331,6 +332,8 @@ const ChatBotPage = () => {
                     className={`${
                       item.type === "user" ? "markdown-cust" : "markdown-admin"
                     }`}
+                    remarkPlugins={[remarkGfm]}
+                    linkTarget={"_blank"}
                     source={item.message}
                   />
                 </div>
