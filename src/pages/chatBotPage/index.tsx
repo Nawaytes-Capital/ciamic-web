@@ -3,38 +3,34 @@ import {
   CloseSquareOutlined,
   CopyOutlined,
   DislikeOutlined,
+  InfoCircleOutlined,
   LikeOutlined,
   MenuOutlined,
   MoreOutlined,
   PlusOutlined,
   SendOutlined,
 } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  Input,
-  Popover,
-  Row,
-  Skeleton,
-  Space,
-  message,
-} from "antd";
-import { useEffect, useState } from "react";
+import MarkdownPreview, {
+  MarkdownPreviewRef,
+} from "@uiw/react-markdown-preview";
+import { Button, Col, Input, Popover, Row, Skeleton, message } from "antd";
+import { AxiosError } from "axios";
+import { useEffect, useRef, useState } from "react";
+import { TbRefresh } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import remarkGfm from "remark-gfm";
 import {
   generateChatRoomApi,
   getHistoryChatByIdApi,
   sendChatApi,
-  sendChatFeedbackApi,
 } from "../../api/chatbot";
 import logo from "../../assets/images/logo-ciamic.png";
-import people from "../../assets/images/people-img.png";
+import FeedbackModal from "../../components/chatbot/feedbackModal";
 import { logoutApp } from "../../redux/features/auth/authSlice";
 import {
   addChat,
   resetChat,
-  updateLike,
 } from "../../redux/features/chatbot/chat/chatSlice";
 import {
   changeChatRoom,
@@ -46,10 +42,6 @@ import {
 } from "../../redux/features/chatbot/history/historyChatSlice";
 import { AppDispatch, RootState } from "../../redux/store";
 import "./styles.scss";
-import { AxiosError } from "axios";
-import ReactMarkdown from "react-markdown";
-import MarkdownPreview from "@uiw/react-markdown-preview";
-import remarkGfm from "remark-gfm";
 
 const { TextArea } = Input;
 
@@ -78,10 +70,18 @@ const ChatBotPage = () => {
   const navigate = useNavigate();
 
   const [question, setQuestion] = useState<string>("");
+  const [lastSentQuestion, setLastSentQuestion] = useState<string>("");
   const [isFullmenu, setFullmenu] = useState<boolean>(false);
 
   const [loadingChat, setLoadingChat] = useState(false);
+  const [chatbotError, setChatbotError] = useState(false);
   const authState = useSelector((state: RootState) => state.auth);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [likeFeedback, setLikeFeedback] = useState<boolean | null>(null);
+  const [chatId, setChatId] = useState<string>("");
+
+  const markdownRef = useRef<MarkdownPreviewRef>(null);
 
   useEffect(() => {
     if (!authState.authenticated) {
@@ -117,6 +117,7 @@ const ChatBotPage = () => {
   const sendChat = async () => {
     try {
       setLoadingChat(true);
+      setChatbotError(false);
       dispatch(
         addChat({
           id: chatState.chats.length,
@@ -124,6 +125,7 @@ const ChatBotPage = () => {
           type: "user",
         })
       );
+      setLastSentQuestion(question);
       const chatResponse = await sendChatApi(authState.accessToken || "", {
         chat: question,
         room_id: chatRoomState.roomId!,
@@ -139,37 +141,82 @@ const ChatBotPage = () => {
           chatId: chatResponse?.data?.data?._id,
         })
       );
-    } catch (error: any) {
-      console.log(error);
+    } catch (error) {
+      setLoadingChat(false);
+      setQuestion("");
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          message.error({
+            content: `Sesi anda telah berakhir, silahkan login kembali`,
+          });
+          dispatch(logoutApp());
+          navigate("/");
+        } else {
+          setChatbotError(true);
+          message.error({
+            content: `${error.response?.data?.message}`,
+          });
+          return;
+        }
+      }
+      message.error({
+        content: `Terjadi kesalahan, silahkan coba lagi`,
+      });
     }
     setQuestion("");
+  };
+
+  const handleRetry = async () => {
+    try {
+      setChatbotError(false);
+      setLoadingChat(true);
+      const response = await sendChatApi(authState.accessToken || "", {
+        chat: lastSentQuestion,
+        room_id: chatRoomState.roomId!,
+      });
+
+      dispatch(
+        addChat({
+          id: chatState.chats.length + 1,
+          message: response?.data?.data?.message,
+          type: "bot",
+          like: null,
+          chatId: response?.data?.data?._id,
+        })
+      );
+      setLoadingChat(false);
+    } catch (error) {
+      setLoadingChat(false);
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          message.error({
+            content: `Sesi anda telah berakhir, silahkan login kembali`,
+          });
+          dispatch(logoutApp());
+          navigate("/");
+        } else {
+          setChatbotError(true);
+          message.error({
+            content: `${error.response?.data?.message}`,
+          });
+          return;
+        }
+      }
+      setChatbotError(true);
+      message.error({
+        content: `Terjadi kesalahan, silahkan coba lagi`,
+      });
+    }
   };
 
   if (historyChatState.error) {
     message.error({
       content: `Sesi anda telah berakhir, silahkan login kembali`,
     });
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
+    dispatch(logoutApp());
     dispatch(resetHistoryChat());
     navigate("/");
   }
-
-  const handleFeedback = async (chatId: string, like: boolean) => {
-    try {
-      await sendChatFeedbackApi(authState.accessToken || "", chatId, like);
-      dispatch(
-        updateLike({
-          chatId,
-          like,
-        })
-      );
-    } catch (error) {
-      message.error({
-        content: `Sesi anda telah berakhir, silahkan login kembali`,
-      });
-    }
-  };
 
   if (!authState.authenticated) {
     return <></>;
@@ -184,6 +231,7 @@ const ChatBotPage = () => {
       message.error({
         content: `Sesi anda telah berakhir, silahkan login kembali`,
       });
+      dispatch(logoutApp());
     }
   };
 
@@ -219,6 +267,7 @@ const ChatBotPage = () => {
           message.error({
             content: `Sesi anda telah berakhir, silahkan login kembali`,
           });
+          dispatch(logoutApp());
         } else {
           message.error({
             content: `${error.response?.data?.message}`,
@@ -230,14 +279,6 @@ const ChatBotPage = () => {
       });
     }
   };
-
-  function LinkRenderer(props: any) {
-    return (
-      <a href={props.href} target='_blank'>
-        {props.children}
-      </a>
-    );
-  }
 
   return (
     <div className='chatbot-wp'>
@@ -251,12 +292,13 @@ const ChatBotPage = () => {
         </Button>
         <div className='history-chat'>
           <div className='buble-container'>
+            <p className='title'>Riwayat Chat</p>
             {historyChatState.data?.data?.today.length === 0 &&
               historyChatState.data?.data?.week_before.length === 0 && (
                 <p className='title'>Belum ada percakapan hari ini</p>
               )}
             {historyChatState.data?.data?.today.length !== 0 && (
-              <p className='title'>Today</p>
+              <p className='title'>Hari Ini</p>
             )}
             {historyChatState.data?.data?.today &&
               [...historyChatState.data?.data?.today]
@@ -329,6 +371,7 @@ const ChatBotPage = () => {
                   }`}
                 >
                   <MarkdownPreview
+                    ref={markdownRef}
                     className={`${
                       item.type === "user" ? "markdown-cust" : "markdown-admin"
                     }`}
@@ -352,7 +395,11 @@ const ChatBotPage = () => {
                     <LikeOutlined
                       className={`icon-like ${item.like ? "icon-liked" : ""}`}
                       onClick={() => {
-                        handleFeedback(item.chatId!, true);
+                        if (item.like !== true) {
+                          setChatId(item.chatId!);
+                          setIsModalOpen(true);
+                          setLikeFeedback(true);
+                        }
                       }}
                     />
                     <DislikeOutlined
@@ -360,7 +407,11 @@ const ChatBotPage = () => {
                         item.like === false ? "icon-unliked" : ""
                       }`}
                       onClick={() => {
-                        handleFeedback(item.chatId!, false);
+                        if (item.like !== false) {
+                          setChatId(item.chatId!);
+                          setIsModalOpen(true);
+                          setLikeFeedback(false);
+                        }
                       }}
                     />
                   </div>
@@ -378,10 +429,7 @@ const ChatBotPage = () => {
               </div>
             );
           })}
-          {/* <Space>
-            <Skeleton.Avatar active={true} size={"large"} shape={"circle"} />
-            <Skeleton.Input active={true} size={"default"} />
-          </Space> */}
+
           {loadingChat && (
             <div className='buble-chat'>
               <div className='img-wp'>
@@ -392,6 +440,26 @@ const ChatBotPage = () => {
                 size={"default"}
                 className='chat-skeleton'
               />
+            </div>
+          )}
+          {chatbotError && (
+            <div className='buble-chat'>
+              <div className='error-wp'>
+                <InfoCircleOutlined
+                  style={{
+                    color: "#B90000",
+                    padding: "0px 10px",
+                  }}
+                />
+                <p className='error-text'>
+                  Maaf, Sistem kami sedang sibuk. Silahkan Kirim Ulang
+                  pertanyaan atau ketik pertanyaan baru.
+                </p>{" "}
+                <Button className='btn-try-again'>
+                  <TbRefresh onClick={handleRetry} />
+                  Kirim Ulang
+                </Button>
+              </div>
             </div>
           )}
         </div>
@@ -433,6 +501,12 @@ const ChatBotPage = () => {
           />
         </div>
       </div>
+      <FeedbackModal
+        chatId={chatId}
+        like={likeFeedback}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </div>
   );
 };

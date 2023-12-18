@@ -52,6 +52,7 @@
         border-radius: 50%;
         overflow: hidden;
         position: relative;
+        background-color: #fff;
 
         img {
           width: 40%; /* Adjust this value based on your needs */
@@ -133,12 +134,12 @@
     width: calc(75% - 32px * 2);
     // width: max-content;
     min-height: calc(100vh - 32px * 2);
+    max-height: 100vh !important;
     padding: 30px;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    max-height: calc(100vh);
     z-index: 3;
 
     .header-mobile {
@@ -184,6 +185,9 @@
       .chat-admin {
         margin-bottom: 60px;
       }
+      .chat-cust {
+        margin-bottom: 60px;
+      }
     }
 
     .buble-chat {
@@ -191,6 +195,7 @@
       // justify-content: space-between;
       margin-bottom: 16px;
       position: relative;
+      max-height: fit-content;
       .img-wp {
         width: 48px;
         height: 48px;
@@ -227,6 +232,7 @@
         margin-left: 14px;
         display: flex;
         align-items: center;
+        height: fit-content;
 
         &.chat-cust {
           background-color: #354463 !important;
@@ -256,6 +262,8 @@
         display: flex;
         flex-direction: column;
         padding: 8px;
+        margin-top: auto;
+        margin-bottom: 55px;
         // width: 5%;
 
         .icon-copy {
@@ -293,6 +301,38 @@
           border-radius: 8px;
         }
       }
+
+      .error-wp{
+        display: flex;
+        // position: absolute;
+        left: 60px;
+        height: fit-content;
+        max-height: fit-content;
+        justify-content: flex-start;
+        margin-left: 65px;
+
+        @include phone {
+          margin-left: 0;
+        }
+        @include tablet {
+          margin-left: 0;
+        }
+        .error-text {
+          padding: 10px 0;
+          font-size: 12px;
+          margin: 0 4px;
+          color: #B90000;
+          // border-radius: 8px;
+        }
+        .btn-try-again{
+          background-color: #fff;
+          border: 1px solid #B90000;
+          color: #B90000;
+          border-radius: 8px;
+          cursor: pointer;
+          margin-top: 4px;
+        }
+      }
     }
 
     .recomend-question {
@@ -315,7 +355,18 @@
     }
 
     .input-wp {
-      position: relative;
+      position: fixed;
+      bottom: 20px;
+      width: calc(75% - 32px * 2);
+      z-index: 99;
+
+      @include phone {
+        width: calc(100% - 32px * 2);
+      }
+
+      @include tablet {
+        width: calc(65% - 32px * 2);
+      }
 
       .input-question {
         padding: 10px 48px 10px 10px;
@@ -364,6 +415,7 @@
     .section-right {
       width: 100%;
       overflow: hidden;
+      padding-bottom: 50px;
 
       .header-mobile {
         display: flex;
@@ -445,7 +497,7 @@
   }
   @include tablet {
     .section-left {
-      width: calc(45% - 48px);
+      width: calc(35% - 48px);
     }
     .section-right {
       overflow: hidden;

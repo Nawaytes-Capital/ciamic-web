@@ -32,11 +32,12 @@ export const sendChatApi = (token: string, payload: IChat) => {
 export const sendChatFeedbackApi = (
   token: string,
   chatId: string,
-  like: boolean | null
+  like: boolean | null,
+  notes: string
 ) => {
   return api.post(
     `/chatbot/bot-feedback/${chatId}`,
-    { like },
+    { like, notes },
     {
       headers: { Authorization: "Bearer " + token },
     }
