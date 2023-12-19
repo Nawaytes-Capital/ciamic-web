@@ -23,6 +23,7 @@ import remarkGfm from "remark-gfm";
 import {
   generateChatRoomApi,
   getHistoryChatByIdApi,
+  getRelatedQuestionApi,
   sendChatApi,
 } from "../../api/chatbot";
 import logo from "../../assets/images/logo-ciamic.png";
@@ -81,6 +82,22 @@ const ChatBotPage = () => {
   const [likeFeedback, setLikeFeedback] = useState<boolean | null>(null);
   const [chatId, setChatId] = useState<string>("");
 
+  const [relatedQuestion, setRelatedQuestion] = useState<string[]>([]);
+
+  const handleGetRelatedQuestion = async () => {
+    try {
+      const response = await getRelatedQuestionApi();
+      //trim 3 huruf pertama
+      const data = response.data.data.map((item) =>
+        item.substring(3, item.length)
+      );
+      data.length = 4;
+      setRelatedQuestion(data);
+    } catch (error) {
+      setRelatedQuestion([]);
+    }
+  };
+
   const markdownRef = useRef<MarkdownPreviewRef>(null);
 
   useEffect(() => {
@@ -94,26 +111,27 @@ const ChatBotPage = () => {
       dispatch(getHistoryChat(authState.accessToken || ""));
       dispatch(generateChatRoom(authState.accessToken || ""));
     }
+    handleGetRelatedQuestion();
   }, [dispatch, authState]);
 
-  const recomendQuestion = [
-    {
-      id: 1,
-      question: "Bagaimana cara mendaftarkan akun email di Telkom ?",
-    },
-    {
-      id: 2,
-      question: "Apa Itu Big Box ?",
-    },
-    {
-      id: 3,
-      question: "Keunggulan Produk Produk Telkom",
-    },
-    {
-      id: 4,
-      question: "Tutorial Mendaftar Akun Chatbot",
-    },
-  ];
+  // const recomendQuestion = [
+  //   {
+  //     id: 1,
+  //     question: "Bagaimana cara mendaftarkan akun email di Telkom ?",
+  //   },
+  //   {
+  //     id: 2,
+  //     question: "Apa Itu Big Box ?",
+  //   },
+  //   {
+  //     id: 3,
+  //     question: "Keunggulan Produk Produk Telkom",
+  //   },
+  //   {
+  //     id: 4,
+  //     question: "Tutorial Mendaftar Akun Chatbot",
+  //   },
+  // ];
   const sendChat = async () => {
     try {
       setLoadingChat(true);
@@ -141,6 +159,7 @@ const ChatBotPage = () => {
           chatId: chatResponse?.data?.data?._id,
         })
       );
+      handleGetRelatedQuestion();
     } catch (error) {
       setLoadingChat(false);
       setQuestion("");
@@ -184,6 +203,7 @@ const ChatBotPage = () => {
           chatId: response?.data?.data?._id,
         })
       );
+      handleGetRelatedQuestion();
       setLoadingChat(false);
     } catch (error) {
       setLoadingChat(false);
@@ -227,6 +247,7 @@ const ChatBotPage = () => {
       const response = await generateChatRoomApi(authState.accessToken || "");
       dispatch(resetChat());
       dispatch(changeChatRoom(response?.data?.data?.id));
+      setChatbotError(false);
     } catch (error) {
       message.error({
         content: `Sesi anda telah berakhir, silahkan login kembali`,
@@ -244,6 +265,7 @@ const ChatBotPage = () => {
 
   const handleSelectChatRoom = async (chatRoomId: string) => {
     try {
+      setChatbotError(false);
       const response = await getHistoryChatByIdApi(
         authState.accessToken || "",
         chatRoomId
@@ -355,78 +377,108 @@ const ChatBotPage = () => {
         <div className='chat-wp'>
           {chatState.chats.map((item, index) => {
             return (
-              <div className='buble-chat'>
-                <div
-                  className={`img-wp ${item.type === "user" ? "bg-cust" : ""}`}
-                >
-                  {item.type === "user" ? (
-                    <img className='img-cust' src={"user-chatbot.png"} />
-                  ) : (
-                    <img className='img-admin' src={logo} />
-                  )}
-                </div>
-                <div
-                  className={`chat ${
-                    item.type === "user" ? "chat-cust" : "chat-admin"
-                  }`}
-                >
-                  <MarkdownPreview
-                    ref={markdownRef}
-                    className={`${
-                      item.type === "user" ? "markdown-cust" : "markdown-admin"
+              <>
+                <div className='buble-chat'>
+                  <div
+                    className={`img-wp ${
+                      item.type === "user" ? "bg-cust" : ""
                     }`}
-                    remarkPlugins={[remarkGfm]}
-                    linkTarget={"_blank"}
-                    source={item.message}
-                  />
-                </div>
-
-                {item.type === "bot" && index !== 0 && (
-                  <div className='feedback-wp'>
-                    <CopyOutlined
-                      className='icon-copy'
-                      onClick={() => {
-                        navigator.clipboard.writeText(item.message);
-                        message.success({
-                          content: `Chatbot berhasil dicopy`,
-                        });
-                      }}
-                    />
-                    <LikeOutlined
-                      className={`icon-like ${item.like ? "icon-liked" : ""}`}
-                      onClick={() => {
-                        if (item.like !== true) {
-                          setChatId(item.chatId!);
-                          setIsModalOpen(true);
-                          setLikeFeedback(true);
-                        }
-                      }}
-                    />
-                    <DislikeOutlined
-                      className={`icon-unlike ${
-                        item.like === false ? "icon-unliked" : ""
+                  >
+                    {item.type === "user" ? (
+                      <img className='img-cust' src={"user-chatbot.png"} />
+                    ) : (
+                      <img className='img-admin' src={logo} />
+                    )}
+                  </div>
+                  <div
+                    className={`chat ${
+                      item.type === "user" ? "chat-cust" : "chat-admin"
+                    }`}
+                  >
+                    <MarkdownPreview
+                      ref={markdownRef}
+                      className={`${
+                        item.type === "user"
+                          ? "markdown-cust"
+                          : "markdown-admin"
                       }`}
-                      onClick={() => {
-                        if (item.like !== false) {
-                          setChatId(item.chatId!);
-                          setIsModalOpen(true);
-                          setLikeFeedback(false);
-                        }
-                      }}
+                      remarkPlugins={[remarkGfm]}
+                      linkTarget={"_blank"}
+                      source={item.message}
                     />
                   </div>
-                )}
-                {item.type === "bot" &&
+
+                  {item.type === "bot" && index !== 0 && (
+                    <div className='feedback-wp'>
+                      <CopyOutlined
+                        className='icon-copy'
+                        onClick={() => {
+                          navigator.clipboard.writeText(item.message);
+                          message.success({
+                            content: `Chatbot berhasil dicopy`,
+                          });
+                        }}
+                      />
+                      <LikeOutlined
+                        className={`icon-like ${item.like ? "icon-liked" : ""}`}
+                        onClick={() => {
+                          if (item.like !== true) {
+                            setChatId(item.chatId!);
+                            setIsModalOpen(true);
+                            setLikeFeedback(true);
+                          }
+                        }}
+                      />
+                      <DislikeOutlined
+                        className={`icon-unlike ${
+                          item.like === false ? "icon-unliked" : ""
+                        }`}
+                        onClick={() => {
+                          if (item.like !== false) {
+                            setChatId(item.chatId!);
+                            setIsModalOpen(true);
+                            setLikeFeedback(false);
+                          }
+                        }}
+                      />
+                    </div>
+                  )}
+                  {/* {item.type === "bot" &&
                   item.id !== 0 &&
                   item.id === chatState.chats.length - 1 && (
                     <div className='suggestion-wp'>
                       <div className='chat-wp'>
-                        Kelebihan Astinet Kebanding Kompetitor
+                        Bisakah Anda merekomendasikan fitur tambahan BigBox yang
+                        dapat meningkatkan keamanan data perusahaan kami?
                       </div>
-                      <div className='chat-wp'>Cara Mendaftar Astinet</div>
+                      <div className='chat-wp'>
+                        Bagaimana cara menggunakan fitur BigIntegration untuk
+                        mengintegrasikan BigBox dengan sistem atau aplikasi yang
+                        sudah ada di perusahaan kami?
+                      </div>
+                    </div>
+                  )} */}
+                </div>
+                {item.type === "bot" &&
+                  item.id !== 0 &&
+                  item.id === chatState.chats.length - 1 && (
+                    <div className='buble-chat'>
+                      <div className='suggestion-wp'>
+                        {relatedQuestion.length !== 0 &&
+                          relatedQuestion.map((item) => {
+                            return (
+                              <div
+                                className='chat-wp'
+                                onClick={() => setQuestion(item)}
+                              >
+                                {item}
+                              </div>
+                            );
+                          })}
+                      </div>
                     </div>
                   )}
-              </div>
+              </>
             );
           })}
 
@@ -463,20 +515,20 @@ const ChatBotPage = () => {
             </div>
           )}
         </div>
-
+        ;
         {chatState.chats.length === 1 && (
           <div className='recomend-question'>
             <p>Pertanyaan yang sering ditanyakan</p>
             <div className='recomend-wp'>
               <Row gutter={16} style={{ width: "100%" }}>
-                {recomendQuestion.map((item) => {
+                {relatedQuestion.map((item) => {
                   return (
                     <Col className='gutter-row' span={12}>
                       <div
                         className='recomend-box'
-                        onClick={() => setQuestion(item.question)}
+                        onClick={() => setQuestion(item)}
                       >
-                        {item.question}
+                        {item}
                       </div>
                     </Col>
                   );

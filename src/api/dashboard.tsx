@@ -7,6 +7,7 @@ import {
 import { FetchUsecaseBatchApiResponse } from "./interface/FetchUsecaseBatch";
 import { fetchFeedbackResponse } from "./interface/feedbackresponse.interface";
 import { UsecaseResult } from "./interface/usecaseResult.interface";
+import { getBearerTokenApi } from "./useCase";
 
 export const fetchUsecasebatchApi = (
   token: string,
@@ -24,7 +25,7 @@ export const createNewBatchApi = (
 ): Promise<AxiosResponse<ICreateBatchResponse>> => {
   return apiWithToken.post(`/chatbot/admin/batch`, payload, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: getBearerTokenApi(),
     },
   });
 };

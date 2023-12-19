@@ -40,6 +40,7 @@ const useCasePage = () => {
   const [loadingRecord, setLoadingRecord] = useState<boolean>(false);
   const chunks = useRef<Blob[]>([]);
 
+
   const startRecording = () => {
     setRecording(true);
     setLoadingRecord(true);

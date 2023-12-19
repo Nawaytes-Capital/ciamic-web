@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import { api } from ".";
 import { IChatRoomDetailResponse } from "./interface/chatRoomDetail.interface";
+import { getBearerTokenApi } from "./useCase";
 
 export const getHistoryChatApi = (token: string) => {
   return api.get("/chatbot/history", {
@@ -52,5 +53,20 @@ export const getHistoryChatByIdApi = (
 ): Promise<AxiosResponse<IChatRoomDetailResponse>> => {
   return api.get(`/chatbot/history/${id}`, {
     headers: { Authorization: "Bearer " + token },
+  });
+};
+
+interface IRelatedQuestion {
+  message: string;
+  data: string[];
+}
+
+export const getRelatedQuestionApi = (): Promise<
+  AxiosResponse<IRelatedQuestion>
+> => {
+  return api.get(`/chatbot/related-question`, {
+    headers: {
+      Authorization: getBearerTokenApi(),
+    },
   });
 };
