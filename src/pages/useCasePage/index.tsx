@@ -1,12 +1,17 @@
 import {
   AudioOutlined,
-  CheckOutlined,
   LoadingOutlined,
   SaveOutlined,
 } from "@ant-design/icons";
 import { Button, Input, Tooltip, message } from "antd";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { FaSquare } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { speechToText2 } from "../../api/speechtotext";
+import { IUseCaseResponse, sendUsecaseResponseApi } from "../../api/useCase";
+import Alert from "../../components/alert/alert";
+import { logoutApp } from "../../redux/features/auth/authSlice";
 import {
   getUsecaseLatestBatch,
   nextStepUseCase,
@@ -15,14 +20,8 @@ import {
   setUseCaseAnswer,
 } from "../../redux/features/usecase/useCaseSlice";
 import { AppDispatch, RootState } from "../../redux/store";
-import Alert from "../../components/alert/alert";
 import HeaderUsecase from "./component/header";
 import "./styles.scss";
-import { useNavigate } from "react-router-dom";
-import { IUseCaseResponse, sendUsecaseResponseApi } from "../../api/useCase";
-import { speechToText } from "../../api/speechtotext";
-import { logoutApp } from "../../redux/features/auth/authSlice";
-import { FaSquare } from "react-icons/fa";
 
 const { TextArea } = Input;
 
@@ -83,7 +82,7 @@ const useCasePage = () => {
 
   const handleSpeechToText = async (audioFile: File) => {
     try {
-      const response = await speechToText(audioFile);
+      const response = await speechToText2(audioFile);
       dispatch(
         setUseCaseAnswer({
           index: useCaseState.step,
@@ -167,9 +166,12 @@ const useCasePage = () => {
   };
 
   const handleNextStep = () => {
+    console.log(useCaseState.useCases[useCaseState.step].required);
+    console.log(useCaseState.useCases[useCaseState.step].answer);
     if (
       useCaseState.useCases[useCaseState.step].required &&
-      useCaseState.useCases[useCaseState.step].answer === ""
+      (useCaseState.useCases[useCaseState.step].answer === "" ||
+        useCaseState.useCases[useCaseState.step].answer === undefined)
     ) {
       setIsRequired(true);
       return;
@@ -296,7 +298,7 @@ const useCasePage = () => {
               onClick={handleNextStep}
               disabled={loadingRecord}
             >
-               Lanjut {loadingRecord && <LoadingOutlined />}
+              Lanjut {loadingRecord && <LoadingOutlined />}
             </Button>
           </div>
         </div>

@@ -1,4 +1,6 @@
 import axios from "axios";
+import { api } from ".";
+import { getBearerTokenApi } from "./useCase";
 
 interface SpeechToTextResponse {
   data: {
@@ -8,20 +10,16 @@ interface SpeechToTextResponse {
   inferenceDuration: number;
   message: string;
 }
-export const speechToText = async (file: File) => {
+
+export const speechToText2 = async (file: File) => {
   const formData = new FormData();
   formData.append("audio", file);
-  formData.append("lang", "indonesian");
-  const response = await axios.post<SpeechToTextResponse>(
-    "https://telkom-bac-api.apilogy.id/Speech_To_Text_Service/1.0.0/stt_inference",
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "x-api-key": "XwUzo2MEl39V9LI6mhLmfwYEaYXrNA3v",
-        Accept: "application/json",
-      },
-    }
-  );
+  const response = await api.post("/chatbot/speech-to-text", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: getBearerTokenApi(),
+    },
+  });
   return response.data;
 };
+
