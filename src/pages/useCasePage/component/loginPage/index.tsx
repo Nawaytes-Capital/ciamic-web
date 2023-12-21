@@ -54,9 +54,17 @@ const LoginPage = () => {
       };
       try {
         const auth = await login(payload);
+        if (!auth.data.data.role.includes("user")) {
+          setIsLoading(false);
+          message.error({
+            content: `Anda tidak memiliki akses ke halaman ini`,
+          });
+          return;
+        }
         message.success({
           content: `${auth.data.message}`,
         });
+
         localStorage.setItem(
           "access_token",
           auth.data.data.authorization.token

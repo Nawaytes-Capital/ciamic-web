@@ -27,6 +27,7 @@ const HeaderUsecase = () => {
   const handleUsecaseForm = () => {
     navigate("/usecase-form");
   };
+  const pathname = window.location.pathname;
   return (
     <div className='header-wp-usecase'>
       <div className='logo-wp' onClick={handleUsecaseForm}>
@@ -34,7 +35,7 @@ const HeaderUsecase = () => {
 
         <p className='title'>Form Pengambilan Usecase</p>
       </div>
-      {email && (
+      {pathname !== "/usecase" && email && (
         <Popover
           content={
             <div
@@ -74,7 +75,7 @@ const HeaderUsecase = () => {
         >
           <div className='account-wp'>
             <div className='img-wp'>
-              <img src={mockup} className='img-account' />
+              <img src={"user-profile.png"} className='img-account' />
             </div>
             <p className='title-account'>{authState.user?.name}</p>
           </div>

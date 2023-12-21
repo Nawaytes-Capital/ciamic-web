@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { apiWithToken } from ".";
+import { api, apiWithToken } from ".";
 import {
   ICreateBatchResponse,
   IQuestionnaire,
@@ -8,6 +8,7 @@ import { FetchUsecaseBatchApiResponse } from "./interface/FetchUsecaseBatch";
 import { fetchFeedbackResponse } from "./interface/feedbackresponse.interface";
 import { UsecaseResult } from "./interface/usecaseResult.interface";
 import { getBearerTokenApi } from "./useCase";
+import { FetchAdminListResponse } from "./interface/fetchAdminList.interface";
 
 export const fetchUsecasebatchApi = (
   token: string,
@@ -48,6 +49,27 @@ export const getBatchResultApi = (
   return apiWithToken.get(`/chatbot/admin/response/${batchId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getAdminListApi = () => {
+  return api.get<FetchAdminListResponse>(`/chatbot/admin/admin-management`, {
+    headers: {
+      Authorization: getBearerTokenApi(),
+    },
+  });
+};
+
+export interface ICreateAdmin {
+  name: string;
+  email: string;
+  phone_number: string;
+}
+export const createAdminApi = (payload: ICreateAdmin) => {
+  return api.post(`/chatbot/admin/admin-management`, payload, {
+    headers: {
+      Authorization: getBearerTokenApi(),
     },
   });
 };

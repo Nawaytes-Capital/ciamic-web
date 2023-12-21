@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { IUseCaseResponse, sendUsecaseResponseApi } from "../../api/useCase";
 import { speechToText } from "../../api/speechtotext";
 import { logoutApp } from "../../redux/features/auth/authSlice";
+import { FaSquare } from "react-icons/fa";
 
 const { TextArea } = Input;
 
@@ -39,7 +40,6 @@ const useCasePage = () => {
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const [loadingRecord, setLoadingRecord] = useState<boolean>(false);
   const chunks = useRef<Blob[]>([]);
-
 
   const startRecording = () => {
     setRecording(true);
@@ -159,19 +159,10 @@ const useCasePage = () => {
             marginTop: "20vh",
           },
         });
-        // localStorage.removeItem("access_token");
-        // localStorage.removeItem("user");
-        // localStorage.removeItem("role");
-        // localStorage.removeItem("userEmail");
+
         dispatch(logoutApp());
         navigate("/usecase");
       }
-      // message.error({
-      //   content: "Gagal mengirim jawaban",
-      //   style: {
-      //     marginTop: "20vh",
-      //   },
-      // });
     }
   };
 
@@ -279,7 +270,7 @@ const useCasePage = () => {
               /> */}
               {recording ? (
                 <Tooltip title='Sedang Merekam' placement='bottom'>
-                  <CheckOutlined className='audio' onClick={stopRecording} />
+                  <FaSquare className='audio' onClick={stopRecording} />
                 </Tooltip>
               ) : (
                 <Tooltip title='Jawab Dengan Suara' placement='bottom'>
@@ -305,7 +296,7 @@ const useCasePage = () => {
               onClick={handleNextStep}
               disabled={loadingRecord}
             >
-             Lanjut {loadingRecord && <LoadingOutlined />}
+               Lanjut {loadingRecord && <LoadingOutlined />}
             </Button>
           </div>
         </div>
