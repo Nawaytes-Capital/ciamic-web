@@ -114,24 +114,24 @@ const ChatBotPage = () => {
     handleGetRelatedQuestion();
   }, [dispatch, authState]);
 
-  // const recomendQuestion = [
-  //   {
-  //     id: 1,
-  //     question: "Bagaimana cara mendaftarkan akun email di Telkom ?",
-  //   },
-  //   {
-  //     id: 2,
-  //     question: "Apa Itu Big Box ?",
-  //   },
-  //   {
-  //     id: 3,
-  //     question: "Keunggulan Produk Produk Telkom",
-  //   },
-  //   {
-  //     id: 4,
-  //     question: "Tutorial Mendaftar Akun Chatbot",
-  //   },
-  // ];
+  const recomendQuestion = [
+    {
+      id: 1,
+      question: "Bagaimana cara mendaftarkan akun email di Telkom ?",
+    },
+    {
+      id: 2,
+      question: "Apa Itu Big Box ?",
+    },
+    {
+      id: 3,
+      question: "Keunggulan Produk Produk Telkom",
+    },
+    {
+      id: 4,
+      question: "Tutorial Mendaftar Akun Chatbot",
+    },
+  ];
   const sendChat = async () => {
     try {
       setLoadingChat(true);
@@ -521,14 +521,14 @@ const ChatBotPage = () => {
             <p>Pertanyaan yang sering ditanyakan</p>
             <div className='recomend-wp'>
               <Row gutter={16} style={{ width: "100%" }}>
-                {relatedQuestion.map((item) => {
+                {recomendQuestion.map((item) => {
                   return (
                     <Col className='gutter-row' span={12}>
                       <div
                         className='recomend-box'
-                        onClick={() => setQuestion(item)}
+                        onClick={() => setQuestion(item.question)}
                       >
-                        {item}
+                        {item.question}
                       </div>
                     </Col>
                   );

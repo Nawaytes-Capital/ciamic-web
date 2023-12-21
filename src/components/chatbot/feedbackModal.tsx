@@ -21,6 +21,7 @@ interface Props {
 export default function FeedbackModal(props: Props) {
   const handleCancel = () => {
     props.setIsModalOpen(false);
+    setNotes("");
   };
   const dispatch = useDispatch<AppDispatch>();
   const [notes, setNotes] = useState("");
