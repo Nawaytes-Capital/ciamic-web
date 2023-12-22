@@ -67,17 +67,17 @@ const LoginPage = () => {
     email: yup
       .string()
       .email("must be a valid email")
-      .required("email is required"),
-    //   .matches(
-    //     /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
-    //     "must be a valid telkom email"
-    //   ),
+      .required("email is required")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
+        "must be a valid telkom email"
+      ),
     password: yup
       .string()
-      //   .matches(
-      //     /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
-      //     "Must Contain 8 Characters with Number"
-      //   )
+      .matches(
+        /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
+        "Must Contain 8 Characters with Number"
+      )
       .required("password is required"),
   });
   const form = useFormik<ILoginRequest>({

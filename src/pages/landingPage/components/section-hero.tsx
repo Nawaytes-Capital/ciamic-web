@@ -24,16 +24,18 @@ const SectionHero = () => {
     email: yup
       .string()
       .email("must be a valid email")
-      .required("email is required"),
-    // .matches(
-    //   /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
-    //   "must be a valid telkom email"
-    // ),
-    password: yup.string().required("password is required"),
-    // .matches(
-    //   /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
-    //   "Must Contain 8 Characters with Number"
-    // )
+      .required("email is required")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
+        "must be a valid telkom email"
+      ),
+    password: yup
+      .string()
+      .required("password is required")
+      .matches(
+        /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
+        "Must Contain 8 Characters with Number"
+      ),
   });
   const form = useFormik<ILoginRequest>({
     initialValues: {
