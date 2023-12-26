@@ -93,9 +93,9 @@ const ListReviewPage = () => {
                 <Skeleton.Input active size='small' className='skeleton' />
               </div>
             ) : dataRespon.length > 0 ? (
-              dataRespon.reverse().map((item) => (
+              dataRespon.map((item, index) => (
                 <div key={item.id} className='card-respon'>
-                  <p className='id-respon'>{item.id}</p>
+                  <p className='id-respon'>{`Response ${index + 1}`}</p>
                   <p className='time-respon'>{item.time}</p>
                   <RightOutlined
                     className='icon-navigate'

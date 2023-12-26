@@ -193,6 +193,7 @@ const useCasePage = () => {
   };
 
   const handleAnswerChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    handleSaveDraft();
     dispatch(
       setUseCaseAnswer({
         index: useCaseState.step,
@@ -210,7 +211,7 @@ const useCasePage = () => {
         step: useCaseState.step,
       })
     );
-    setIsSave(true);
+    // setIsSave(true);
   };
 
   useEffect(() => {
@@ -234,7 +235,7 @@ const useCasePage = () => {
       />
       {useCaseState.useCases.length > 0 && (
         <div className='question-wp'>
-          <div className='save-draft-wp'>
+          {/* <div className='save-draft-wp'>
             <Button
               className='save-draft-btn'
               icon={<SaveOutlined />}
@@ -242,7 +243,7 @@ const useCasePage = () => {
             >
               Simpan Sebagai Draft
             </Button>
-          </div>
+          </div> */}
           <div className='title-wp'>
             <div className='number'>{useCaseState.step + 1}</div>
             <div className='question'>
@@ -265,6 +266,9 @@ const useCasePage = () => {
               value={useCaseState.useCases[useCaseState.step].answer}
               onChange={handleAnswerChange}
             />
+            <p className={` ${isRequired ? "error-textarea" : ""}`}>
+              {isRequired ? "Pertanyaan ini wajib diisi" : ""}
+            </p>
             <div className='audio-wp'>
               {/* <AudioOutlined
                 className='audio'

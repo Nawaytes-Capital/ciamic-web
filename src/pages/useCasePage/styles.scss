@@ -72,7 +72,7 @@
     }
 
     .warn-textarea{
-        border-color: red;
+        border-color: #FC2E2E;
     }
     
     .btn-wp{
@@ -117,6 +117,11 @@
         .textarea {
             padding-right: 48px;
         }
+        .error-textarea{
+            position: absolute;
+            color: #FC2E2E;
+            font-size: small;
+        }   
     }
 
     @include phone { 
