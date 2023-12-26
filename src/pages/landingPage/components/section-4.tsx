@@ -10,6 +10,7 @@ const Section4 = () => {
     name: Yup.string().required("Name is required"),
     email: Yup.string()
       .email("Must be a valid email")
+      .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "must be a valid email")
       .required("Email is required"),
     notes: Yup.string().required("Notes is required"),
   });

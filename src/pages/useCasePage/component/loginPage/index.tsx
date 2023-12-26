@@ -24,6 +24,7 @@ const LoginPage = () => {
     email: yup
       .string()
       .email("must be a valid email")
+      .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "must be a valid email")
       .required("email is required")
       .matches(
         /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
