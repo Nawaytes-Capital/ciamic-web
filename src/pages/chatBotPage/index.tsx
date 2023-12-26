@@ -134,7 +134,11 @@ const ChatBotPage = () => {
   ];
   const sendChat = async () => {
     try {
+      if (!question || question.length > 2100) {
+        return;
+      }
       setLoadingChat(true);
+      setQuestion("");
       setChatbotError(false);
       dispatch(
         addChat({
@@ -310,7 +314,7 @@ const ChatBotPage = () => {
           icon={<PlusOutlined />}
           onClick={handleNewChatRoom}
         >
-          Pertanyaan Baru
+          New Chat
         </Button>
         <div className='history-chat'>
           <div className='buble-container'>
@@ -323,9 +327,8 @@ const ChatBotPage = () => {
               <p className='title'>Hari Ini</p>
             )}
             {historyChatState.data?.data?.today &&
-              [...historyChatState.data?.data?.today]
-                .reverse()
-                .map((item: any, index: number) => (
+              [...historyChatState.data?.data?.today].map(
+                (item: any, index: number) => (
                   <div
                     key={item.room_id}
                     className={`bubble-wp ${isActive(item.room_id)}`}
@@ -333,24 +336,23 @@ const ChatBotPage = () => {
                   >
                     {item.first_chat}
                   </div>
-                ))}
+                )
+              )}
             {historyChatState.data?.data?.week_before.length !== 0 && (
               <p className='title'>7 Hari Terakhir</p>
             )}
             {historyChatState.data?.data?.week_before &&
-              [...historyChatState.data?.data?.week_before]
-                .reverse()
-                .map((item: any) => {
-                  return (
-                    <div
-                      key={item.room_id}
-                      className={`bubble-wp ${isActive(item.room_id)}`}
-                      onClick={() => handleSelectChatRoom(item.room_id)}
-                    >
-                      {item.first_chat}
-                    </div>
-                  );
-                })}
+              [...historyChatState.data?.data?.week_before].map((item: any) => {
+                return (
+                  <div
+                    key={item.room_id}
+                    className={`bubble-wp ${isActive(item.room_id)}`}
+                    onClick={() => handleSelectChatRoom(item.room_id)}
+                  >
+                    {item.first_chat}
+                  </div>
+                );
+              })}
           </div>
         </div>
         <div className='account-wp'>
@@ -515,7 +517,7 @@ const ChatBotPage = () => {
             </div>
           )}
         </div>
-        ;
+
         {chatState.chats.length === 1 && (
           <div className='recomend-question'>
             <p>Pertanyaan yang sering ditanyakan</p>
@@ -543,7 +545,15 @@ const ChatBotPage = () => {
             disabled={loadingChat}
             placeholder='Type A Messages'
             value={question}
-            onChange={(e) => setQuestion(e.target.value)}
+            // maxLength={2100}
+            onChange={(e) => {
+              setQuestion(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                sendChat();
+              }
+            }}
             autoSize
           />
           <SendOutlined
@@ -551,6 +561,13 @@ const ChatBotPage = () => {
             disabled={loadingChat}
             onClick={() => sendChat()}
           />
+          <p
+            className={`question-length ${
+              question.length > 2100 ? "error" : null
+            }`}
+          >
+            Total karakter {question.length}/2100
+          </p>
         </div>
       </div>
       <FeedbackModal

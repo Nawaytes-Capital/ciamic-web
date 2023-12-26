@@ -17,8 +17,9 @@ const initialState: IChatState = {
     {
       id: 0,
       type: "bot",
-      message:
-        "Hai kak! Saya CIAMIC, asisten virtual Telkom Indonesia. Ada yang bisa saya bantu??",
+      message: `Halo! Selamat datang di Ciamic.
+
+Anda bisa langsung mengetik pertanyaan Anda atau pilih salah satu dari pertanyaan yang kami rekomendasikan`,
     },
   ],
 };
@@ -40,8 +41,10 @@ const chatSlice = createSlice({
         {
           id: 0,
           type: "bot",
-          message:
-            "Hai kak! Saya CIAMIC, asisten virtual Telkom Indonesia. Ada yang bisa saya bantu??",
+          message: `Halo! Selamat datang di Ciamic.
+          
+Anda bisa langsung mengetik pertanyaan Anda atau pilih salah satu dari pertanyaan yang kami rekomendasikan
+`,
         },
       ];
     },

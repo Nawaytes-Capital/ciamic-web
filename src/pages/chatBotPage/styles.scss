@@ -373,7 +373,7 @@
 
     .input-wp {
       position: fixed;
-      bottom: 20px;
+      bottom: 30px;
       width: calc(75% - 32px * 2);
       z-index: 99;
 
@@ -408,6 +408,16 @@
         right: 16px;
         bottom: 14px;
       }
+      .question-length{
+        position: absolute;
+        right: 16px;
+        bottom: -19px;
+        font-size: 12px;
+        &.error{
+          color: #B90000;
+        }
+      }
+      
     }
   }
 
