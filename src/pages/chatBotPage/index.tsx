@@ -84,19 +84,26 @@ const ChatBotPage = () => {
   const [chatId, setChatId] = useState<string>("");
 
   const [relatedQuestion, setRelatedQuestion] = useState<string[]>([]);
+  const [isLoadingRelatedQuestion, setIsLoadingRelatedQuestion] =
+    useState(false);
 
   const handleGetRelatedQuestion = async (chatRoomId: string | null) => {
     try {
+      setIsLoadingRelatedQuestion(true);
       const response = await getRelatedQuestionApi(
         chatRoomId ?? chatRoomState.roomId!
       );
       //trim 3 huruf pertama
-      const data = response.data.data.map((item) =>
-        item.substring(3, item.length)
-      );
+      //get 5 last array data
+      const data = response.data.data
+        .slice(-4)
+        .map((item) => item.substring(3, item.length));
+      // const data = response.data.data.slice(-4);
       data.length = 4;
       setRelatedQuestion(data);
+      setIsLoadingRelatedQuestion(false);
     } catch (error) {
+      setIsLoadingRelatedQuestion(false);
       setRelatedQuestion([]);
     }
   };
@@ -489,6 +496,8 @@ const ChatBotPage = () => {
                   )} */}
                 </div>
                 {item.type === "bot" &&
+                  isLoadingRelatedQuestion === false &&
+                  false &&
                   item.id !== 0 &&
                   item.id === chatState.chats.length - 1 && (
                     <div className='buble-chat'>
