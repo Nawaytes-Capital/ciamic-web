@@ -42,7 +42,6 @@ const LoginPage = () => {
       localStorage.setItem("user", JSON.stringify(auth.data.data.user));
       localStorage.setItem("role", JSON.stringify(auth.data.data.role));
       setIsLoading(false);
-      console.log(auth.data.data.role);
       dispatch(
         loginApp({
           authenticated: true,

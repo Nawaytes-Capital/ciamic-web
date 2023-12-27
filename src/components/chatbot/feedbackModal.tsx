@@ -29,12 +29,12 @@ export default function FeedbackModal(props: Props) {
   const handleFeedback = async (chatId: string, like: boolean) => {
     try {
       setNotes("");
-      if (notes === "") {
-        message.error({
-          content: `Mohon isi feedback anda`,
-        });
-        return;
-      }
+      // if (notes === "") {
+      //   message.error({
+      //     content: `Mohon isi feedback anda`,
+      //   });
+      //   return;
+      // }
       await sendChatFeedbackApi(
         authState.accessToken || "",
         chatId,
@@ -78,10 +78,16 @@ export default function FeedbackModal(props: Props) {
       onOk={handleOk}
       onCancel={handleCancel}
       footer={[
-        <Text key='text' className='cancle-button' onClick={handleCancel}>
+        <Text key='text' className='cancle-button' onClick={handleOk}>
           Tidak memberi feedback
         </Text>,
-        <Button key='submit' type='primary' onClick={handleOk}>
+        <Button
+          key='submit'
+          type='primary'
+          onClick={handleOk}
+          className='submit-button'
+          disabled={notes === ""}
+        >
           Kirim
         </Button>,
       ]}

@@ -61,12 +61,18 @@ interface IRelatedQuestion {
   data: string[];
 }
 
-export const getRelatedQuestionApi = (): Promise<
-  AxiosResponse<IRelatedQuestion>
-> => {
-  return api.get(`/chatbot/related-question`, {
-    headers: {
-      Authorization: getBearerTokenApi(),
+export const getRelatedQuestionApi = (
+  id: string
+): Promise<AxiosResponse<IRelatedQuestion>> => {
+  return api.post(
+    `/chatbot/related-question`,
+    {
+      room_id: id,
     },
-  });
+    {
+      headers: {
+        Authorization: getBearerTokenApi(),
+      },
+    }
+  );
 };

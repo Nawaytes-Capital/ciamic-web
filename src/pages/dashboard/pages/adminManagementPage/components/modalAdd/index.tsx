@@ -23,9 +23,7 @@ export const ModalAdd = ({
   form,
   isLoading,
 }: IModalFilter) => {
-  useEffect(() => {
-    console.log(isLoading);
-  }, [isLoading]);
+
   return (
     <AntdModal
       title={<h3 className='title-page'>Tambah Admin</h3>}

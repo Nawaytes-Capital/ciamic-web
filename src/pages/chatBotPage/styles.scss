@@ -107,9 +107,13 @@
         }
       }
       .title {
+        margin-top: 16px;
         font-size: 14px;
         color: #fff;
         font-weight: 700;
+        &.larger {
+          font-size: 16px;
+        }
       }
 
       .bubble-wp {
@@ -194,6 +198,9 @@
       display: flex;
       // justify-content: space-between;
       margin-bottom: 16px;
+      &.buble-chat-bot{
+        margin-bottom: 40px;
+      }
       position: relative;
       max-height: fit-content;
       .img-wp {
@@ -251,7 +258,7 @@
       }
       .chat-skeleton {
         border: none;
-        width: 95%;
+        width: calc(85% + 48px);
         border-radius: 0 16px 16px 16px;
         margin-left: 8px;
         display: flex;
@@ -259,12 +266,30 @@
         height: 48px;
       }
       .feedback-wp {
+        // flex-basis: 100%;
+        width: calc(87% );
+        margin: 0 auto;
+        left: 69px;
+        position: absolute;
+        justify-content: flex-end;
+        bottom: -35px;
+        // right: 30px;
+        align-items: flex-start;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        gap: 8px;
+        
         padding: 8px;
         margin-top: auto;
-        margin-bottom: 55px;
+        // margin-bottom: 55px;
         // width: 5%;
+        @include tablet {
+          width: 70%;
+        }
+        @include phone {
+          width: 70%;
+          left: 55px;
+        }
 
         .icon-copy {
           color: #003ba1;
@@ -272,7 +297,7 @@
         }
         .icon-like {
           color: #003ba1;
-          margin-top: 14px;
+          // margin-top: 14px;
           cursor: pointer;
         }
         .icon-liked {
@@ -280,7 +305,7 @@
         }
         .icon-unlike {
           color: #003ba1;
-          margin-top: 14px;
+          // margin-top: 14px;
           cursor: pointer;
         }
         .icon-unliked {
@@ -303,11 +328,19 @@
         @include phone {
           margin-left: 50px;
           width: 70%;
+          .chat-wp:nth-child(3),
+          .chat-wp:nth-child(4) {
+            display: none;
+          }
         }
 
         @include tablet {
           margin-left: 65px;
           width: 70%;
+          .chat-wp:nth-child(3),
+          .chat-wp:nth-child(4) {
+            display: none;
+          }
         }
 
         .chat-wp {

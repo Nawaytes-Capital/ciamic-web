@@ -12,6 +12,12 @@ const Header = () => {
     const user = localStorage.getItem("user");
     return !!accessToken && !!user;
   };
+
+  const scrollWithOffset = (el: HTMLElement) => {
+    const yCoordinate = el.getBoundingClientRect().top + window.pageYOffset;
+    const yOffset = -120;
+    window.scrollTo({ top: yCoordinate + yOffset, behavior: "smooth" });
+  };
   return (
     <header className='header-wrapper'>
       <img src={logo} className='logo' alt='logo' />
@@ -22,6 +28,7 @@ const Header = () => {
           style={{
             textDecoration: "none",
           }}
+          scroll={(el) => scrollWithOffset(el)}
         >
           <div className='menu-title '>Home</div>
         </HashLink>
@@ -31,6 +38,7 @@ const Header = () => {
           style={{
             textDecoration: "none",
           }}
+          scroll={(el) => scrollWithOffset(el)}
         >
           <div className='menu-title'>Keuntungan</div>
         </HashLink>
@@ -40,6 +48,7 @@ const Header = () => {
           style={{
             textDecoration: "none",
           }}
+          scroll={(el) => scrollWithOffset(el)}
         >
           {" "}
           <div className='menu-title'>Cara Penggunaan</div>
@@ -50,6 +59,7 @@ const Header = () => {
           style={{
             textDecoration: "none",
           }}
+          scroll={(el) => scrollWithOffset(el)}
         >
           {" "}
           <div className='menu-title'>Feedback</div>

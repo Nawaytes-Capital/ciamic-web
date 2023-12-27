@@ -16,7 +16,6 @@ export default function PrivateRoute(props: PrivateRouteProps) {
 
   useEffect(() => {
     if (!authState.authenticated) {
-      console.log("not authenticated");
       // Redirect if not authenticated
       navigate(props.unautorizedPath ? props.unautorizedPath : "/");
     }
@@ -24,17 +23,13 @@ export default function PrivateRoute(props: PrivateRouteProps) {
 
   useEffect(() => {
     if (props.role === "admin_chatbot checking") {
-      console.log("admin_chatbot");
       if (!authState.role?.includes("admin_chatbot")) {
-        console.log("not admin_chatbot");
         // Logout and redirect if not admin_chatbot
         dispatch(logoutApp());
         navigate(props.unautorizedPath ? props.unautorizedPath : "/");
       }
     } else if (props.role === "user") {
-      console.log("user checking");
       if (!authState.role?.includes("user")) {
-        console.log("not user");
         // Logout and redirect if not user
         dispatch(logoutApp());
         navigate(props.unautorizedPath ? props.unautorizedPath : "/");

@@ -89,6 +89,17 @@ const SectionHero = () => {
       }
     },
   });
+
+  const isDisableSubmit = () => {
+    if (form.errors.email || form.errors.password) {
+      return true;
+    }
+    if (isLoading) return true;
+    if (form.values.email && form.values.password) {
+      return false;
+    }
+    return true;
+  };
   return (
     <section className='section-hero' id='home'>
       <div className='section-left'>
@@ -167,7 +178,8 @@ const SectionHero = () => {
                 backgroundColor: "#003BA1",
                 color: "#fff",
               }}
-              disabled={isLoading}
+              // disable when email and password format is wrong
+              disabled={isDisableSubmit()}
             >
               Masuk {isLoading && <LoadingOutlined />}
             </Button>

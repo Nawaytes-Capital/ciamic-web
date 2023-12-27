@@ -159,9 +159,6 @@ const AdminManagementpage = () => {
   const handleDelete = () => {
     setIsDelete(false);
   };
-  useEffect(() => {
-    console.log(isLoading);
-  }, [isLoading]);
 
   const handleCreateAdmin = async () => {
     try {
@@ -191,10 +188,6 @@ const AdminManagementpage = () => {
       message.error("Gagal menambahkan admin");
     }
   };
-
-  useEffect(() => {
-    console.log(form.errors);
-  }, [form.errors]);
 
   return (
     <div id='admin-dashboard'>

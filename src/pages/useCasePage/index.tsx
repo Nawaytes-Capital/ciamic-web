@@ -150,7 +150,6 @@ const useCasePage = () => {
         navigate("/success-page");
       }
     } catch (error: any) {
-      console.log(error);
       if (error.response.status === 401) {
         message.error({
           content: "Session anda telah berakhir, silahkan login kembali",
@@ -166,8 +165,6 @@ const useCasePage = () => {
   };
 
   const handleNextStep = () => {
-    console.log(useCaseState.useCases[useCaseState.step].required);
-    console.log(useCaseState.useCases[useCaseState.step].answer);
     if (
       useCaseState.useCases[useCaseState.step].required &&
       (useCaseState.useCases[useCaseState.step].answer === "" ||

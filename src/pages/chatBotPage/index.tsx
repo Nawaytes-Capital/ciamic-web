@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
 import {
   CloseSquareOutlined,
@@ -84,9 +85,11 @@ const ChatBotPage = () => {
 
   const [relatedQuestion, setRelatedQuestion] = useState<string[]>([]);
 
-  const handleGetRelatedQuestion = async () => {
+  const handleGetRelatedQuestion = async (chatRoomId: string | null) => {
     try {
-      const response = await getRelatedQuestionApi();
+      const response = await getRelatedQuestionApi(
+        chatRoomId ?? chatRoomState.roomId!
+      );
       //trim 3 huruf pertama
       const data = response.data.data.map((item) =>
         item.substring(3, item.length)
@@ -111,7 +114,7 @@ const ChatBotPage = () => {
       dispatch(getHistoryChat(authState.accessToken || ""));
       dispatch(generateChatRoom(authState.accessToken || ""));
     }
-    handleGetRelatedQuestion();
+    handleGetRelatedQuestion(null);
   }, [dispatch, authState]);
 
   const recomendQuestion = [
@@ -163,7 +166,7 @@ const ChatBotPage = () => {
           chatId: chatResponse?.data?.data?._id,
         })
       );
-      handleGetRelatedQuestion();
+      handleGetRelatedQuestion(null);
     } catch (error) {
       setLoadingChat(false);
       setQuestion("");
@@ -207,7 +210,7 @@ const ChatBotPage = () => {
           chatId: response?.data?.data?._id,
         })
       );
-      handleGetRelatedQuestion();
+      handleGetRelatedQuestion(null);
       setLoadingChat(false);
     } catch (error) {
       setLoadingChat(false);
@@ -252,6 +255,7 @@ const ChatBotPage = () => {
       dispatch(resetChat());
       dispatch(changeChatRoom(response?.data?.data?.id));
       setChatbotError(false);
+      handleGetRelatedQuestion(response?.data?.data?.id);
     } catch (error) {
       message.error({
         content: `Sesi anda telah berakhir, silahkan login kembali`,
@@ -287,6 +291,7 @@ const ChatBotPage = () => {
           })
         );
       });
+      handleGetRelatedQuestion(chatRoomId);
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
@@ -306,6 +311,17 @@ const ChatBotPage = () => {
     }
   };
 
+  const chatContainerRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      const lastElement = chatContainerRef.current.lastChild;
+      if (lastElement) {
+        lastElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [chatState.chats]);
+
   return (
     <div className='chatbot-wp'>
       <div className={`section-left ${isFullmenu && "active"}`}>
@@ -318,7 +334,7 @@ const ChatBotPage = () => {
         </Button>
         <div className='history-chat'>
           <div className='buble-container'>
-            <p className='title'>Riwayat Chat</p>
+            <p className='title larger'>Riwayat Chat</p>
             {historyChatState.data?.data?.today.length === 0 &&
               historyChatState.data?.data?.week_before.length === 0 && (
                 <p className='title'>Belum ada percakapan hari ini</p>
@@ -376,11 +392,16 @@ const ChatBotPage = () => {
             <MenuOutlined onClick={() => setFullmenu(true)} />
           )}
         </div>
-        <div className='chat-wp'>
+        <div className='chat-wp' ref={chatContainerRef}>
           {chatState.chats.map((item, index) => {
             return (
               <>
-                <div className='buble-chat'>
+                <div
+                  key={index}
+                  className={`buble-chat ${
+                    item.type === "bot" && index !== 0 ? "buble-chat-bot" : ""
+                  }`}
+                >
                   <div
                     className={`img-wp ${
                       item.type === "user" ? "bg-cust" : ""
@@ -421,28 +442,34 @@ const ChatBotPage = () => {
                           });
                         }}
                       />
-                      <LikeOutlined
-                        className={`icon-like ${item.like ? "icon-liked" : ""}`}
-                        onClick={() => {
-                          if (item.like !== true) {
-                            setChatId(item.chatId!);
-                            setIsModalOpen(true);
-                            setLikeFeedback(true);
-                          }
-                        }}
-                      />
-                      <DislikeOutlined
-                        className={`icon-unlike ${
-                          item.like === false ? "icon-unliked" : ""
-                        }`}
-                        onClick={() => {
-                          if (item.like !== false) {
-                            setChatId(item.chatId!);
-                            setIsModalOpen(true);
-                            setLikeFeedback(false);
-                          }
-                        }}
-                      />
+                      {item.like !== false && (
+                        <LikeOutlined
+                          className={`icon-like ${
+                            item.like ? "icon-liked" : ""
+                          }`}
+                          onClick={() => {
+                            if (item.like !== true) {
+                              setChatId(item.chatId!);
+                              setIsModalOpen(true);
+                              setLikeFeedback(true);
+                            }
+                          }}
+                        />
+                      )}
+                      {item.like !== true && (
+                        <DislikeOutlined
+                          className={`icon-unlike ${
+                            item.like === false ? "icon-unliked" : ""
+                          }`}
+                          onClick={() => {
+                            if (item.like !== false) {
+                              setChatId(item.chatId!);
+                              setIsModalOpen(true);
+                              setLikeFeedback(false);
+                            }
+                          }}
+                        />
+                      )}
                     </div>
                   )}
                   {/* {item.type === "bot" &&
