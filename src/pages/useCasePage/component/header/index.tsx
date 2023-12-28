@@ -8,7 +8,7 @@ import { FileTextOutlined, LogoutOutlined } from "@ant-design/icons";
 import { logoutApp } from "../../../../redux/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-
+import userProfile from "../../../../assets/images/user-profile.png";
 const HeaderUsecase = () => {
   const authState = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
@@ -75,7 +75,7 @@ const HeaderUsecase = () => {
         >
           <div className='account-wp'>
             <div className='img-wp'>
-              <img src={"user-profile.png"} className='img-account' />
+              <img src={userProfile} alt='' className='img-account' />
             </div>
             <p className='title-account'>{authState.user?.name}</p>
           </div>

@@ -67,6 +67,11 @@ const ListReviewPage = () => {
     getDataRespon();
   }, []);
 
+  const encodeBase64 = (id: string, title: string) => {
+    const data = `${id}+${title}`;
+    return btoa(data);
+  };
+
   return (
     <>
       <HeaderUsecase />
@@ -99,7 +104,14 @@ const ListReviewPage = () => {
                   <p className='time-respon'>{item.time}</p>
                   <RightOutlined
                     className='icon-navigate'
-                    onClick={() => navigate(`/detail-review/${item.id}`)}
+                    onClick={() =>
+                      navigate(
+                        `/detail-review/${encodeBase64(
+                          item.id,
+                          "Response " + (index + 1)
+                        )}`
+                      )
+                    }
                   />
                 </div>
               ))

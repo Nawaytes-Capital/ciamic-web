@@ -21,6 +21,15 @@ const DetailReviewPage = () => {
 
   const { usecaseId } = useParams();
   const [dataRespon, setDataRespon] = useState<IDataResponse[]>([]);
+
+  const decodeBase64 = (str: string) => {
+    // the format string is id+title
+    const decode = atob(str);
+    const split = decode.split("+");
+    const id = split[0];
+    const title = split[1];
+    return { id, title };
+  };
   const data = [
     {
       key: 1,
@@ -62,7 +71,7 @@ const DetailReviewPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const getDataRespon = async () => {
     try {
-      const response = await getDetailResponseApi(usecaseId!);
+      const response = await getDetailResponseApi(decodeBase64(usecaseId!).id);
       const payload: IDataResponse[] = response.data.data.response.map(
         (item, index) => {
           return {
@@ -100,7 +109,7 @@ const DetailReviewPage = () => {
               onClick={() => navigate("/list-review")}
               style={{ marginRight: "14px" }}
             />
-            <p className='title-card'>{usecaseId}</p>
+            <p className='title-card'>{decodeBase64(usecaseId!).title}</p>
           </div>
           <div className='content-detail'>
             {dataRespon.map((item, index) => (
