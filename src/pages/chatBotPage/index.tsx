@@ -144,7 +144,7 @@ const ChatBotPage = () => {
   ];
   const sendChat = async () => {
     try {
-      if (!question || question.length > 2100) {
+      if (!question || question.length > 2100 || !question.trim()) {
         return;
       }
       setLoadingChat(true);
