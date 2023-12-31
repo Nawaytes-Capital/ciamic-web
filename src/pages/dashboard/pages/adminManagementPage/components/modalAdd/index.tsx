@@ -14,6 +14,7 @@ interface IModalFilter {
   isShow: boolean;
   form: FormikProps<IAddAdmin>;
   isLoading: boolean;
+  isEdit?: boolean;
 }
 
 export const ModalAdd = ({
@@ -22,11 +23,13 @@ export const ModalAdd = ({
   isShow,
   form,
   isLoading,
+  isEdit,
 }: IModalFilter) => {
-
   return (
     <AntdModal
-      title={<h3 className='title-page'>Tambah Admin</h3>}
+      title={
+        <h3 className='title-page'>{isEdit ? "Edit Admin" : "Tambah Admin"}</h3>
+      }
       footer={
         <Button
           className='btn-primary'
@@ -66,7 +69,7 @@ export const ModalAdd = ({
           <div className='form-group'>
             <p className='title-form'>Email</p>
             <Input
-              disabled={isLoading}
+              disabled={isLoading || isEdit}
               name='email'
               type='text'
               className='form-control ps-15 bg-transparent'
@@ -79,11 +82,26 @@ export const ModalAdd = ({
             <p className='text-error'>{form.errors.email}</p>
           </div>
         </Form.Item>
-        <Form.Item>
+        <Form.Item
+          rules={[
+            {
+              type: "number",
+              message: "Masukkan nomor yang valid",
+            },
+            {
+              required: true,
+              message: "Masukkan nomor telepon",
+            },
+            {
+              min: 11,
+              message: "Minimal 11 karakter",
+            },
+          ]}
+        >
           <div className='form-group'>
             <p className='title-form'>No. Handphone</p>
             <Input
-              disabled={isLoading}
+              disabled={isLoading || isEdit}
               name='number_phone'
               type='text'
               className='form-control ps-15 bg-transparent'

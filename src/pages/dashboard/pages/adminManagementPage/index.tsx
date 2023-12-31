@@ -11,6 +11,7 @@ import {
   createAdminApi,
   deleteAdminApi,
   getAdminListApi,
+  updateAdminApi,
 } from "../../../../api/dashboard";
 import { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
@@ -60,9 +61,14 @@ const AdminManagementpage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [dataSource, setDataSource] = useState<IDataAdmin[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [setIdAccount, setSetIdAccount] = useState<number>(0);
+
   const handleDetail = (data: IDataAdmin) => {
+    setIsEdit(true);
     setDetail(data);
     setIsShow(true);
+    setSetIdAccount(data.id);
   };
 
   const fetchAdminList = async () => {
@@ -128,7 +134,6 @@ const AdminManagementpage = () => {
               onClick={() => {
                 setIsDelete(true);
                 setSetIdAccount(record.id);
-                console.log(record.id);
               }}
               style={{ marginLeft: "8px" }}
             />
@@ -140,15 +145,19 @@ const AdminManagementpage = () => {
   const validation = yup.object().shape({
     email: yup
       .string()
-      .email("must be a valid email")
-      .required("email is required")
-      .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "must be a valid email"),
+      .email("Email tidak valid")
+      .required("Email tidak boleh kosong")
+      .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Email tidak valid"),
     // .matches(
     //   /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
     //   "must be a valid telkom email"
     // ),
-    name: yup.string().required("name is required"),
-    number_phone: yup.string().required("email is required"),
+    name: yup.string().required("Nama tidak boleh kosong"),
+    number_phone: yup
+      .string()
+      .required("Nomor telepon tidak boleh kosong")
+      .min(11, "Minimal 11 karakter")
+      .matches(/^[0-9]+$/, "Nomor telepon tidak valid"),
   });
   const form = useFormik<IAddAdmin>({
     initialValues: {
@@ -159,8 +168,9 @@ const AdminManagementpage = () => {
     enableReinitialize: true,
     validationSchema: validation,
     onSubmit: async (values) => {
-      console.log("add batch : ", values);
-      handleCreateAdmin();
+      if (isEdit) {
+        handleUpdateAmdmin();
+      } else handleCreateAdmin();
     },
   });
 
@@ -187,11 +197,9 @@ const AdminManagementpage = () => {
     setIsDelete(false);
   };
 
-  const [setIdAccount, setSetIdAccount] = useState<number>(0);
   const handleCreateAdmin = async () => {
     try {
       setIsLoading(true);
-      console.log("kok kocak sih");
       const response = await createAdminApi({
         email: form.values.email,
         name: form.values.name,
@@ -218,6 +226,35 @@ const AdminManagementpage = () => {
     }
   };
 
+  const handleUpdateAmdmin = async () => {
+    try {
+      setIsLoading(true);
+      const response = await updateAdminApi(setIdAccount, {
+        name: form.values.name,
+        email: form.values.email,
+        phone_number: form.values.number_phone,
+      });
+      setIsShow(false);
+      setDetail({
+        name: "",
+        email: "",
+        number_phone: "",
+      });
+      form.resetForm();
+      message.success("Berhasil mengubah admin");
+      fetchAdminList();
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          dispatch(logoutApp());
+        }
+      }
+      message.error("Gagal mengubah admin");
+    }
+  };
+
   return (
     <div id='admin-dashboard'>
       <div className='header-wp'>
@@ -230,6 +267,7 @@ const AdminManagementpage = () => {
               email: "",
               number_phone: "",
             });
+            setIsEdit(false);
             setIsShow(true);
           }}
         >
@@ -243,6 +281,7 @@ const AdminManagementpage = () => {
         form={form}
         handleSubmit={form.handleSubmit}
         isLoading={isLoading}
+        isEdit={isEdit}
       />
       <ModalDelete
         isShow={isDelete}

@@ -83,3 +83,19 @@ export const deleteAdminApi = (id: number) => {
     },
   });
 };
+
+// PATCH chatbot/admin/admin-management/25
+
+export interface IUpdateAdmin {
+  name: string;
+  email: string;
+  phone_number: string;
+}
+
+export const updateAdminApi = (id: number, payload: IUpdateAdmin) => {
+  return api.patch(`/chatbot/admin/admin-management/${id}`, payload, {
+    headers: {
+      Authorization: getBearerTokenApi(),
+    },
+  });
+};

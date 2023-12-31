@@ -54,10 +54,6 @@ const Section4 = () => {
     onSubmit: onSubmit,
   });
 
-  useEffect(() => {
-    console.log(form.errors);
-  }, [form.errors]);
-
   return (
     <section className='section-4'>
       <div className='section-left'>

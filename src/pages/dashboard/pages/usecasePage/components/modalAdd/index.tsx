@@ -54,9 +54,8 @@ export const ModalAdd = ({
     onSubmit: async(values) => {
       const payload = {
         ...values,
-        questions: listQuestion
-      }
-      console.log("add batch : ", payload);
+        questions: listQuestion,
+      };
     },
   }); 
   
