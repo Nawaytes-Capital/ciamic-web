@@ -71,9 +71,23 @@ body {
   height: 48px;
   background-color: $c-primary;
   color: #fff;
+  border-color: $c-primary !important;
 
   &:hover {
     color: #fff !important;
+    border-color: $c-primary !important;
+  }
+}
+
+.btn-secondary {
+  height: 48px;
+  background-color: #fff;
+  color: $c-primary;  
+  border-color: $c-primary;
+  cursor: pointer;
+  &:hover {
+    color: $c-primary !important;
+    border-color: $c-primary !important;
   }
 }
 

@@ -76,6 +76,8 @@ const AdminManagementpage = () => {
 
   const fetchAdminList = async () => {
     try {
+      setIsLoading(true);
+      setDataSource([]);
       const response = await getAdminListApi(page);
       const data: IDataAdmin[] = response.data.data.map((item) => {
         return {
@@ -85,9 +87,11 @@ const AdminManagementpage = () => {
           email: item.email,
         };
       });
+      setIsLoading(false);
       setDataSource(data);
       setTotalData(response.data.total);
     } catch (error) {
+      setIsLoading(false);
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
           dispatch(logoutApp());
@@ -105,7 +109,7 @@ const AdminManagementpage = () => {
       title: "No",
       dataIndex: "no",
       render: (text: string, record: any, index: number) => {
-        return <p>{index + 1}</p>;
+        return <p>{(page - 1) * 10 + index + 1}</p>;
       },
     },
     {
@@ -283,6 +287,7 @@ const AdminManagementpage = () => {
         dataSource={dataSource}
         columns={columns}
         pagination={false}
+        loading={isLoading}
       />
       <div className='pagination-wp'>
         <Pagination

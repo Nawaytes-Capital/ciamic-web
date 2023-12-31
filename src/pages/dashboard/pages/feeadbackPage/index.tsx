@@ -45,8 +45,11 @@ const ListFeedbackpage = () => {
   const authState = useSelector((state: RootState) => state.auth);
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const fetchData = async () => {
     try {
+      setIsLoading(true);
+      setDataSet([]);
       const response = await fetchFeedbackApi(page, authState.accessToken!);
       const data = response.data.data.map((item, index: number) => {
         return {
@@ -56,11 +59,12 @@ const ListFeedbackpage = () => {
           email: item.email,
         };
       });
-
+      setIsLoading(false);
       setDataSet(data);
       setTotalData(response.data.total);
       setFetchResponse(response.data);
     } catch (error) {
+      setIsLoading(false);
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
           message.error({
@@ -85,7 +89,7 @@ const ListFeedbackpage = () => {
       title: "No",
       dataIndex: "no",
       render: (text: string, record: any, index: number) => {
-        return <p>{index + 1}</p>;
+        return <p>{(page - 1) * 10 + index + 1}</p>;
       },
     },
     {
@@ -115,6 +119,7 @@ const ListFeedbackpage = () => {
         dataSource={dataSet}
         columns={columns}
         pagination={false}
+        loading={isLoading}
       />
       <Pagination
         className='pagination-wp'

@@ -1,7 +1,7 @@
 import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Pagination, Table, message } from "antd";
 import { useEffect, useState } from "react";
-import { ModalAdd } from "./components/modalAdd";
+import { IQuestion, ModalAdd } from "./components/modalAdd";
 import "./styles.scss";
 import { fetchUsecasebatchApi } from "../../../../api/dashboard";
 import { AxiosError } from "axios";
@@ -16,6 +16,7 @@ interface IUsecaseBatchData {
   question: string;
   response: string;
   status: string;
+  questionList?: IQuestion[];
 }
 
 const dataSource = [
@@ -50,8 +51,12 @@ const UsecasePage = () => {
     useState<FetchUsecaseBatchApiResponse>();
   const [page, setPage] = useState<number>(1);
   const navigate = useNavigate();
+  const [questionList, setQuestionList] = useState<IQuestion[]>([]);
+  const [idBatch, setIdBatch] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const response = await fetchUsecasebatchApi(authState.accessToken!, page);
       setFetchResponse(response.data);
       const dataSet: IUsecaseBatchData[] = response.data.data.map(
@@ -62,12 +67,15 @@ const UsecasePage = () => {
             question: `${item.question.length} Pertanyaan`,
             response: `${item.count_response} Response`,
             status: item.status.toUpperCase(),
+            questionList: item.question,
           };
         }
       );
 
       setData(dataSet);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
           message.error({
@@ -91,12 +99,18 @@ const UsecasePage = () => {
     [page]
   );
 
+  useEffect(() => {
+    if (isLoading) {
+      setData([]);
+    }
+  }, [isLoading]);
+
   const columns = [
     {
       title: "No",
       dataIndex: "no",
       render: (text: string, record: any, index: number) => {
-        return <p>{index + 1}</p>;
+        return <p>{(page - 1) * 10 + index + 1}</p>;
       },
     },
     {
@@ -123,12 +137,24 @@ const UsecasePage = () => {
       },
       align: "center" as "center",
     },
-    // {
-    //   title: "Action",
-    //   render: (text: string, record: any, index: number) => {
-    //     return <EditOutlined />;
-    //   },
-    // },
+    {
+      title: "Action",
+      render: (text: string, record: any, index: number) => {
+        // return <EditOutlined onClick={setIsShow(true)} />;
+        return (
+          <div>
+            <EditOutlined
+              onClick={() => {
+                setIsShow(true);
+                console.log("record", record);
+                setQuestionList(record.questionList!);
+                setIdBatch(record.id);
+              }}
+            />
+          </div>
+        );
+      },
+    },
   ];
   return (
     <div id='usecase-dashboard'>
@@ -143,6 +169,7 @@ const UsecasePage = () => {
         dataSource={data}
         columns={columns}
         pagination={false}
+        loading={isLoading}
       />
       <Pagination
         className='pagination-wp'
@@ -152,7 +179,12 @@ const UsecasePage = () => {
         total={fetchResponse?.total}
         showSizeChanger={false}
       />
-      <ModalAdd isShow={isShow} handleCancel={() => setIsShow(false)} />
+      <ModalAdd
+        isShow={isShow}
+        handleCancel={() => setIsShow(false)}
+        questionList={questionList}
+        idBatch={idBatch}
+      />
     </div>
   );
 };

@@ -95,8 +95,11 @@ const ResponsePage = () => {
   const [fetchResponse, setFetchResponse] =
     useState<FetchUsecaseBatchApiResponse>();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const fetchData = async () => {
     try {
+      setIsLoading(true);
+      setData([]);
       const response = await fetchUsecasebatchApi(authState.accessToken!, page);
       setFetchResponse(response.data);
       const dataSet: IDataSource[] = response.data.data.map((item, index) => {
@@ -107,9 +110,10 @@ const ResponsePage = () => {
           status: item.status,
         };
       });
-
+      setIsLoading(false);
       setData(dataSet);
     } catch (error) {
+      setIsLoading(false);
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
           message.error({
@@ -168,7 +172,7 @@ const ResponsePage = () => {
       title: "No",
       dataIndex: "no",
       render: (text: string, record: any, index: number) => {
-        return <p>{index + 1}</p>;
+        return <p>{(page - 1) * 10 + index + 1}</p>;
       },
     },
     {
@@ -222,6 +226,7 @@ const ResponsePage = () => {
         dataSource={data}
         columns={columns}
         pagination={false}
+        loading={isLoading}
       />
       <Pagination
         className='pagination-wp'
