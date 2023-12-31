@@ -184,6 +184,7 @@ const UsecasePage = () => {
         handleCancel={() => setIsShow(false)}
         questionList={questionList}
         idBatch={idBatch}
+        reFetchData={fetchData}
       />
     </div>
   );

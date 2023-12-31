@@ -91,6 +91,7 @@ const useCasePage = () => {
       );
       setLoadingRecord(false);
     } catch (error) {
+      setLoadingRecord(false);
       message.error({
         content: "Gagal mengirim jawaban",
         style: {

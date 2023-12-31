@@ -102,3 +102,21 @@ export const updateAdminApi = (id: number, payload: IUpdateAdmin) => {
     },
   });
 };
+
+//POST chatbot/admin/batch
+
+export interface ICreatBatch {
+  status: string;
+  questions: {
+    question: string;
+    required: boolean;
+  }[];
+}
+
+export const createBatchApi = (payload: ICreatBatch) => {
+  return api.post(`/chatbot/admin/batch`, payload, {
+    headers: {
+      Authorization: getBearerTokenApi(),
+    },
+  });
+};
