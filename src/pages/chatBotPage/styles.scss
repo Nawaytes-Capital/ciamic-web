@@ -323,24 +323,27 @@
         max-height: fit-content;
         // left: 60px;
         margin-left: 65px;
+        margin-top: -25px;
         cursor: pointer;
 
         @include phone {
           margin-left: 50px;
+          margin-top: 0px;
           width: 70%;
-          .chat-wp:nth-child(3),
-          .chat-wp:nth-child(4) {
-            display: none;
-          }
+          // .chat-wp:nth-child(3),
+          // .chat-wp:nth-child(4) {
+          //   display: none;
+          // }
         }
 
         @include tablet {
           margin-left: 65px;
           width: 70%;
-          .chat-wp:nth-child(3),
-          .chat-wp:nth-child(4) {
-            display: none;
-          }
+          margin-top: 0px;
+          // .chat-wp:nth-child(3),
+          // .chat-wp:nth-child(4) {
+          //   display: none;
+          // }
         }
 
         .chat-wp {
@@ -349,6 +352,10 @@
           border: 1px solid #d0dfff;
           margin: 0 8px;
           border-radius: 8px;
+          max-width: 250px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
 
@@ -526,9 +533,10 @@
       .buble-chat {
         .suggestion-wp {
           font-size: 12px;
-          .chat-wp:last-child {
-            display: none;
-          }
+          margin-bottom: 50px;
+          // .chat-wp:last-child {
+          //   display: none;
+          // }
         }
         .chat {
           font-size: 14px;

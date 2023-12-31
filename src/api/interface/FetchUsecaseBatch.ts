@@ -20,4 +20,5 @@ interface DataItem {
   created_by: string;
   updated_at: string;
   created_at: string;
+  count_response: number;
 }

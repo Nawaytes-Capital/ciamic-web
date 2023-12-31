@@ -103,7 +103,7 @@ const ResponsePage = () => {
         return {
           key: item._id,
           id: item._id,
-          answer: `${10} Jawaban`,
+          answer: `${item.count_response} Jawaban`,
           status: item.status,
         };
       });

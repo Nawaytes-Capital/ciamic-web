@@ -60,7 +60,7 @@ const UsecasePage = () => {
             key: item._id,
             id: item._id,
             question: `${item.question.length} Pertanyaan`,
-            response: "-",
+            response: `${item.count_response} Response`,
             status: item.status.toUpperCase(),
           };
         }

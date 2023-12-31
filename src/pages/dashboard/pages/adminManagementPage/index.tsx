@@ -7,7 +7,11 @@ import "./styles.scss";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { ModalDelete } from "./components/modalDelete";
-import { createAdminApi, getAdminListApi } from "../../../../api/dashboard";
+import {
+  createAdminApi,
+  deleteAdminApi,
+  getAdminListApi,
+} from "../../../../api/dashboard";
 import { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../redux/store";
@@ -121,7 +125,11 @@ const AdminManagementpage = () => {
           <div>
             <EditOutlined onClick={() => handleDetail(record)} />
             <DeleteOutlined
-              onClick={() => setIsDelete(true)}
+              onClick={() => {
+                setIsDelete(true);
+                setSetIdAccount(record.id);
+                console.log(record.id);
+              }}
               style={{ marginLeft: "8px" }}
             />
           </div>
@@ -152,14 +160,34 @@ const AdminManagementpage = () => {
     validationSchema: validation,
     onSubmit: async (values) => {
       console.log("add batch : ", values);
-      // handleCreateAdmin();
+      handleCreateAdmin();
     },
   });
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    try {
+      const response = await deleteAdminApi(setIdAccount);
+      message.success({
+        content: `${response.data.message}`,
+      });
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          dispatch(logoutApp());
+        }
+      } else {
+        message.error({
+          content: `something went wrong`,
+        });
+      }
+    }
+    fetchAdminList();
     setIsDelete(false);
   };
 
+  const [setIdAccount, setSetIdAccount] = useState<number>(0);
   const handleCreateAdmin = async () => {
     try {
       setIsLoading(true);
@@ -175,6 +203,7 @@ const AdminManagementpage = () => {
         email: "",
         number_phone: "",
       });
+      form.resetForm();
       message.success("Berhasil menambahkan admin");
       fetchAdminList();
       setIsLoading(false);

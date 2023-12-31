@@ -99,7 +99,7 @@ const ChatBotPage = () => {
         .slice(-4)
         .map((item) => item.substring(3, item.length));
       // const data = response.data.data.slice(-4);
-      data.length = 4;
+      data.length = 2;
       setRelatedQuestion(data);
       setIsLoadingRelatedQuestion(false);
     } catch (error) {
@@ -497,7 +497,6 @@ const ChatBotPage = () => {
                 </div>
                 {item.type === "bot" &&
                   isLoadingRelatedQuestion === false &&
-                  false &&
                   item.id !== 0 &&
                   item.id === chatState.chats.length - 1 && (
                     <div className='buble-chat'>

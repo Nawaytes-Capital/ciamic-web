@@ -73,3 +73,13 @@ export const createAdminApi = (payload: ICreateAdmin) => {
     },
   });
 };
+
+// DELETE chatbot/admin/admin-management/64
+
+export const deleteAdminApi = (id: number) => {
+  return api.delete(`/chatbot/admin/admin-management/${id}`, {
+    headers: {
+      Authorization: getBearerTokenApi(),
+    },
+  });
+};
