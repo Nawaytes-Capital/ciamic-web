@@ -39,7 +39,7 @@ export const ModalAdd = ({
           loading={isLoading}
           disabled={isLoading}
         >
-          Simpan {isLoading && <LoadingOutlined />}
+          Simpan
         </Button>
       }
       onCancel={handleCancel}
@@ -69,7 +69,7 @@ export const ModalAdd = ({
           <div className='form-group'>
             <p className='title-form'>Email</p>
             <Input
-              disabled={isLoading || isEdit}
+              disabled={isLoading}
               name='email'
               type='text'
               className='form-control ps-15 bg-transparent'
@@ -101,7 +101,7 @@ export const ModalAdd = ({
           <div className='form-group'>
             <p className='title-form'>No. Handphone</p>
             <Input
-              disabled={isLoading || isEdit}
+              disabled={isLoading}
               name='number_phone'
               type='text'
               className='form-control ps-15 bg-transparent'

@@ -53,12 +53,15 @@ export const getBatchResultApi = (
   });
 };
 
-export const getAdminListApi = () => {
-  return api.get<FetchAdminListResponse>(`/chatbot/admin/admin-management`, {
-    headers: {
-      Authorization: getBearerTokenApi(),
-    },
-  });
+export const getAdminListApi = (page: number) => {
+  return api.get<FetchAdminListResponse>(
+    `/chatbot/admin/admin-management?page=${page}`,
+    {
+      headers: {
+        Authorization: getBearerTokenApi(),
+      },
+    }
+  );
 };
 
 export interface ICreateAdmin {

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Table, message } from "antd";
+import { Button, Pagination, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import { ModalAdd } from "./components/modalAdd";
 import "./styles.scss";
@@ -63,6 +63,7 @@ const AdminManagementpage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [setIdAccount, setSetIdAccount] = useState<number>(0);
+  const [totalData, setTotalData] = useState<number>(0);
 
   const handleDetail = (data: IDataAdmin) => {
     setIsEdit(true);
@@ -71,9 +72,11 @@ const AdminManagementpage = () => {
     setSetIdAccount(data.id);
   };
 
+  const [page, setPage] = useState<number>(1);
+
   const fetchAdminList = async () => {
     try {
-      const response = await getAdminListApi();
+      const response = await getAdminListApi(page);
       const data: IDataAdmin[] = response.data.data.map((item) => {
         return {
           id: item.user_id,
@@ -83,6 +86,7 @@ const AdminManagementpage = () => {
         };
       });
       setDataSource(data);
+      setTotalData(response.data.total);
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
@@ -94,7 +98,7 @@ const AdminManagementpage = () => {
 
   useEffect(() => {
     fetchAdminList();
-  }, []);
+  }, [page]);
 
   const columns = [
     {
@@ -274,7 +278,23 @@ const AdminManagementpage = () => {
           Tambah Admin <PlusOutlined style={{ marginLeft: "8px" }} />
         </Button>
       </div>
-      <Table className='table-wp' dataSource={dataSource} columns={columns} />
+      <Table
+        className='table-wp'
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}
+      />
+      <div className='pagination-wp'>
+        <Pagination
+          defaultCurrent={1}
+          current={page}
+          total={totalData}
+          pageSize={10}
+          onChange={(page) => {
+            setPage(page);
+          }}
+        />
+      </div>
       <ModalAdd
         isShow={isShow}
         handleCancel={() => setIsShow(false)}
