@@ -40,6 +40,7 @@ const dataSource = [
 ];
 const ListFeedbackpage = () => {
   const [dataSet, setDataSet] = useState<IFeedbackData[]>();
+  const [totalData, setTotalData] = useState<number>(0);
   const [fetchResponse, setFetchResponse] = useState<fetchFeedbackResponse>();
   const authState = useSelector((state: RootState) => state.auth);
   const [page, setPage] = useState<number>(1);
@@ -57,6 +58,7 @@ const ListFeedbackpage = () => {
       });
 
       setDataSet(data);
+      setTotalData(response.data.total);
       setFetchResponse(response.data);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -119,7 +121,7 @@ const ListFeedbackpage = () => {
         defaultCurrent={1}
         current={page}
         onChange={(page) => setPage(page)}
-        total={10}
+        total={totalData}
         showSizeChanger={false}
       />
     </div>

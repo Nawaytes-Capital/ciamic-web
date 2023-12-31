@@ -3,6 +3,7 @@ export interface fetchFeedbackResponse {
   current_page: number;
   last_page: number;
   data: UserData[];
+  total: number;
 }
 
 interface UserData {
