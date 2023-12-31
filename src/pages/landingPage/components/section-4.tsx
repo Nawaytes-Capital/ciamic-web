@@ -3,6 +3,7 @@ import accent from "../../../assets/images/icon-quote.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { sendFeedbackApi } from "../../../api/feedback";
+import { useEffect } from "react";
 
 const { TextArea } = Input;
 const Section4 = () => {
@@ -10,11 +11,25 @@ const Section4 = () => {
     name: Yup.string().required("Name is required"),
     email: Yup.string()
       .email("Must be a valid email")
-      .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "must be a valid email")
-      .required("Email is required"),
+      .required("Email is required")
+      .matches(
+        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+        "Must be a valid email"
+      ),
     notes: Yup.string().required("Notes is required"),
   });
   const onSubmit = async (values: any) => {
+    if (
+      values.name === "" ||
+      values.email === "" ||
+      values.notes.trim() === ""
+    ) {
+      message.error({
+        content: `Mohon isi semua form`,
+      });
+      return;
+    }
+
     try {
       const response = await sendFeedbackApi(values);
       message.success({
@@ -38,6 +53,10 @@ const Section4 = () => {
     validationSchema: validation,
     onSubmit: onSubmit,
   });
+
+  useEffect(() => {
+    console.log(form.errors);
+  }, [form.errors]);
 
   return (
     <section className='section-4'>
@@ -86,6 +105,11 @@ const Section4 = () => {
                   required: true,
                   message: "Please input your email!",
                 },
+                {
+                  type: "email",
+                  message: "Please input a valid email!",
+                },
+                {},
               ]}
             >
               <div className='form-group'>
@@ -109,8 +133,14 @@ const Section4 = () => {
                   message: "Please input your suggestion!",
                 },
                 {
-                  min: 10,
-                  message: "Suggestion must be at least 10 characters",
+                  validator: (_, value) => {
+                    if (value && value.trim().length >= 10) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      "Suggestion must be at least 10 characters"
+                    );
+                  },
                 },
               ]}
             >
