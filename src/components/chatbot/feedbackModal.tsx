@@ -92,8 +92,20 @@ export default function FeedbackModal(props: Props) {
         </Button>,
       ]}
     >
-      <p>Masukan apa yang ingin ada berikan</p>
+      {props.like ? (
+        <>
+          <p>Terima kasih sudah menyukai Fitur Ciamic! </p>
+          <p>
+            Masukan apa yang ingin ada berikan feedback untuk kami, atau
+            ceritakan apa yang kamu suka.
+          </p>
+        </>
+      ) : (
+        <p> Silahkan beri masukan agar kami bisa jauh lebih baik</p>
+      )}
+
       <TextArea
+        className='text-input'
         rows={4}
         onChange={(e) => setNotes(e.target.value)}
         value={notes}
