@@ -7,9 +7,23 @@
     justify-content: center;
     align-items: center;
 
+    @include phone {
+      // padding: 0 24px;
+    }
+
+    @include tablet {
+      // padding: 0 24px;
+    }
+
     .confirmation-wp {
       width: 500px;
       position: relative;
+      @include phone {
+        width: 100vw !important;
+        padding: 0 24px;
+      }
+
+     
 
       .icon {
         height: 50px;
