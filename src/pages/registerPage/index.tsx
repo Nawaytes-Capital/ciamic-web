@@ -23,11 +23,11 @@ const RegisterPage = () => {
         .string()
         .email("must be a valid email")
         .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "must be a valid email")
-        .required("email is required")
-        .matches(
-          /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
-          "must be a valid telkom email"
-        ),
+        // .matches(
+        //   /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
+        //   "must be a valid telkom email"
+        // )
+        .required("email is required"),
       password: yup
         .string()
         .matches(
@@ -43,31 +43,34 @@ const RegisterPage = () => {
     });
     const form = useFormik<IRegisterRequest>({
       initialValues: {
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: ""
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
       },
       enableReinitialize: true,
       validationSchema: validation,
-      onSubmit: async(values) => {
-        setIsLoading(true)
+      onSubmit: async (values) => {
+        setIsLoading(true);
         const payload = {
           name: values.name,
           email: values.email,
           password: values.password,
-        }
+        };
+        console.log(btoa(values.email));
         try {
           const auth = await register(payload);
           message.success({
             content: `${auth.data.message}`,
           });
-          setIsLoading(false)
-          navigate('/confirmation')
+          setIsLoading(false);
+          const emailBase64 = btoa(values.email);
+          // navigate('/confirmation/')
+          navigate(`/confirmation/${emailBase64}`);
         } catch (error: any) {
-          setIsLoading(false)
+          setIsLoading(false);
           message.error({
-            content:`${error?.response?.data?.message}`,
+            content: `${error?.response?.data?.message}`,
           });
         }
       },

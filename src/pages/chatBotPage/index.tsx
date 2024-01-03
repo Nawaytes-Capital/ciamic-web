@@ -86,7 +86,7 @@ const ChatBotPage = () => {
   const [relatedQuestion, setRelatedQuestion] = useState<string[]>([]);
   const [isLoadingRelatedQuestion, setIsLoadingRelatedQuestion] =
     useState(false);
-
+  const [getRandomQuestion, setRandomQuestion] = useState<any[]>([]);
   const handleGetRelatedQuestion = async (chatRoomId: string | null) => {
     try {
       setIsLoadingRelatedQuestion(true);
@@ -122,26 +122,69 @@ const ChatBotPage = () => {
       dispatch(generateChatRoom(authState.accessToken || ""));
     }
     handleGetRelatedQuestion(null);
+    setRandomQuestion(get4RandomQuestion());
   }, [dispatch, authState]);
 
   const recomendQuestion = [
     {
       id: 1,
-      question: "Bagaimana cara mendaftarkan akun email di Telkom ?",
+      question: "Apa berita terkini mengenai Diskominfo Aceh?",
     },
     {
       id: 2,
-      question: "Apa Itu Big Box ?",
+      question: "Contoh perusahaan yang menggunakan OCA?",
     },
     {
       id: 3,
-      question: "Keunggulan Produk Produk Telkom",
+      question: "Apa itu indibiz pay?",
     },
     {
       id: 4,
-      question: "Tutorial Mendaftar Akun Chatbot",
+      question:
+        "Bagaimana cara berkenalan dengan pelanggan tanpa terlihat seperti menjual sesuatu?",
+    },
+    {
+      id: 5,
+      question: "Ceritakan tentang pemkab aceh besar",
+    },
+    {
+      id: 6,
+      question: "Untuk hotel layanan apa yang bagus?",
+    },
+    {
+      id: 7,
+      question: "Solusi untuk sekolah",
+    },
+    {
+      id: 8,
+      question: "Apa saja varian produk oca?",
+    },
+    {
+      id: 9,
+      question: "Kelebihan pijar sekolah dibanding ruang guru",
+    },
+    {
+      id: 10,
+      question: "Strategi komunikasi untuk mendekati Pemkot Medan",
+    },
+    {
+      id: 11,
+      question: "Berikan success story pemakaian OCA di segment government",
+    },
+    {
+      id: 12,
+      question: "Jelaskan tentang produk antares asset tracking",
+    },
+    {
+      id: 13,
+      question: "kalo disisi umkm perbedaan majoo dengan kasiraja gimana",
     },
   ];
+
+  const get4RandomQuestion = () => {
+    const randomQuestion = recomendQuestion.sort(() => Math.random() - 0.5);
+    return randomQuestion.slice(0, 4);
+  };
   const sendChat = async () => {
     try {
       if (!question || question.length > 2100 || !question.trim()) {
@@ -258,6 +301,7 @@ const ChatBotPage = () => {
 
   const handleNewChatRoom = async () => {
     try {
+      setRandomQuestion(get4RandomQuestion());
       const response = await generateChatRoomApi(authState.accessToken || "");
       dispatch(resetChat());
       dispatch(changeChatRoom(response?.data?.data?.id));
@@ -558,7 +602,7 @@ const ChatBotPage = () => {
             <p>Pertanyaan yang sering ditanyakan</p>
             <div className='recomend-wp'>
               <Row gutter={16} style={{ width: "100%" }}>
-                {recomendQuestion.map((item) => {
+                {getRandomQuestion.map((item) => {
                   return (
                     <Col className='gutter-row' span={12}>
                       <div

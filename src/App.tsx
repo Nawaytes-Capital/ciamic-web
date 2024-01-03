@@ -25,7 +25,7 @@ function App() {
       <Routes>
         <Route path='/' element={<LandingPage />} />
         <Route path='/register' element={<RegisterPage />} />
-        <Route path='/confirmation' element={<ConfirmationPage />} />
+        <Route path='/confirmation/:email' element={<ConfirmationPage />} />
         <Route path='/verification/:token' element={<VerificationPage />} />
 
         <Route path='/usecase' element={<LoginPage />} />

@@ -25,3 +25,11 @@ export const verifyApi = (token: string) => {
     verif_code: token,
   });
 };
+
+// POST chatbot/resend-verification
+
+export const resendVerification = (email: string) => {
+  return api.post(`/chatbot/resend-verification`, {
+    email: email,
+  });
+};

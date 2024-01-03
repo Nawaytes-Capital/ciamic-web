@@ -1,13 +1,29 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useState } from "react";
-import icon from '../../assets/images/icon-confirmation1.png';
-import icon2 from '../../assets/images/icon-confirmation2.png';
-import './styles.scss'
+import icon from "../../assets/images/icon-confirmation1.png";
+import icon2 from "../../assets/images/icon-confirmation2.png";
+import "./styles.scss";
+import { useParams } from "react-router-dom";
+import { LoadingOutlined } from "@ant-design/icons";
+import { resendVerification } from "../../api/auth";
 
 const ConfirmationPage = () => {
-  const [confirm, setConfirm] =useState<boolean>(false)
+  const [confirm, setConfirm] = useState<boolean>(false);
+  const email = useParams<{ email: string }>();
   const openEmail = () => {
     window.open("https://gmail.com", "_blank");
+  };
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const resendEmail = async () => {
+    try {
+      setIsLoading(true);
+      await resendVerification(atob(email.email!));
+      setIsLoading(false);
+      message.success("Email berhasil dikirim");
+    } catch (error) {
+      setIsLoading(false);
+      message.error("Email gagal dikirim");
+    }
   };
   return (
     <div className='confirmation-container'>
@@ -28,9 +44,10 @@ const ConfirmationPage = () => {
             <img src={icon} className='icon' />
             <p className='title'>Konfirmasi Email</p>
             <p className='subtitle'>
-              {" "}
-              Kami telah mengirimkan Email Konfirmasi ke alfatih@telkom.co.id
-              Silahkan mengunjungi Email Anda dan klik link pada email tersebut.
+              {`Kami telah mengirimkan Email Konfirmasi ke ${atob(
+                email.email!
+              )}.
+Silahkan mengunjungi Email Anda dan klik link pada email tersebut.`}
             </p>
             <Button
               type='primary'
@@ -45,13 +62,34 @@ const ConfirmationPage = () => {
               Belum mendapat email?
             </p>
             <p className='subtitle'>
-              <span>Kirim ulang</span>
+              <span className='resend-email' onClick={resendEmail}>
+                Kirim ulang
+              </span>
             </p>
           </>
         )}
       </div>
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          opacity: 0.5,
+          position: "absolute",
+          backgroundColor: "#000",
+          display: isLoading ? "flex" : "none",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <LoadingOutlined
+          style={{
+            fontSize: "50px",
+            color: "#fff",
+          }}
+        />
+      </div>
     </div>
   );
-}
+};
 
 export default ConfirmationPage;
