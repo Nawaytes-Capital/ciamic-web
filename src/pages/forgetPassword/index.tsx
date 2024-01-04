@@ -1,18 +1,56 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import "./style.scss";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { forgotPassword } from "../../api/forgotPassword";
+
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { useEffect, useState } from "react";
 
 export default function ForgetPasswordPage() {
   const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleBackToLogin = () => {
     navigate("/");
   };
 
   const handleSubmit = () => {
-    console.log("submit");
+    handleForgotPassword();
   };
+
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email("Email harus valid").required("Email dibutuhkan"),
+  });
+
+  const form = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      console.log(values);
+      handleSubmit();
+    },
+  });
+
+  const handleForgotPassword = async () => {
+    try {
+      setIsLoading(true);
+      await forgotPassword(form.values.email);
+      setIsLoading(false);
+      const email = btoa(form.values.email);
+      navigate(`/check-forgot-password/${email}`);
+    } catch (error) {
+      setIsLoading(false);
+      message.error("Email tidak terdaftar");
+    }
+  };
+
+  useEffect(() => {
+    console.log(form.values.email);
+    console.log(form.errors);
+  }, [form.values.email, form.errors]);
 
   return (
     <div className='forgot-password-wp'>
@@ -23,6 +61,7 @@ export default function ForgetPasswordPage() {
           initialValues={{
             email: "",
           }}
+          onFinish={form.handleSubmit}
         >
           <Form.Item
             label={<span className='title'>Email</span>}
@@ -48,14 +87,18 @@ export default function ForgetPasswordPage() {
               placeholder='Masukan Email Anda'
               className='input'
               name='email'
+              onChange={form.handleChange}
+              onBlur={form.handleBlur}
+              value={form.values.email}
+              disabled={isLoading}
             />
           </Form.Item>
           <Form.Item>
             <Button
-              onClick={handleSubmit}
               className='btn'
               htmlType='submit'
               type='primary'
+              loading={isLoading}
             >
               Kirim Email
             </Button>
