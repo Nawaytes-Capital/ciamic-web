@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.d1d3efd0.css",
-    "main.js": "/static/js/main.29f64c38.js",
+    "main.css": "/static/css/main.63bebf9e.css",
+    "main.js": "/static/js/main.f419f83d.js",
     "static/js/27.ea7bb1b1.chunk.js": "/static/js/27.ea7bb1b1.chunk.js",
     "static/media/background.png": "/static/media/background.15543b982bbab582465a.png",
     "static/media/background-2.png": "/static/media/background-2.943ad9fae4f4d749cb90.png",
@@ -19,10 +19,12 @@
     "static/media/img-content-3.png": "/static/media/img-content-3.07341aa7869969c65086.png",
     "static/media/AmoebaSans-Light.otf": "/static/media/AmoebaSans-Light.875569c658ae91fd313d.otf",
     "static/media/AmoebaSans-Regular.otf": "/static/media/AmoebaSans-Regular.b9438fecf85550474aef.otf",
+    "static/media/logo512.png": "/static/media/logo512.437ab36078d15afceeb0.png",
     "static/media/chat-2.png": "/static/media/chat-2.95ef27cf951e55557b71.png",
     "static/media/mockup.png": "/static/media/mockup.cd962ba0172b46cd3417.png",
     "static/media/img-content-2.png": "/static/media/img-content-2.cd231268ec6897950fbe.png",
     "static/media/user-profile.png": "/static/media/user-profile.c750992e58a47e88665a.png",
+    "static/media/success-icon.png": "/static/media/success-icon.b677a4ffdd2b491e9fa6.png",
     "static/media/chat-1.png": "/static/media/chat-1.230a1f1d7e930431481e.png",
     "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
@@ -31,7 +33,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.d1d3efd0.css",
-    "static/js/main.29f64c38.js"
+    "static/css/main.63bebf9e.css",
+    "static/js/main.f419f83d.js"
   ]
 }
