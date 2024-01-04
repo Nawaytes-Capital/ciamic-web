@@ -1,9 +1,9 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { Button, Form, Input, message } from "antd";
-import accent from "../../../assets/images/icon-quote.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { sendFeedbackApi } from "../../../api/feedback";
-import { useEffect } from "react";
+import accent from "../../../assets/images/icon-quote.png";
 
 const { TextArea } = Input;
 const Section4 = () => {

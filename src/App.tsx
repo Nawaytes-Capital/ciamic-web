@@ -18,6 +18,9 @@ import SuccessPage from "./pages/useCasePage/component/successPage";
 import "./styles/variables.scss";
 import VerificationPage from "./pages/verificationPage";
 import PrivateRoute from "./PrivateRoute";
+import ForgetPasswordPage from "./pages/forgetPassword";
+import CheckForgotPasswordPage from "./pages/dashboard/pages/checkForgetPassword";
+import ResetPasswordPage from "./pages/dashboard/pages/changePassword";
 
 function App() {
   return (
@@ -27,6 +30,13 @@ function App() {
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/confirmation/:email' element={<ConfirmationPage />} />
         <Route path='/verification/:token' element={<VerificationPage />} />
+        <Route path='/forgot-password' element={<ForgetPasswordPage />} />
+        <Route path='/reset-password/:token' element={<ResetPasswordPage />} />
+
+        <Route
+          path='/check-forgot-password/:email'
+          element={<CheckForgotPasswordPage />}
+        />
 
         <Route path='/usecase' element={<LoginPage />} />
         <Route

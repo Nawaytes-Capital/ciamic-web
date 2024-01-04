@@ -7,12 +7,6 @@ import logo from "../../../assets/images/logo-ciamic.png";
 const Header = () => {
   const [isActive, setIsActive] = useState(false);
 
-  const isAuthenticated = (): boolean => {
-    const accessToken = localStorage.getItem("access_token");
-    const user = localStorage.getItem("user");
-    return !!accessToken && !!user;
-  };
-
   const scrollWithOffset = (el: HTMLElement) => {
     const yCoordinate = el.getBoundingClientRect().top + window.pageYOffset;
     const yOffset = -120;

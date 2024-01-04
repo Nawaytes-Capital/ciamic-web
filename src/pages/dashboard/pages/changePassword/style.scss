@@ -1,0 +1,154 @@
+@import "../../../../styles/variables.scss";
+
+
+
+.reset-password-page-wp{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .hide{
+        display: none !important;
+    }
+
+    .container{
+        max-width: 360px;
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        @include phone{
+            padding: 0 24px;
+        }
+
+        .logo{
+            width:50px;
+            height: 64px;
+            margin: 0 auto;
+        }
+        .title{
+            font-family: $amoebaBold;
+            font-size: 30px;
+            font-weight: 700;
+            margin-top: 24px;
+        }
+
+        .content{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: $amoebaReg;
+            color: #475467;
+            align-items: center;
+            justify-content: center;
+            .description{
+                font-size: 16px;
+                font-weight: 400;
+                margin-top: 12px;
+                text-align: center;
+            }
+        }
+
+        .form{
+            margin-top: 32px;
+
+            .ant-form-item-label{
+                padding: 0;
+            }
+            .ant-form-item{
+                margin-bottom: 12px;
+            }
+            .label{
+                font-size: 16px;
+                font-family: $amoebaReg;
+                font-weight: 600;
+            }
+            
+            .input{
+                margin-top: 6px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .btn{
+                width: 100%;
+                height: 40px;
+                background-color: $c-primary;
+                color: white;
+                font-size: 16px;
+                font-weight: 600;
+                margin-bottom: 72px;
+                margin-top: 24px;
+
+                &:hover{
+                    background-color: $c-primary;
+                    color: white;
+                }
+            }
+        }
+    }
+
+    .success-container{
+        max-width: 360px;
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .logo{
+            width:64px;
+            height: 64px;
+            margin: 0 auto;
+        }
+        .title{
+            font-family: $amoebaBold;
+            font-size: 30px;
+            font-weight: 700;
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .content{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: $amoebaReg;
+            color: #475467;
+            align-items: center;
+            justify-content: center;
+            .description{
+                font-size: 16px;
+                font-weight: 400;
+                margin-top: 12px;
+                text-align: center;
+            }
+        }
+
+        .btn{
+            width: 100%;
+            height: 40px;
+            background-color: $c-primary;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 72px;
+            margin-top: 24px;
+
+            &:hover{
+                background-color: $c-primary;
+                color: white;
+            }
+        }
+    }
+}
+
+.hide{
+    display: none !important;
+}

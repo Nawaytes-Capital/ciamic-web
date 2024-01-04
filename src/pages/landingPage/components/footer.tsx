@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { HashLink } from "react-router-hash-link";
 import illustration from "../../../assets/images/illustration.png";
 import { Button } from "antd";

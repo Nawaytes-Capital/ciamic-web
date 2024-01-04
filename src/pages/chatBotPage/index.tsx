@@ -65,6 +65,7 @@ const LogoutButton = () => {
 };
 
 const ChatBotPage = () => {
+  document.documentElement.setAttribute("data-color-mode", "light");
   const dispatch = useDispatch<AppDispatch>();
   const historyChatState = useSelector((state: RootState) => state.historyChat);
   const chatRoomState = useSelector((state: RootState) => state.chatRoom);
@@ -469,7 +470,7 @@ const ChatBotPage = () => {
                       item.type === "user" ? "chat-cust" : "chat-admin"
                     }`}
                   >
-                    <MarkdownPreview
+                    {/* <MarkdownPreview
                       ref={markdownRef}
                       className={`${
                         item.type === "user"
@@ -479,7 +480,23 @@ const ChatBotPage = () => {
                       remarkPlugins={[remarkGfm]}
                       linkTarget={"_blank"}
                       source={item.message}
-                    />
+                    /> */}
+                    {item.type === "user" ? (
+                      <p
+                        className='chat-cust'
+                        style={{ whiteSpace: "pre-line" }}
+                      >
+                        {item.message}
+                      </p>
+                    ) : (
+                      <MarkdownPreview
+                        ref={markdownRef}
+                        className={"markdown-admin"}
+                        remarkPlugins={[remarkGfm]}
+                        linkTarget={"_blank"}
+                        source={item.message}
+                      />
+                    )}
                   </div>
 
                   {item.type === "bot" && index !== 0 && (

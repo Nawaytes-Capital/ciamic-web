@@ -1,0 +1,67 @@
+@import "../../styles/variables.scss";
+.forgot-password-wp{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .container{
+        max-width: 360px;
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        @include phone{
+            padding: 0 24px;
+        }
+
+        .logo{
+            width:50px;
+            height: 64px;
+            margin: 0 auto;
+        }
+
+        .form{
+            margin-top: 32px;
+            .title{
+                font-size: 16px;
+                font-weight: 600;
+            }
+            .input{
+                margin-top: 6px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .btn{
+                width: 100%;
+                height: 40px;
+                background-color: $c-primary;
+                color: white;
+                font-size: 16px;
+                font-weight: 600;
+                margin-bottom: 72px;
+
+                &:hover{
+                    background-color: $c-primary;
+                    color: white;
+                }
+            }
+        }
+        .back-to-login{
+            display: flex;
+            justify-content: center;
+            gap: 11px;
+            font-size: 14px;
+            font-weight: 600;
+            color: $c-primary;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 24px;
+            &:hover{
+                color: $c-primary;
+            }
+        }
+    }
+}

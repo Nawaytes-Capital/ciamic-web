@@ -24,6 +24,10 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
+  const handleForgetPassword = () => {
+    navigate("/forgot-password");
+  };
+
   const handleLogin = async (payload: ILoginRequest) => {
     setIsLoading(true);
     try {
@@ -143,7 +147,9 @@ const LoginPage = () => {
                     ) : null}
                   </div>
                 </Form.Item>
-                <p className='forgot'>Lupa Password?</p>
+                <p className='forgot' onClick={handleForgetPassword}>
+                  Lupa Password?
+                </p>
                 <Button
                   type='primary'
                   htmlType='submit'
