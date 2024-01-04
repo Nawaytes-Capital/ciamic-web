@@ -44,7 +44,7 @@ const Section3 = () => {
   };
 
   return (
-    <section className='section-3'>
+    <section className='section-3 section' id='xcara-penggunaan'>
       <img src={accent} className='img' />
       <p className='title' id='cara-penggunaan'>
         Cara menggunakan ciamic

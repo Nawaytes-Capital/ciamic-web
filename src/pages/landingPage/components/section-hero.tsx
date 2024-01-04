@@ -19,6 +19,11 @@ interface ILoginRequest {
 const SectionHero = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+  const handleForgetPassword = () => {
+    navigate("/forgot-password");
+  };
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const validationLogin = yup.object().shape({
     email: yup
@@ -101,7 +106,7 @@ const SectionHero = () => {
     return true;
   };
   return (
-    <section className='section-hero' id='home'>
+    <section className='section-hero section' id='home'>
       <div className='section-left'>
         <h2 className='title-hero'>
           Dekati Target <br />
@@ -168,7 +173,9 @@ const SectionHero = () => {
                 ) : null}
               </div>
             </Form.Item>
-            <p className='forgot'>Lupa Password?</p>
+            <p className='forgot' onClick={handleForgetPassword}>
+              Lupa Password?
+            </p>
             <Button
               type='primary'
               htmlType='submit'

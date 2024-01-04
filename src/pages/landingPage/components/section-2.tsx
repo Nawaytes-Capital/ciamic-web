@@ -26,12 +26,12 @@ const Section2 = () => {
         }
     ]
     return (
-      <section className='section-2' id='keuntungan'>
+      <section className='section-2 section' id='xkeuntungan'>
         <div className='section-left'>
           <img src={mockup} className='mockup' />
           <img src={chat} className='chat' />
         </div>
-        <div className='section-right'>
+        <div className='section-right' id='keuntungan'>
           <p className='title'>Keuntungan Menggunakan Ciamic</p>
           {profit.map((item) => (
             <div className='text-wp'>

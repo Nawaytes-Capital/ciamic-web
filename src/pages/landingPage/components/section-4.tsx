@@ -55,7 +55,7 @@ const Section4 = () => {
   });
 
   return (
-    <section className='section-4'>
+    <section className='section-4 section' id='xfeedback'>
       <div className='section-left'>
         <div className='quote-accent'>
           <img src={accent} height='12px' />

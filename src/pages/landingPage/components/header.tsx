@@ -1,5 +1,5 @@
 import { CloseOutlined, MenuOutlined } from '@ant-design/icons';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import logo from "../../../assets/images/logo-ciamic.png";
@@ -18,6 +18,40 @@ const Header = () => {
     const yOffset = -120;
     window.scrollTo({ top: yCoordinate + yOffset, behavior: "smooth" });
   };
+
+  const [activeSection, setActiveSection] = useState("");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = document.querySelectorAll(".section");
+      let currentSection = "";
+      if (window.scrollY < 200) currentSection = "home";
+
+      sections.forEach((section) => {
+        const sectionElement = section as HTMLElement; // Cast to HTMLElement
+        const sectionTop = sectionElement.offsetTop;
+        const sectionHeight = sectionElement.clientHeight;
+        if (
+          window.scrollY + 200 >= sectionTop &&
+          window.scrollY < sectionTop + sectionHeight
+        ) {
+          currentSection = sectionElement.id;
+        }
+      });
+      if (currentSection === "home2") currentSection = "home";
+      setActiveSection(currentSection);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(activeSection);
+  }, [activeSection]);
+
   return (
     <header className='header-wrapper'>
       <img src={logo} className='logo' alt='logo' />
@@ -30,7 +64,9 @@ const Header = () => {
           }}
           scroll={(el) => scrollWithOffset(el)}
         >
-          <div className='menu-title '>Home</div>
+          <div className={`menu-title ${activeSection === "home" && "active"}`}>
+            Home
+          </div>
         </HashLink>
         <HashLink
           smooth
@@ -40,7 +76,13 @@ const Header = () => {
           }}
           scroll={(el) => scrollWithOffset(el)}
         >
-          <div className='menu-title'>Keuntungan</div>
+          <div
+            className={`menu-title ${
+              activeSection === "xkeuntungan" && "active"
+            }`}
+          >
+            Keuntungan
+          </div>
         </HashLink>
         <HashLink
           smooth
@@ -51,7 +93,13 @@ const Header = () => {
           scroll={(el) => scrollWithOffset(el)}
         >
           {" "}
-          <div className='menu-title'>Cara Penggunaan</div>
+          <div
+            className={`menu-title ${
+              activeSection === "xcara-penggunaan" && "active"
+            }`}
+          >
+            Cara Penggunaan
+          </div>
         </HashLink>
         <HashLink
           smooth
@@ -62,7 +110,13 @@ const Header = () => {
           scroll={(el) => scrollWithOffset(el)}
         >
           {" "}
-          <div className='menu-title'>Feedback</div>
+          <div
+            className={`menu-title ${
+              activeSection === "xfeedback" && "active"
+            }`}
+          >
+            Feedback
+          </div>
         </HashLink>
         <Link
           to={"/usecase"}

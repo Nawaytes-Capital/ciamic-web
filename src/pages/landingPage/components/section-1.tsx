@@ -3,7 +3,7 @@ import chat from "../../../assets/images/chat-1.png";
 
 const Section1 = () => {
     return (
-      <section className='section-1'>
+      <section className='section-1 section' id='home2'>
         <div className='section-left'>
           <p className='title'>
             CIAMIC (Chatbot Intelligence for Account Manager In Collaboration)
