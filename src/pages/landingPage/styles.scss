@@ -384,7 +384,7 @@ body {
 
   @include phone {
     flex-direction: column-reverse;
-    margin-top: 0;
+    margin-top: 160px;
 
     .section-left {
       width: 100%;
@@ -1038,7 +1038,7 @@ body {
       }
 
       .btn-footer {
-        width: 90%;
+        width: 100%;
       }
 
       &::after {
@@ -1076,7 +1076,7 @@ body {
       }
 
       .btn-footer {
-        width: 90%;
+        width: 100%;
       }
 
       &::after {
