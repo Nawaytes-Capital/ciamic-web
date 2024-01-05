@@ -384,9 +384,9 @@ const ChatBotPage = () => {
         >
           New Chat
         </Button>
+        <p className='title-1 larger'>Riwayat Chat</p>
         <div className='history-chat'>
           <div className='buble-container'>
-            <p className='title larger'>Riwayat Chat</p>
             {historyChatState.data?.data?.today.length === 0 &&
               historyChatState.data?.data?.week_before.length === 0 && (
                 <p className='title'>Belum ada percakapan hari ini</p>
