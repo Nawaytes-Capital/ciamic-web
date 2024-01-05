@@ -57,7 +57,7 @@ const RegisterPage = () => {
           email: values.email,
           password: values.password,
         };
-        console.log(btoa(values.email));
+        // console.log(btoa(values.email));
         try {
           const auth = await register(payload);
           message.success({

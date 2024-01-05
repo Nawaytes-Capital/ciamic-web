@@ -146,7 +146,7 @@ const UsecasePage = () => {
             <EditOutlined
               onClick={() => {
                 setIsShow(true);
-                console.log("record", record);
+                // console.log("record", record);
                 setQuestionList(record.questionList!);
                 setIdBatch(record.id);
               }}

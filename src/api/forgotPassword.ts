@@ -11,3 +11,18 @@ export const forgotPassword = (email: string) => {
     }
   );
 };
+
+
+interface ChangePassword {
+  email: string;
+  forgot_key: string;
+  new_password: string;
+}
+
+export const changePassword = (data: ChangePassword) => {
+  return api.post("/chatbot/change-password", data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};

@@ -1,20 +1,49 @@
 import "./style.scss";
 import logo from "../../../../assets/images/logo512.png";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import successLogo from "../../../../assets/images/success-icon.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { changePassword } from "../../../../api/forgotPassword";
 
 export default function ResetPasswordPage() {
   const [isFinnish, setIsFinnish] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const [token, setToken] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const navigate = useNavigate();
+
+  const params = useParams<{ token: string }>();
 
   const handleBack = () => {
     navigate("/");
   };
+
+  useEffect(() => {
+    if (!params.token) {
+      navigate("/");
+    }
+    try {
+      atob(params.token!);
+      setIsValid(true);
+    } catch (error) {
+      navigate("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isValid) {
+      const base64 = atob(params.token!);
+      const token = base64.split("+")[0];
+      const email = base64.split("+")[1];
+      setToken(token);
+      setEmail(email);
+    }
+  }, [isValid]);
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
@@ -38,14 +67,38 @@ export default function ResetPasswordPage() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
+      submitResetPassword();
     },
   });
+
+
+  const submitResetPassword = async () => {
+    try {
+      setIsLoading(true);
+      await changePassword({
+        email: email,
+        forgot_key: token,
+        new_password: form.values.password,
+      });
+      message.success("Berhasil Ubah Password");
+      setIsLoading(false);
+      setIsFinnish(true);
+    } catch (error: any) {
+      setIsLoading(false);
+      // console.log(error.response);
+      if (error.response.data.message) {
+        message.error(error.response.data.message);
+      } else {
+        message.error("Gagal Ubah Password");
+      }
+    }
+  };
 
   return (
     <>
       <div className={`reset-password-page-wp`}>
-        <div className={`container  ${!isFinnish ? "hide" : ""}`}>
+        <div className={`container  ${isFinnish ? "hide" : ""}`}>
           <img src={logo} className='logo' alt='logo' />
           <span className='title'>Atur Ulang Password</span>
           <div className='content'>
@@ -83,6 +136,7 @@ export default function ResetPasswordPage() {
               ]}
             >
               <Input.Password
+                disabled={isLoading}
                 placeholder='Password'
                 className='input'
                 name='password'
@@ -123,19 +177,24 @@ export default function ResetPasswordPage() {
               ]}
             >
               <Input.Password
+                disabled={isLoading}
                 placeholder='Konfirmasi Password'
                 className='input'
-                name='password'
+                name='confirmPassword'
+                onChange={(e) => {
+                  form.setFieldValue("confirmPassword", e.target.value);
+                }}
+                onBlur={form.handleBlur}
               />
             </Form.Item>
             <Form.Item>
-              <Button className='btn' htmlType='submit'>
+              <Button className='btn' htmlType='submit' loading={isLoading}>
                 Reset Password
               </Button>
             </Form.Item>
           </Form>
         </div>
-        <div className='success-container'>
+        <div className={`success-container ${isFinnish ? "" : "hide"}`}>
           <img src={successLogo} className='logo' alt='logo' />
           <span className='title'>Password Reset</span>
           <div className='content'>

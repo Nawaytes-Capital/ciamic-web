@@ -29,7 +29,7 @@ export default function ForgetPasswordPage() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       handleSubmit();
     },
   });
@@ -47,10 +47,10 @@ export default function ForgetPasswordPage() {
     }
   };
 
-  useEffect(() => {
-    console.log(form.values.email);
-    console.log(form.errors);
-  }, [form.values.email, form.errors]);
+  // useEffect(() => {
+  //   console.log(form.values.email);
+  //   console.log(form.errors);
+  // }, [form.values.email, form.errors]);
 
   return (
     <div className='forgot-password-wp'>

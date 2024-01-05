@@ -42,9 +42,9 @@ const Header = () => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(activeSection);
-  }, [activeSection]);
+  // useEffect(() => {
+  //   console.log(activeSection);
+  // }, [activeSection]);
 
   return (
     <header className='header-wrapper'>
