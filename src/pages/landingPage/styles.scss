@@ -22,7 +22,7 @@ body {
   align-items: center;
   border-bottom: 2px solid rgb(224, 224, 224);
   padding: 14px 24px;
-  z-index: 3;
+  z-index: 30;
   .logo {
     height: 54px;
   }
@@ -419,7 +419,7 @@ body {
 
   @include tablet {
     flex-direction: column-reverse;
-    margin-top: 0;
+    margin-top: 360px;
 
     .section-left {
       width: 100%;
