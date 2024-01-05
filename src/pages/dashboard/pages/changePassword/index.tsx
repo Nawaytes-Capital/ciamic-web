@@ -29,6 +29,12 @@ export default function ResetPasswordPage() {
     }
     try {
       atob(params.token!);
+      const base64 = atob(params.token!);
+      const email = base64.split("+")[1];
+      const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+      if (!regex.test(email)) {
+        navigate("/");
+      }
       setIsValid(true);
     } catch (error) {
       navigate("/");
