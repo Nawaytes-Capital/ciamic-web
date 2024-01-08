@@ -8,9 +8,15 @@ import { logoutApp } from "../../../../redux/features/auth/authSlice";
 
 interface ISidebar {
   isActiveMobile: boolean;
+  onClose?: () => void;
+  isHide?: boolean;
 }
 
-const SidebarDashboard: React.FC<ISidebar> = ({ isActiveMobile }) => {
+const SidebarDashboard: React.FC<ISidebar> = ({
+  isActiveMobile,
+  onClose,
+  isHide,
+}) => {
   const authState = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -46,12 +52,12 @@ const SidebarDashboard: React.FC<ISidebar> = ({ isActiveMobile }) => {
     },
   ];
   return (
-    <div className={`sidebar-dashboard ${isActiveMobile && "active-mobile"}`}>
+    <div className={`sidebar-dashboard ${isActiveMobile && "active-mobile"} `}>
       <div className='header-sidebar'>
         <h2 className='title'>Dashboard Ciamic</h2>
-        <div className='icon-wrapper'>
-          <DoubleLeftOutlined />
-        </div>
+        {/* <div className='icon-wrapper'>
+          <DoubleLeftOutlined onClick={onClose} />
+        </div> */}
       </div>
       <div className='menu-wrapper'>
         {menuData.map((item) => (

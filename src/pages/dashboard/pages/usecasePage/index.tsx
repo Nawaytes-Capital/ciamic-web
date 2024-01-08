@@ -160,9 +160,9 @@ const UsecasePage = () => {
     <div id='usecase-dashboard'>
       <div className='header-wp'>
         <h3 className='title-page'>List Batch Usecase</h3>
-        <Button className='btn-add' onClick={() => setIsShow(true)}>
+        {/* <Button className='btn-add' onClick={() => setIsShow(true)}>
           Add UseCase <PlusOutlined style={{ marginLeft: "8px" }} />
-        </Button>
+        </Button> */}
       </div>
       <Table
         className='table-wp'

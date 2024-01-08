@@ -11,10 +11,21 @@ import PrivateRouteDashboard from "../../components/private/PrivateRoute";
 
 function RouterDashboard() {
   const [isFullmenu, setFullmenu] = useState<boolean>(false)
+  const [isShow, setIsShow] = useState<boolean>(false);
   return (
     <div className='wrapper-dashboard-admin'>
-      <SidebarDashboard isActiveMobile={isFullmenu} />
-      <div className='content-wrapper'>
+      <SidebarDashboard
+        isActiveMobile={isFullmenu}
+        isHide={isShow}
+        onClose={() => {
+          if (isFullmenu) {
+            setFullmenu(false);
+          } else {
+            setIsShow(!isShow);
+          }
+        }}
+      />
+      <div className={`content-wrapper`}>
         <div className={`header-mobile ${isFullmenu && "after-active"}`}>
           {isFullmenu ? (
             <CloseSquareOutlined
