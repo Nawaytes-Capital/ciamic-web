@@ -132,16 +132,22 @@
 
 
       .bubble-wp {
+        font-size: 14px;
         cursor: pointer;
-        padding: 8px 16px 8px 16px;
+        padding: 8px 14px 8px 14px;
         width: calc(100% - 16px * 2);
         border: #4771c8 solid 2px;
+        
         border-radius: 8px;
         color: #fff;
         margin: 8px 0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        &:hover {
+          background-color: rgba(71, 113, 200, 0.5); ;
+          
+        }
       }
 
       .history-active {
@@ -417,7 +423,10 @@
 
       .recomend-wp {
         .recomend-box {
-          padding: 24px;
+          font-family: $amoebaReg;
+          font-weight: 500; 
+          font-size: 14px;
+          padding: 24px;  
           background-color: #d0dfff;
           border-radius: 8px;
           margin: 8px 0;
@@ -441,9 +450,16 @@
       }
 
       .input-question {
+        // &.bold {
+        //   font-weight: 700;
+        // }
         padding: 10px 48px 10px 10px;
         max-height: 300px;
         overflow-y: scroll;
+        border-color: #5D8BEA;
+        &::placeholder {
+          font-weight: bold ;
+        }
         &::-webkit-scrollbar {
           width: 6px;
         }

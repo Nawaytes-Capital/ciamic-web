@@ -51,6 +51,7 @@ const LogoutButton = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const handleLogout = () => {
+    dispatch(resetChat());
     dispatch(logoutApp());
     navigate("/");
   };
@@ -179,6 +180,10 @@ const ChatBotPage = () => {
     {
       id: 13,
       question: "kalo disisi umkm perbedaan majoo dengan kasiraja gimana",
+    },
+    {
+      id: 14,
+      question: "Isu terkait dinas kominfo kota ambon ?",
     },
   ];
 
@@ -637,7 +642,7 @@ const ChatBotPage = () => {
         )}
         <div className='input-wp'>
           <TextArea
-            className='input-question'
+            className={`input-question`}
             disabled={loadingChat}
             placeholder='Type A Messages'
             value={question}

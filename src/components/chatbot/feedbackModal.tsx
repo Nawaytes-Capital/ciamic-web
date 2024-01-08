@@ -22,6 +22,7 @@ export default function FeedbackModal(props: Props) {
   const handleCancel = () => {
     props.setIsModalOpen(false);
     setNotes("");
+    handleFeedback(props.chatId, props.like!);
   };
   const dispatch = useDispatch<AppDispatch>();
   const [notes, setNotes] = useState("");
@@ -29,12 +30,6 @@ export default function FeedbackModal(props: Props) {
   const handleFeedback = async (chatId: string, like: boolean) => {
     try {
       setNotes("");
-      // if (notes === "") {
-      //   message.error({
-      //     content: `Mohon isi feedback anda`,
-      //   });
-      //   return;
-      // }
       await sendChatFeedbackApi(
         authState.accessToken || "",
         chatId,
@@ -78,15 +73,15 @@ export default function FeedbackModal(props: Props) {
       onOk={handleOk}
       onCancel={handleCancel}
       footer={[
-        <Text key='text' className='cancle-button' onClick={handleOk}>
-          Tidak memberi feedback
-        </Text>,
+        // <Text key='text' className='cancle-button' onClick={handleOk}>
+        //   Tidak memberi feedback
+        // </Text>,
         <Button
           key='submit'
           type='primary'
           onClick={handleOk}
           className='submit-button'
-          disabled={notes === ""}
+          // disabled={notes === ""}
         >
           Kirim
         </Button>,
@@ -106,6 +101,7 @@ export default function FeedbackModal(props: Props) {
 
       <TextArea
         className='text-input'
+        placeholder='Masukan feedback anda'
         rows={4}
         onChange={(e) => setNotes(e.target.value)}
         value={notes}
