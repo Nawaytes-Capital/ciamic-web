@@ -73,15 +73,11 @@ export default function FeedbackModal(props: Props) {
       onOk={handleOk}
       onCancel={handleCancel}
       footer={[
-        // <Text key='text' className='cancle-button' onClick={handleOk}>
-        //   Tidak memberi feedback
-        // </Text>,
         <Button
           key='submit'
           type='primary'
           onClick={handleOk}
           className='submit-button'
-          // disabled={notes === ""}
         >
           Kirim
         </Button>,
@@ -97,7 +93,7 @@ export default function FeedbackModal(props: Props) {
 
       <TextArea
         className='text-input'
-        placeholder='Masukan feedback anda'
+        placeholder='Berikan Feedback (Optional)'
         rows={4}
         onChange={(e) => setNotes(e.target.value)}
         value={notes}
