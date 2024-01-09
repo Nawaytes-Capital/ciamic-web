@@ -90,10 +90,6 @@ export default function FeedbackModal(props: Props) {
       {props.like ? (
         <>
           <p>Terima kasih sudah menyukai Fitur Ciamic! </p>
-          <p>
-            Masukan apa yang ingin ada berikan feedback untuk kami, atau
-            ceritakan apa yang kamu suka.
-          </p>
         </>
       ) : (
         <p> Silahkan beri masukan agar kami bisa jauh lebih baik</p>
