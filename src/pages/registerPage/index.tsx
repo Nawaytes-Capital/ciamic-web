@@ -18,28 +18,33 @@ const RegisterPage = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const validation = yup.object().shape({
-      name: yup.string().required("username is required"),
+      name: yup.string().required("Nama wajib diisi"),
       email: yup
         .string()
-        .email("must be a valid email")
-        .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "must be a valid email")
+        .email("Email tidak valid")
+        .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Email tidak valid")
         // .matches(
         //   /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
         //   "must be a valid telkom email"
         // )
-        .required("email is required"),
+        .required("Email wajib diisi"),
       password: yup
         .string()
         .matches(
-          /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
-          "Must Contain 8 Characters with Number"
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
+          "Password harus mengandung setidaknya 1 huruf kapital, 1 huruf kecil dan 1 angka"
         )
-        .required("password is required"),
+        .required("Password wajib diisi"),
       confirmPassword: yup
         .string()
-        .test("passwords-match", "Passwords must match", function (value) {
-          return this.parent.password === value;
-        }),
+        .required("Konfirmasi password wajib diisi")
+        .test(
+          "passwords-match",
+          "Konfirmasi password harus sama",
+          function (value) {
+            return this.parent.password === value;
+          }
+        ),
     });
     const form = useFormik<IRegisterRequest>({
       initialValues: {
