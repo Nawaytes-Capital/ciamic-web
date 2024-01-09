@@ -79,7 +79,7 @@ const LoginPage = () => {
     password: yup
       .string()
       .matches(
-        /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/,
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
         "Must Contain 8 Characters with Number"
       )
       .required("password is required"),
