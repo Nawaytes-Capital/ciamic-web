@@ -58,7 +58,7 @@ export default function ResetPasswordPage() {
       .matches(
         //kapital, kecil, angka, 8 karakter
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
-        "Password harus mengandung setidaknya 1 huruf kapital, 1 huruf kecil, 1 angka, dan 1 karakter khusus"
+        "Password harus mengandung setidaknya 1 huruf kapital, 1 huruf kecil dan 1 angka"
       )
       .required("Password dibutuhkan"),
     confirmPassword: Yup.string()

@@ -69,20 +69,20 @@ const LoginPage = () => {
   const validationLogin = yup.object().shape({
     email: yup
       .string()
-      .email("must be a valid email")
-      .required("email is required")
+      .email("Email tidak valid")
+      .required("Email wajib diisi")
       // .matches(
       //   /^[a-zA-Z0-9._%+-]+@telkom\.co\.id$/,
       //   "must be a valid telkom email"
       // )
-      .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "must be a valid email"),
+      .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Email tidak valid"),
     password: yup
       .string()
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
-        "Must Contain 8 Characters with Number"
+        "Password harus mengandung setidaknya 1 huruf kapital, 1 huruf kecil dan 1 angka"
       )
-      .required("password is required"),
+      .required("Password wajib diisi"),
   });
   const form = useFormik<ILoginRequest>({
     initialValues: {
