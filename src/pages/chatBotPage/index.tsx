@@ -196,6 +196,7 @@ const ChatBotPage = () => {
       if (!question || question.length > 2100 || !question.trim()) {
         return;
       }
+      setLastSentQuestion(question);
       setLoadingChat(true);
       setQuestion("");
       setChatbotError(false);
@@ -236,7 +237,10 @@ const ChatBotPage = () => {
         } else {
           setChatbotError(true);
           message.error({
-            content: `${error.response?.data?.message}`,
+            content: `${
+              error.response?.data?.message ??
+              "Terjadi kesalahan, silahkan coba lagi"
+            }`,
           });
           return;
         }
@@ -250,6 +254,14 @@ const ChatBotPage = () => {
 
   const handleRetry = async () => {
     try {
+      if (
+        !lastSentQuestion ||
+        lastSentQuestion.length > 2100 ||
+        !lastSentQuestion.trim()
+      ) {
+        return;
+      }
+
       setChatbotError(false);
       setLoadingChat(true);
       const response = await sendChatApi(authState.accessToken || "", {
@@ -280,7 +292,10 @@ const ChatBotPage = () => {
         } else {
           setChatbotError(true);
           message.error({
-            content: `${error.response?.data?.message}`,
+            content: `${
+              error.response?.data?.message ??
+              "Terjadi kesalahan, silahkan coba lagi"
+            }`,
           });
           return;
         }
@@ -473,7 +488,7 @@ const ChatBotPage = () => {
                   <div
                     className={`chat ${
                       item.type === "user" ? "chat-cust" : "chat-admin"
-                    }`}
+                    } ${relatedQuestion.length === 0 && "no-recomend"}`}
                   >
                     {/* <MarkdownPreview
                       ref={markdownRef}
@@ -609,9 +624,9 @@ const ChatBotPage = () => {
                 <p className='error-text'>
                   Maaf, Sistem kami sedang sibuk. Silahkan Kirim Ulang
                   pertanyaan atau ketik pertanyaan baru.
-                </p>{" "}
-                <Button className='btn-try-again'>
-                  <TbRefresh onClick={handleRetry} />
+                </p>
+                <Button className='btn-try-again' onClick={handleRetry}>
+                  <TbRefresh />
                   Kirim Ulang
                 </Button>
               </div>

@@ -211,8 +211,12 @@
         // margin-bottom: 60px;
       }
       .chat-cust {
-        margin-bottom: 60px;
+        margin-bottom: 0px;
+        // &.no-recomend {
+        //   margin-bottom: 0 !important;
+        // }
       }
+      
     }
 
     .buble-chat {
@@ -437,7 +441,7 @@
 
     .input-wp {
       position: fixed;
-      bottom: 30px;
+      bottom: 43px;
       width: calc(75% - 32px * 2);
       z-index: 99;
 
@@ -482,7 +486,7 @@
       .question-length{
         position: absolute;
         right: 16px;
-        bottom: -19px;
+        bottom: -23px;
         font-size: 12px;
         &.error{
           color: #B90000;
