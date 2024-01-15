@@ -101,7 +101,7 @@ const ChatBotPage = () => {
         .slice(-4)
         .map((item) => item.substring(3, item.length));
       // const data = response.data.data.slice(-4);
-      data.length = 2;
+      data.length = 3;
       setRelatedQuestion(data);
       setIsLoadingRelatedQuestion(false);
     } catch (error) {
