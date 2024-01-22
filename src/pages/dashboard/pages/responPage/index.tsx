@@ -211,15 +211,18 @@ const ResponsePage = () => {
   ];
 
   const handleSubmit = () => {
-    //
+    const apiUrl = new URL(process.env.REACT_APP_API_URL!);
+    apiUrl.pathname = `/chatbot/admin/response-download/${answer[0].id}`;
+
+    window.location.href = `${process.env.REACT_APP_API_URL}/chatbot/admin/response-download/${answer[0].id}`;
   };
   return (
     <div id='usecase-dashboard'>
       <div className='header-wp'>
         <h3 className='title-page'>List Response</h3>
-        <Button className='btn-add' onClick={() => setIsShow(true)}>
+        {/* <Button className='btn-add' onClick={() => setIsShow(true)}>
           Download as CSV <PlusOutlined style={{ marginLeft: "8px" }} />
-        </Button>
+        </Button> */}
       </div>
       <Table
         className='table-wp'
