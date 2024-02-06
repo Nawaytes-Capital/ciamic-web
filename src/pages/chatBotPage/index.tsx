@@ -580,19 +580,21 @@ const ChatBotPage = () => {
                   isLoadingRelatedQuestion === false &&
                   item.id !== 0 &&
                   item.id === chatState.chats.length - 1 && (
-                    <div className='buble-chat'>
-                      <div className='suggestion-wp'>
-                        {relatedQuestion.length !== 0 &&
-                          relatedQuestion.map((item) => {
-                            return (
-                              <div
-                                className='chat-wp'
-                                onClick={() => setQuestion(item)}
-                              >
-                                {item}
-                              </div>
-                            );
-                          })}
+                    <div className='buble-chat '>
+                      <div className='buble-chat-mobile'>
+                        <div className='suggestion-wp'>
+                          {relatedQuestion.length !== 0 &&
+                            relatedQuestion.map((item) => {
+                              return (
+                                <div
+                                  className='chat-wp'
+                                  onClick={() => setQuestion(item)}
+                                >
+                                  {item}
+                                </div>
+                              );
+                            })}
+                        </div>
                       </div>
                     </div>
                   )}
